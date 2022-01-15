@@ -1,18 +1,16 @@
 import * as Phaser from 'phaser';
-import { SceneConfig } from '../interfaces/scene.config';
+import { SceneConfig } from '../interfaces/scene-config.interface';
+import { TilesetConfig } from '../interfaces/tileset-config.interface';
 
 export class BaseScene extends Phaser.Scene {
+  tilesetConfig: TilesetConfig;
+  map: Phaser.Tilemaps.Tilemap;
+  layers: { [key: string]: Phaser.Tilemaps.TilemapLayer };
 
   constructor(config: SceneConfig) {
     super(config);
-  }
 
-  preload(): void {
-    console.log('enter preload');
-  }
-
-  create(): void {
-    console.log('enter create');
+    this.tilesetConfig = config.tilesetConfig || this.tilesetConfig;
   }
 
 }

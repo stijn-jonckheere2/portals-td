@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import * as Phaser from 'phaser';
-import { SceneConfig } from "../interfaces/scene.config";
-import { BaseScene } from "../scenes/base.scene";
+import { SceneConfig } from "../interfaces/scene-config.interface";
+import { GrasslandScene } from "../scenes/grassland.scene";
+import { PreloadScene } from "../scenes/preload.scene";
 
 @Component({
   selector: "app-game-page",
@@ -20,7 +21,7 @@ export class GamePageComponent implements OnInit {
   ngOnInit() {
     this.config = {
       type: Phaser.AUTO,
-      scene: [BaseScene],
+      scene: [PreloadScene, GrasslandScene],
       physics: {
         default: 'arcade',
       },
