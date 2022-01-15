@@ -1,0 +1,50 @@
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+
+h3 {
+  margin: 0;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.menu {
+  padding-top: 16px;
+
+  a {
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    background-color: lightseagreen;
+    padding: 8px 12px;
+    border: 2px solid white;
+    border-radius: 26px;
+
+    &:hover {
+      background-color: darken(lightseagreen, 5%);
+    }
+
+    & + a {
+      margin-top: 8px;
+    }
+  }
+}
+

@@ -1,0 +1,9 @@
+@use 'mixins';
+
+:host {
+  @include mixins.pageComponent();
+}
+
+.game-wrapper {
+
+}

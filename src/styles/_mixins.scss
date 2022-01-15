@@ -1,0 +1,12 @@
+
+@mixin pageComponent() {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  h1 {
+    text-align: center;
+  }
+}
