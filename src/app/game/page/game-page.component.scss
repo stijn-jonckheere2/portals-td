@@ -6,6 +6,19 @@
 
 .game-menu {
   height: 10vh;
+  padding: 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .button {
+    @include mixins.defaultButton();
+
+    &+.button {
+      margin-left: 16px;
+    }
+  }
 }
 
 .game-wrapper {
