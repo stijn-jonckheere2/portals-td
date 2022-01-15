@@ -4,6 +4,14 @@
   @include mixins.pageComponent();
 }
 
-.game-wrapper {
+.game-menu {
+  height: 10vh;
+}
 
+.game-wrapper {
+  height: 80vh;
+}
+
+#portals-td-container {
+  text-align: center;
 }
