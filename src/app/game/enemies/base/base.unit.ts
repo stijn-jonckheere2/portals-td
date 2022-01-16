@@ -6,7 +6,7 @@ import { EventEmitter } from '@angular/core';
 export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
   speed: number = 100;
   health: number = 100;
-
+  dead: boolean = false;
   id: string;
 
   onUpdate: EventEmitter<BaseUnit> = new EventEmitter();
@@ -35,8 +35,13 @@ export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
     super.update(time, delta);
     this.onUpdate.emit(this);
 
-    if (this.health <= 0) {
-      this.destroyEnemy();
+    if (!this.dead && this.health <= 0) {
+      this.dead = true;
+      this.setTint(0xff0000);
+
+      setTimeout(() => {
+        this.destroyEnemy();
+      }, 200);
     }
   }
 

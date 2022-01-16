@@ -17,7 +17,7 @@ export class FireballProjectile extends BaseProjectile {
   override init(): void {
     super.init();
 
-    this.speed = 100;
+    this.speed = 200;
     this.maxDistance = 400;
     this.damage = 50;
 

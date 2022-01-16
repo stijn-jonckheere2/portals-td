@@ -28,7 +28,7 @@ export class FirePortal extends BaseUnit {
     this.triggerTimer = this.scene.time.addEvent({
       callback: this.shootNearestTarget,
       callbackScope: this,
-      delay: 1000, // 1000 = 1 second
+      delay: 350, // 1000 = 1 second
       loop: true
     });
   }
