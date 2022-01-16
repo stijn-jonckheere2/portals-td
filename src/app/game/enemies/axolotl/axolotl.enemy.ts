@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { BaseScene } from '../../scenes/base.scene';
-import { BaseUnit } from '../../base/base.unit';
+import { BaseUnit } from '../base/base.unit';
 import { initAxolotlAnims } from './axolotl.anims';
 
 export class AxolotlEnemy extends BaseUnit {
@@ -9,10 +9,6 @@ export class AxolotlEnemy extends BaseUnit {
 
   currentDestination: Phaser.Types.Tilemaps.TiledObject;
   nextDestinationIndex: number = 0;
-
-  get bodyDynamic(): Phaser.Physics.Arcade.Body {
-    return this.body as Phaser.Physics.Arcade.Body;
-  }
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, AxolotlEnemy.SPRITE_KEY);
@@ -24,18 +20,20 @@ export class AxolotlEnemy extends BaseUnit {
     initAxolotlAnims(this.scene.anims);
   }
 
-  init(): void {
-    this.setImmovable(true);
+  override init(): void {
+    super.init();
+
+    this.speed = 200;
   }
 
   override preUpdate(time, delta): void {
     super.preUpdate(time, delta);
   }
 
-  override update() {
-    super.update();
+  override update(time, delta) {
+    super.update(time, delta);
 
-    if(!this.body) {
+    if (!this.body) {
       return;
     }
 

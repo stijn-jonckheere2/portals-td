@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { BaseUnit } from '../base/base.unit';
+import { BaseUnit } from '../enemies/base/base.unit';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
 

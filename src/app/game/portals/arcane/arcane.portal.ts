@@ -1,4 +1,4 @@
-import { BaseUnit } from '../../base/base.unit';
+import { BaseUnit } from '../../enemies/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 
@@ -21,13 +21,13 @@ export class ArcanePortal extends BaseUnit {
     this.initEvents();
   }
 
-  init(): void {
-    this.setImmovable(true);
+  override init(): void {
+    super.init();
 
     this.triggerTimer = this.scene.time.addEvent({
       callback: this.absorbNearestTarget,
       callbackScope: this,
-      delay: 50, // 1000 = 1 second
+      delay: 100, // 1000 = 1 second
       loop: true
     });
 

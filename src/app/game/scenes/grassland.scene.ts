@@ -1,13 +1,15 @@
 import { tilesetsConfig } from 'src/config/tilesets.config';
-import { BaseUnit } from '../base/base.unit';
+import { BaseUnit } from '../enemies/base/base.unit';
 import { AxolotlEnemy } from '../enemies/axolotl/axolotl.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { ArcanePortal } from '../portals/arcane/arcane.portal';
 import { FirePortal } from '../portals/fire/fire.portal';
 import { IcePortal } from '../portals/ice/ice.portal';
 import { PortalElement } from '../portals/portal-element.enum';
-import { Fireball } from '../projectiles/fireball/fireball.projectile';
+import { BaseProjectile } from '../projectiles/base/base.projectile';
 import { BaseScene } from './base.scene';
+import { initExplosionAnim } from '../anims/explosion.anim';
+
 
 export class GrasslandScene extends BaseScene {
   static KEY: string = 'grassland-scene';
@@ -26,39 +28,32 @@ export class GrasslandScene extends BaseScene {
 
     this.load.tilemapTiledJSON(GrasslandScene.MAP_KEY, 'assets/maps/grassland.json');
     this.load.image(key, url);
-
-    this.load.spritesheet(AxolotlEnemy.SPRITE_KEY, AxolotlEnemy.SPRITE_URL, {
-      frameWidth: 16,
-      frameHeight: 16
-    });
-
-    this.load.spritesheet(ArcanePortal.SPRITE_KEY, ArcanePortal.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(Fireball.SPRITE_KEY, Fireball.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
   }
 
   create(): void {
     this.createMap();
     this.createLayers();
     this.createPoints();
+    this.createAnims();
 
     const arcanePortal = this.createPortal(2, PortalElement.ARCANE);
     const icePortal = this.createPortal(1, PortalElement.ICE);
-    const firePortal = this.createPortal(0, PortalElement.FIRE);
+    const firePortal: FirePortal = this.createPortal(0, PortalElement.FIRE) as FirePortal;
 
     // TODO: Make axolotl collide with fireball somehow
 
     setInterval(() => {
       const axol = this.createAxolotl();
+      axol.addCollider(firePortal.fireballs, this.onUnitHit)
       axol.move();
+
       this.enemies.push(axol);
-    }, 500);
+    }, 1500);
+  }
+
+  onUnitHit(unit: BaseUnit, projectile: BaseProjectile): void {
+    unit.takeDamage(projectile.damage);
+    projectile.onHitTarget(unit);
   }
 
   createMap(): void {
@@ -93,6 +88,10 @@ export class GrasslandScene extends BaseScene {
     this.endPoint = zoneLayer.find(z => z.name === 'end-point');
     this.waypoints = waypointsLayer.sort(wp => wp.id);
     this.towerpoints = towerpointsLayer.sort(tp => tp.id);
+  }
+
+  createAnims(): void {
+    initExplosionAnim(this.anims);
   }
 
   createAxolotl(): AxolotlEnemy {

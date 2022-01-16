@@ -1,6 +1,5 @@
-import { BaseUnit } from '../../base/base.unit';
-import { Fireball } from '../../projectiles/fireball/fireball.projectile';
-import { Fireballs } from '../../projectiles/fireball/fireballs.group';
+import { BaseUnit } from '../../enemies/base/base.unit';
+import { FireballGroup } from '../../projectiles/fireball/fireball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 
@@ -8,10 +7,9 @@ export class FirePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
   static SPRITE_URL = 'assets/sprites/portals.png';
 
-  closestEnemy: BaseUnit;
   triggerTimer: Phaser.Time.TimerEvent;
   ammo: number = 1;
-  fireballs: Fireballs;
+  fireballs: FireballGroup;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, FirePortal.SPRITE_KEY);
@@ -23,14 +21,14 @@ export class FirePortal extends BaseUnit {
     this.initEvents();
   }
 
-  init(): void {
-    this.setImmovable(true);
-    this.fireballs = new Fireballs(this.baseScene);
+  override init(): void {
+    super.init();
+    this.fireballs = new FireballGroup(this.baseScene);
 
     this.triggerTimer = this.scene.time.addEvent({
       callback: this.shootNearestTarget,
       callbackScope: this,
-      delay: 100, // 1000 = 1 second
+      delay: 1000, // 1000 = 1 second
       loop: true
     });
   }
@@ -51,30 +49,19 @@ export class FirePortal extends BaseUnit {
       return;
     }
 
-    this.closestEnemy = closest as BaseUnit;
+    const closestEnemy = closest as BaseUnit;
 
     const distanceToClosest = Phaser.Math.Distance.Between(
-      this.closestEnemy.body.position.x,
-      this.closestEnemy.body.position.y,
+      closestEnemy.body.position.x,
+      closestEnemy.body.position.y,
       this.body.position.x,
       this.body.position.y,
     );
 
-    if (distanceToClosest <= 100) {
-      // Shoot fireball
+    if (distanceToClosest <= 200) {
       const fireballX = this.body.position.x + 32;
       const fireballY = this.body.position.y + 32;
-
-      const fireball = new Fireball(this.baseScene, fireballX, fireballY);
-
-      fireball
-        .setOrigin(0.5)
-        .setScale(1);
-
-      this.scene.physics.moveToObject(fireball, this.closestEnemy, fireball.speed);
-
-      // this.closestEnemy.destroyEnemy();
-      this.closestEnemy = null;
+      this.fireballs.fireProjectile(fireballX, fireballY, closestEnemy);
     }
   }
 

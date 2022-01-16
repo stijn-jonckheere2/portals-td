@@ -1,4 +1,4 @@
-import { BaseUnit } from '../../base/base.unit';
+import { BaseUnit } from '../../enemies/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 
@@ -16,8 +16,8 @@ export class IcePortal extends BaseUnit {
     this.initEvents();
   }
 
-  init(): void {
-    this.setImmovable(true);
+  override init(): void {
+    super.init();
   }
 
   override preUpdate(time, delta): void {
@@ -25,8 +25,8 @@ export class IcePortal extends BaseUnit {
 
   }
 
-  override update(): void {
-    super.update();
+  override update(time, delta): void {
+    super.update(time, delta);
 
   }
 
