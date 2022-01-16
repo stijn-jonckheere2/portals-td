@@ -1,8 +1,13 @@
 import { tilesetsConfig } from 'src/config/tilesets.config';
+import { BaseUnit } from '../base/base.unit';
 import { AxolotlEnemy } from '../enemies/axolotl/axolotl.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
+import { ArcanePortal } from '../portals/arcane/arcane.portal';
+import { FirePortal } from '../portals/fire/fire.portal';
+import { IcePortal } from '../portals/ice/ice.portal';
+import { PortalElement } from '../portals/portal-element.enum';
+import { Fireball } from '../projectiles/fireball/fireball.projectile';
 import { BaseScene } from './base.scene';
-import Phaser from 'phaser';
 
 export class GrasslandScene extends BaseScene {
   static KEY: string = 'grassland-scene';
@@ -26,44 +31,98 @@ export class GrasslandScene extends BaseScene {
       frameWidth: 16,
       frameHeight: 16
     });
+
+    this.load.spritesheet(ArcanePortal.SPRITE_KEY, ArcanePortal.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(Fireball.SPRITE_KEY, Fireball.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
   }
 
   create(): void {
-    this.map = this.createMap();
-    this.layers = this.createLayers();
-    
-    const axolotl = this.createAxolotl();
-    axolotl.addCollider(this.layers.path);
+    this.createMap();
+    this.createLayers();
+    this.createPoints();
+
+    const arcanePortal = this.createPortal(2, PortalElement.ARCANE);
+    const icePortal = this.createPortal(1, PortalElement.ICE);
+    const firePortal = this.createPortal(0, PortalElement.FIRE);
+
+    // TODO: Make axolotl collide with fireball somehow
+
+    setInterval(() => {
+      const axol = this.createAxolotl();
+      axol.move();
+      this.enemies.push(axol);
+    }, 500);
   }
 
-  createMap(): Phaser.Tilemaps.Tilemap {
-    const map = this.make.tilemap({
+  createMap(): void {
+    this.map = this.make.tilemap({
       key: GrasslandScene.MAP_KEY
     });
-
-    return map;
   }
 
-  createLayers(): any {
+  createLayers(): void {
     const { id, key } = this.tilesetConfig;
     const natureTiles = this.map.addTilesetImage(id, key);
 
     const backgroundLayer = this.map.createLayer('background', natureTiles);
     const pathLayer = this.map.createLayer('path', natureTiles);
+    const zoneLayer = this.map.getObjectLayer('zones');
+
     pathLayer.setCollisionByExclusion([58], true);
 
-    return {
+    this.layers = {
       background: backgroundLayer,
       path: pathLayer,
+      zones: zoneLayer,
     };
   }
 
+  createPoints(): void {
+    const zoneLayer = this.map.getObjectLayer('zones').objects;
+    const waypointsLayer = this.map.getObjectLayer('waypoints').objects;
+    const towerpointsLayer = this.map.getObjectLayer('towers').objects;
+
+    this.spawnPoint = zoneLayer.find(z => z.name === 'spawn-point');
+    this.endPoint = zoneLayer.find(z => z.name === 'end-point');
+    this.waypoints = waypointsLayer.sort(wp => wp.id);
+    this.towerpoints = towerpointsLayer.sort(tp => tp.id);
+  }
+
   createAxolotl(): AxolotlEnemy {
-    const axolotl = new AxolotlEnemy(this, 120, 50)
+    const axolotl = new AxolotlEnemy(this, this.spawnPoint.x, this.spawnPoint.y)
       .setScale(2)
       .setOrigin(0.5);
 
     return axolotl;
   }
 
+  createPortal(position: number, element: PortalElement): BaseUnit {
+    const towerPoint = this.towerpoints[position];
+    let portal;
+
+    switch (element) {
+      case PortalElement.ARCANE:
+        portal = new ArcanePortal(this, towerPoint.x, towerPoint.y);
+        break;
+      case PortalElement.FIRE:
+        portal = new FirePortal(this, towerPoint.x, towerPoint.y);
+        break;
+      case PortalElement.ICE:
+        portal = new IcePortal(this, towerPoint.x, towerPoint.y);
+        break;
+    }
+
+    portal
+      .setScale(2)
+      .setOrigin(0.5);
+
+    return portal;
+  }
 }

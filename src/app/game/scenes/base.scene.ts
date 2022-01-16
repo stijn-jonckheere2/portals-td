@@ -1,11 +1,19 @@
 import * as Phaser from 'phaser';
+import { BaseUnit } from '../base/base.unit';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
 
 export class BaseScene extends Phaser.Scene {
   tilesetConfig: TilesetConfig;
   map: Phaser.Tilemaps.Tilemap;
-  layers: { [key: string]: Phaser.Tilemaps.TilemapLayer };
+  layers: { [key: string]: Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.ObjectLayer };
+
+  spawnPoint: Phaser.Types.Tilemaps.TiledObject;
+  endPoint: Phaser.Types.Tilemaps.TiledObject;
+  waypoints: Phaser.Types.Tilemaps.TiledObject[];
+  towerpoints: Phaser.Types.Tilemaps.TiledObject[];
+
+  enemies: BaseUnit[] = [];
 
   constructor(config: SceneConfig) {
     super(config);
