@@ -1,11 +1,11 @@
-import { AxolotlEnemy } from './axolotl.enemy';
 
-export function initAxolotlAnims(anims): void {
+
+export function initEnemyAnim(anims: any, spriteKey: string): void {
   const frameRate = 8;
 
   anims.create({
     key: 'walkDown',
-    frames: anims.generateFrameNumbers(AxolotlEnemy.SPRITE_KEY, {
+    frames: anims.generateFrameNumbers(spriteKey, {
       frames: [0, 4, 8, 12]
     }),
     frameRate,
@@ -14,7 +14,7 @@ export function initAxolotlAnims(anims): void {
 
   anims.create({
     key: 'walkUp',
-    frames: anims.generateFrameNumbers(AxolotlEnemy.SPRITE_KEY, {
+    frames: anims.generateFrameNumbers(spriteKey, {
       frames: [1, 5, 9, 13]
     }),
     frameRate,
@@ -23,7 +23,7 @@ export function initAxolotlAnims(anims): void {
 
   anims.create({
     key: 'walkLeft',
-    frames: anims.generateFrameNumbers(AxolotlEnemy.SPRITE_KEY, {
+    frames: anims.generateFrameNumbers(spriteKey, {
       frames: [2, 6, 10, 14]
     }),
     frameRate,
@@ -32,7 +32,7 @@ export function initAxolotlAnims(anims): void {
 
   anims.create({
     key: 'walkRight',
-    frames: anims.generateFrameNumbers(AxolotlEnemy.SPRITE_KEY, {
+    frames: anims.generateFrameNumbers(spriteKey, {
       frames: [3, 7, 11, 15]
     }),
     frameRate,

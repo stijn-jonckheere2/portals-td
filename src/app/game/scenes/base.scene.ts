@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { BaseEnemy } from '../enemies/base/base.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
+import { WavesManager } from '../waves/waves.manager';
 
 export abstract class BaseScene extends Phaser.Scene {
   private startingGold: number = 400;
@@ -21,6 +22,7 @@ export abstract class BaseScene extends Phaser.Scene {
   levelHealthSubject$: BehaviorSubject<number>;
 
   enemies: BaseEnemy[] = [];
+  wavesManager: WavesManager = new WavesManager(0);
 
   constructor(config: SceneConfig) {
     super(config);
@@ -32,6 +34,7 @@ export abstract class BaseScene extends Phaser.Scene {
 
   create(): void {
     this.setupWindowSubjects();
+    this.wavesManager.init();
   }
 
   earnGold(gold: number): void {

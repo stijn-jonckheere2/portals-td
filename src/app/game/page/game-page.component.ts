@@ -25,6 +25,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   levelGoldSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
   levelHealthSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
+  currentWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
+  lastWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
 
   constructor() {
   }
@@ -80,6 +82,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
       portalSelectedSubject$: this.portalSelectedSubject$,
       levelGoldSubject$: this.levelGoldSubject$,
       levelHealthSubject$: this.levelHealthSubject$,
+      currentWaveSubject$: this.currentWaveSubject$,
+      lastWaveSubject$: this.lastWaveSubject$,
     };
   }
 }

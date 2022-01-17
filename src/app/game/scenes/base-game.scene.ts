@@ -42,6 +42,15 @@ export abstract class BaseGameScene extends BaseScene {
     this.createMap();
     this.createLayers();
     this.createPoints();
+    this.spawnEnemies();
+
+    setInterval(() => {
+      if (this.enemies?.length === 0) {
+        this.earnGold(this.wavesManager.getRoundWonReward());
+        this.wavesManager.startNextWave();
+        this.spawnEnemies();
+      }
+    }, 1500);
   }
 
   createMap(): void {
@@ -75,6 +84,9 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   createPortal(x: number, y: number, element: PortalElement): void {
+    x = Phaser.Math.Snap.To(x, 40);
+    y = Phaser.Math.Snap.To(y, 40);
+
     let portal: GamePortal;
 
     switch (element) {
@@ -120,7 +132,8 @@ export abstract class BaseGameScene extends BaseScene {
         break;
     }
 
-    this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass).setScale(2);
+    this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass)
+      .setScale(2);
   }
 
   hidePortalPlaceholder(): void {
@@ -159,6 +172,39 @@ export abstract class BaseGameScene extends BaseScene {
   onUnitHit(enemy: BaseEnemy, projectile: BaseProjectile): void {
     enemy.takeDamage(projectile.damage);
     projectile.onHitTarget(enemy);
+  }
+
+  startNextWave(): void {
+    this.wavesManager.startNextWave();
+    this.spawnEnemies();
+  }
+
+  spawnEnemies(): void {
+    const enemyClasses = this.wavesManager.getEnemies();
+    let index = 0;
+
+    const interval = setInterval(() => {
+      const enemyClass = enemyClasses[index];
+      this.spawnEnemy(enemyClass);
+      index++;
+
+      if (index == enemyClasses.length) {
+        clearInterval(interval);
+      }
+    }, 500)
+  }
+
+  spawnEnemy(EnemyClass): void {
+    const enemy = new EnemyClass(this, this.spawnPoint.x, this.spawnPoint.y) as BaseEnemy;
+
+    enemy
+      .setScale(2)
+      .setOrigin(0.5);
+
+    enemy.addCollider(this.getCollidingProjectiles(), this.onUnitHit)
+    enemy.startMoving();
+
+    this.enemies.push(enemy);
   }
 
   createUIObservables(): void {

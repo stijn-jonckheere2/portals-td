@@ -24,9 +24,12 @@
 
 .game-stats {
   color: white;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: bold;
   flex-basis: 25%;
+
+  display: flex;
+  flex-wrap: wrap;
 
   div {
     display: flex;
@@ -34,6 +37,20 @@
 
     img {
       margin-right: 8px;
+    }
+
+    & + div {
+      margin-left: 16px;
+    }
+  }
+
+  .waves {
+    span {
+      font-size: 12px;
+    }
+    p {
+      margin: 0;
+      font-size: 24px;
     }
   }
 }
@@ -58,13 +75,15 @@
     &-option {
       height: 32px;
       width: 32px;
+      flex-shrink: 0;
+      flex-grow: 0;
       background-repeat: no-repeat;
       background-size: cover;
       background-image: url('../../../assets/sprites/portals.png');
     }
 
     &-fire {
-      background-position-x: -65px;
+      background-position-x: -64px;
       background-position-y: 0;
     }
 

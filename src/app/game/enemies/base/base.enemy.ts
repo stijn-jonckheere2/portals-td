@@ -6,7 +6,7 @@ import { EventEmitter } from '@angular/core';
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   speed: number = 100;
   health: number = 100;
-  loot: number = 10;
+  gold: number = 10;
   damage: number = 1;
 
   dead: boolean = false;
@@ -79,8 +79,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  move(): void {
-    const myScene = this.scene as BaseScene;
+  startMoving(): void {
     this.setNextDestination();
   }
 
@@ -152,7 +151,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.baseScene.enemies = this.baseScene.enemies.filter(e => e.id !== this.id);
 
     if (receiveGold) {
-      this.baseScene.earnGold(this.loot);
+      this.baseScene.earnGold(this.gold);
     }
 
     this.destroy();
