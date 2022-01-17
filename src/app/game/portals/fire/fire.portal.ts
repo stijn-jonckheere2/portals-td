@@ -1,3 +1,4 @@
+import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseUnit } from '../../enemies/base/base.unit';
 import { FireballGroup } from '../../projectiles/fireball/fireball.group';
 import { BaseScene } from '../../scenes/base.scene';
@@ -55,11 +56,11 @@ export class FirePortal extends BaseUnit {
   shootNearestTarget(): void {
     const closest = this.scene.physics.closest(this, this.baseScene.enemies);
 
-    if (!closest || !(closest as BaseUnit).body) {
+    if (!closest || !(closest as BaseEnemy).body) {
       return;
     }
 
-    const closestEnemy = closest as BaseUnit;
+    const closestEnemy = closest as BaseEnemy;
 
     const distanceToClosest = Phaser.Math.Distance.Between(
       closestEnemy.body.position.x,

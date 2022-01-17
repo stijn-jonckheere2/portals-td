@@ -66,9 +66,11 @@ export class ArcanePortal extends BaseUnit {
 
     if (distanceToClosest <= 200) {
       this.scene.physics.moveTo(this.closestEnemy, this.body.position.x + 32, this.body.position.y + 32, this.speed);
+      this.closestEnemy.tintFill = false;
+      this.closestEnemy.setTint(0x250095);
     }
 
-    if (distanceToClosest <= 25) {
+    if (distanceToClosest <= 40) {
       this.closestEnemy.destroyEnemy();
       this.closestEnemy = null;
     }

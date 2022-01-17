@@ -1,4 +1,4 @@
-import { BaseUnit } from "../../enemies/base/base.unit";
+import { BaseEnemy } from "../../enemies/base/base.enemy";
 import { BaseScene } from "../../scenes/base.scene";
 import { BaseEffect } from "../base/base.effect";
 
@@ -9,7 +9,7 @@ export class EffectManager {
     this.scene = scene;
   }
 
-  playEffectOn(spriteKey: string, effectKey: string, target: BaseUnit): void {
+  playEffectOn(spriteKey: string, effectKey: string, target: BaseEnemy): void {
     const effect = new BaseEffect(this.scene, target.x, target.y, spriteKey, effectKey);
     effect.playOn(target);
   }

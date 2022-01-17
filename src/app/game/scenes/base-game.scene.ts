@@ -1,4 +1,5 @@
 import { Observable, Observer, Subject, Subscription, tap } from "rxjs";
+import { BaseEnemy } from "../enemies/base/base.enemy";
 import { BaseUnit } from "../enemies/base/base.unit";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
@@ -114,6 +115,9 @@ export abstract class BaseGameScene extends BaseScene {
       case PortalElement.FIRE:
         parentClass = FirePortal;
         break;
+      case PortalElement.ICE:
+        parentClass = IcePortal;
+        break;
     }
 
     this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass).setScale(2);
@@ -137,6 +141,9 @@ export abstract class BaseGameScene extends BaseScene {
       if (portal instanceof FirePortal) {
         projectiles.push((portal as FirePortal).fireballs);
       }
+      if (portal instanceof IcePortal) {
+        projectiles.push((portal as IcePortal).snowballs);
+      }
     });
 
     return projectiles;
@@ -148,9 +155,9 @@ export abstract class BaseGameScene extends BaseScene {
     });
   }
 
-  onUnitHit(unit: BaseUnit, projectile: BaseProjectile): void {
-    unit.takeDamage(projectile.damage);
-    projectile.onHitTarget(unit);
+  onUnitHit(enemy: BaseEnemy, projectile: BaseProjectile): void {
+    enemy.takeDamage(projectile.damage);
+    projectile.onHitTarget(enemy);
   }
 
   createUIObservables(): void {

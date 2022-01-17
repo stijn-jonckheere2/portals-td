@@ -9,6 +9,13 @@
       </div>
     </div>
 
+    <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.ICE">
+      <div
+        class="game-portal-option game-portal-ice"
+        (click)="onActivatePortal(PortalElement.ICE)">
+      </div>
+    </div>
+
     <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE">
       <div
         class="game-portal-option game-portal-arcane"

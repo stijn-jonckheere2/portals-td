@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseScene } from '../../scenes/base.scene';
-import { FireballProjectile } from './fireball.projectile';
+import { SnowballProjectile } from './snowball.projectile';
 
-export class FireballGroup extends Phaser.Physics.Arcade.Group {
+export class SnowballGroup extends Phaser.Physics.Arcade.Group {
 
   constructor(scene: BaseScene) {
     super(scene.physics.world, scene);
@@ -12,13 +12,13 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
       frameQuantity: 10,
       active: false,
       visible: false,
-      key: FireballProjectile.SPRITE_KEY,
-      classType: FireballProjectile
+      key: SnowballProjectile.SPRITE_KEY,
+      classType: SnowballProjectile
     });
   }
 
   fireProjectile(spawnX: number, spawnY: number, target: BaseEnemy): void {
-    const projectile: FireballProjectile = this.getFirstDead(false, spawnX, spawnY);
+    const projectile: SnowballProjectile = this.getFirstDead(false, spawnX, spawnY);
 
     if (projectile) {
       projectile.setScale(1);

@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
-import { BaseUnit } from '../../enemies/base/base.unit';
+import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseScene } from '../../scenes/base.scene';
 
 export class BaseEffect extends Phaser.Physics.Arcade.Sprite {
   spriteKey: string;
   effectKey: string;
-  target: BaseUnit;
+  target: BaseEnemy;
 
   get baseScene(): BaseScene {
     return this.scene as BaseScene;
@@ -44,7 +44,7 @@ export class BaseEffect extends Phaser.Physics.Arcade.Sprite {
     this.body.reset(targetCenter.x, targetCenter.y);
   }
 
-  playOn(target: BaseUnit): void {
+  playOn(target: BaseEnemy): void {
     this.target = target;
     this.play(this.effectKey, true);
     this.placeEffect();

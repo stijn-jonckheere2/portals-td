@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 import { EffectManager } from '../../effects/manager/effect.manager';
+import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseUnit } from '../../enemies/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 
@@ -50,7 +51,7 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  trackTarget(target: BaseUnit): void {
+  trackTarget(target: BaseEnemy): void {
     this.trackingSub$ = target.onUpdate.asObservable().subscribe(newTarget => {
       if (newTarget && newTarget.body) {
         this.fire(newTarget.body.x, newTarget.body.y);
@@ -58,7 +59,7 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  onHitTarget(target: BaseUnit): void {
+  onHitTarget(target: BaseEnemy): void {
     this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, target);
     this.destroyEnemy();
   }

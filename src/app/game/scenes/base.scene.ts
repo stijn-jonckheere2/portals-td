@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { BaseUnit } from '../enemies/base/base.unit';
+import { BaseEnemy } from '../enemies/base/base.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
 
@@ -13,7 +13,7 @@ export abstract class BaseScene extends Phaser.Scene {
   waypoints: Phaser.Types.Tilemaps.TiledObject[];
   towerpoints: Phaser.Types.Tilemaps.TiledObject[];
 
-  enemies: BaseUnit[] = [];
+  enemies: BaseEnemy[] = [];
 
   constructor(config: SceneConfig) {
     super(config);
