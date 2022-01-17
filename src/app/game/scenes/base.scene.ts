@@ -3,7 +3,7 @@ import { BaseUnit } from '../enemies/base/base.unit';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
 
-export class BaseScene extends Phaser.Scene {
+export abstract class BaseScene extends Phaser.Scene {
   tilesetConfig: TilesetConfig;
   map: Phaser.Tilemaps.Tilemap;
   layers: { [key: string]: Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.ObjectLayer };
@@ -17,8 +17,12 @@ export class BaseScene extends Phaser.Scene {
 
   constructor(config: SceneConfig) {
     super(config);
-
     this.tilesetConfig = config.tilesetConfig || this.tilesetConfig;
   }
 
+  preload(): void {
+  }
+
+  create(): void {
+  }
 }

@@ -13,7 +13,7 @@ const routes: Routes = [
         path: 'game',
         loadChildren: () => import('./game/game.module').then(m => m.GameModule),
       },
-      { path: '', redirectTo: 'alerts', pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
   { path: '**', redirectTo: '/home' }

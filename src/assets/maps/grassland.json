@@ -140,54 +140,6 @@
          "visible":true,
          "x":0,
          "y":0
-        }, 
-        {
-         "color":"#ff55ff",
-         "draworder":"topdown",
-         "id":7,
-         "name":"towers",
-         "objects":[
-                {
-                 "height":0,
-                 "id":13,
-                 "name":"1",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":200,
-                 "y":680
-                }, 
-                {
-                 "height":0,
-                 "id":14,
-                 "name":"2",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1000,
-                 "y":400
-                }, 
-                {
-                 "height":0,
-                 "id":15,
-                 "name":"3",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1200,
-                 "y":840
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
         }],
  "nextlayerid":8,
  "nextobjectid":16,

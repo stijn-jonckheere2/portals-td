@@ -15,7 +15,9 @@ export class PreloadScene extends BaseScene {
     });
   }
 
-  preload(): void {
+  override preload(): void {
+    super.preload();
+
     this.load.spritesheet(AxolotlEnemy.SPRITE_KEY, AxolotlEnemy.SPRITE_URL, {
       frameWidth: 16,
       frameHeight: 16
@@ -37,7 +39,9 @@ export class PreloadScene extends BaseScene {
     });
   }
 
-  create(): void {
+  override create(): void {
+    super.create();
+
     this.scene.start(GrasslandScene.KEY);
   }
 }

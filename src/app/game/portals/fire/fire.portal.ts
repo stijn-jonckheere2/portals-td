@@ -6,9 +6,11 @@ import { PortalElement } from '../portal-element.enum';
 export class FirePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
   static SPRITE_URL = 'assets/sprites/portals.png';
+  static PORTAL_ELEMENT = PortalElement.FIRE;
 
+  firingSpeed: number;
+  maxRange: number;
   triggerTimer: Phaser.Time.TimerEvent;
-  ammo: number = 1;
   fireballs: FireballGroup;
 
   constructor(scene: BaseScene, x: number, y: number) {
@@ -16,21 +18,20 @@ export class FirePortal extends BaseUnit {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.setFrame(PortalElement.FIRE);
+    this.setFrame(FirePortal.PORTAL_ELEMENT);
     this.init();
     this.initEvents();
   }
 
   override init(): void {
     super.init();
+
+    this.firingSpeed = 350;
+    this.maxRange = 200;
+
     this.fireballs = new FireballGroup(this.baseScene);
 
-    this.triggerTimer = this.scene.time.addEvent({
-      callback: this.shootNearestTarget,
-      callbackScope: this,
-      delay: 350, // 1000 = 1 second
-      loop: true
-    });
+    this.startShooting();
   }
 
   override preUpdate(time, delta): void {
@@ -40,6 +41,16 @@ export class FirePortal extends BaseUnit {
 
   override update(time, delta): void {
     super.update(time, delta);
+
+  }
+
+  startShooting(): void {
+    this.triggerTimer = this.scene.time.addEvent({
+      callback: this.shootNearestTarget,
+      callbackScope: this,
+      delay: this.firingSpeed, // 1000 = 1 second
+      loop: true
+    });
   }
 
   shootNearestTarget(): void {
@@ -58,7 +69,7 @@ export class FirePortal extends BaseUnit {
       this.body.position.y,
     );
 
-    if (distanceToClosest <= 200) {
+    if (distanceToClosest <= this.maxRange) {
       const fireballX = this.body.position.x + 32;
       const fireballY = this.body.position.y + 32;
       this.fireballs.fireProjectile(fireballX, fireballY, closestEnemy);
