@@ -4,13 +4,14 @@
   @include mixins.pageComponent();
 }
 
-.game-menu {
+.game-menu-wrapper {
   height: 10vh;
-  padding: 32px;
+  width: 100%;
+  max-width: 1728.64px;
+  margin: 0 auto;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
 
   .button {
     @include mixins.defaultButton();
@@ -19,6 +20,59 @@
       margin-left: 16px;
     }
   }
+}
+
+.game-stats {}
+
+.game-portals {
+  display: flex;
+
+  .game-portal {
+    border-radius: 4px;
+    border: 2px solid white;
+    background: #252525;
+    padding: 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-option {
+      height: 64px;
+      width: 64px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-image: url('../../../assets/sprites/portals.png');
+    }
+
+    &-fire {
+      background-position-x: -126px;
+      background-position-y: 0;
+    }
+
+    &-arcane {
+      background-position-x: 0;
+      background-position-y: 0;
+    }
+
+    &.active {
+      background-color: white;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    & + .game-portal {
+      margin-left: 12px;
+    }
+  }
+}
+
+.game-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .game-wrapper {

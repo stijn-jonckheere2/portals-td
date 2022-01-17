@@ -1,8 +1,6 @@
 import { tilesetsConfig } from 'src/config/tilesets.config';
-import { BaseUnit } from '../enemies/base/base.unit';
 import { AxolotlEnemy } from '../enemies/axolotl/axolotl.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
-import { BaseProjectile } from '../projectiles/base/base.projectile';
 import { initExplosionAnim } from '../anims/explosion.anim';
 import { BaseGameScene } from './base-game.scene';
 
@@ -31,7 +29,7 @@ export class GrasslandScene extends BaseGameScene {
       axol.move();
 
       this.enemies.push(axol);
-    }, 1500);
+    }, 750);
   }
 
   createAnims(): void {

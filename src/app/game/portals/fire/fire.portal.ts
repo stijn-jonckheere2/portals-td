@@ -8,8 +8,6 @@ export class FirePortal extends BaseUnit {
   static SPRITE_URL = 'assets/sprites/portals.png';
   static PORTAL_ELEMENT = PortalElement.FIRE;
 
-  firingSpeed: number;
-  maxRange: number;
   triggerTimer: Phaser.Time.TimerEvent;
   fireballs: FireballGroup;
 
@@ -26,10 +24,11 @@ export class FirePortal extends BaseUnit {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 350;
+    this.firingSpeed = 300;
     this.maxRange = 200;
 
     this.fireballs = new FireballGroup(this.baseScene);
+    this.body.setSize(40, 40);
 
     this.startShooting();
   }

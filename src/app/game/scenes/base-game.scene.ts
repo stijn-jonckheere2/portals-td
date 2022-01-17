@@ -1,3 +1,4 @@
+import { Observable, Observer, Subject, Subscription, tap } from "rxjs";
 import { BaseUnit } from "../enemies/base/base.unit";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
@@ -12,6 +13,11 @@ import { BaseScene } from "./base.scene";
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
   activePortals: GamePortal[] = [];
+  portalPlaceholder: PortalPlaceholder;
+
+  portalElementSubject$: Subject<PortalElement>;
+  activePortalElement$: Observable<PortalElement>;
+  sub$ = new Subscription();
 
   constructor(config: SceneConfig) {
     super(config);
@@ -30,10 +36,11 @@ export abstract class BaseGameScene extends BaseScene {
 
   override create(): void {
     super.create();
+    this.createUIObservables();
+
     this.createMap();
     this.createLayers();
     this.createPoints();
-    this.createPortalPlaceholders();
   }
 
   createMap(): void {
@@ -66,8 +73,8 @@ export abstract class BaseGameScene extends BaseScene {
     this.waypoints = waypointsLayer.sort(wp => wp.id);
   }
 
-  createPortal(x: number, y: number, element: PortalElement): BaseUnit {
-    let portal;
+  createPortal(x: number, y: number, element: PortalElement): void {
+    let portal: GamePortal;
 
     switch (element) {
       case PortalElement.ARCANE:
@@ -83,32 +90,39 @@ export abstract class BaseGameScene extends BaseScene {
 
     portal
       .setScale(2)
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .addCollider(this.activePortals);
 
-    return portal;
+    const portalIsOverlapping = this.activePortals.some(activePortal => {
+      return this.physics.overlap(portal, activePortal);
+    });
+
+    if (portalIsOverlapping) {
+      portal.destroyEnemy();
+    } else {
+      this.addPortal(portal);
+    }
   }
 
-  createPortalPlaceholders(): void {
-    const firePortalPlaceholder = new PortalPlaceholder(this, 1920 / 2, 50, FirePortal);
+  showPortalPlaceholder(element: PortalElement): void {
+    let parentClass;
 
-    firePortalPlaceholder
-      .setScale(2)
-      .setInteractive();
+    switch (element) {
+      case PortalElement.ARCANE:
+        parentClass = ArcanePortal;
+        break;
+      case PortalElement.FIRE:
+        parentClass = FirePortal;
+        break;
+    }
 
-    this.input.setDraggable(firePortalPlaceholder);
+    this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass).setScale(2);
+  }
 
-    this.input.on('drag', (pointer, gameObject: PortalPlaceholder, dragX, dragY) => {
-      gameObject.x = dragX;
-      gameObject.y = dragY;
-    });
-
-    this.input.on('dragend', (pointer, gameObject: PortalPlaceholder, dragX, dragY) => {
-      const firePortal = new FirePortal(this, gameObject.x, gameObject.y);
-      firePortal.setScale(2);
-
-      this.addPortal(firePortal);
-      gameObject.resetPosition();
-    });
+  hidePortalPlaceholder(): void {
+    this.portalPlaceholder.destroyEnemy();
+    this.portalPlaceholder = null;
+    this.portalElementSubject$.next(null);
   }
 
   addPortal(portal: GamePortal): void {
@@ -139,5 +153,51 @@ export abstract class BaseGameScene extends BaseScene {
     projectile.onHitTarget(unit);
   }
 
+  createUIObservables(): void {
+    this.portalElementSubject$ = (window as any).portalsTD.portalElementSubject$;
+
+    this.activePortalElement$ = this.portalElementSubject$.asObservable().pipe(
+      tap((element: PortalElement) => {
+        if (element !== null) {
+          this.showPortalPlaceholder(element);
+          return;
+        }
+
+        if (this.portalPlaceholder) {
+          this.hidePortalPlaceholder();
+        }
+      })
+    );
+
+    this.input.on('pointermove', pointer => {
+      if (this.portalPlaceholder) {
+        this.portalPlaceholder.setX(pointer.x);
+        this.portalPlaceholder.setY(pointer.y);
+      }
+    }, this);
+
+    this.input.on('pointerdown', pointer => {
+      if (this.portalPlaceholder) {
+        this.createPortal(pointer.x, pointer.y, this.portalPlaceholder.PORTAL_ELEMENT);
+        this.hidePortalPlaceholder();
+      }
+    }, this);
+
+    this.input.on('gameout', () => {
+      if (this.portalPlaceholder) {
+        this.hidePortalPlaceholder();
+      }
+    }, this);
+
+    this.events.on('destroy', () => {
+      this.clearUIObservables();
+    }, this);
+
+    this.sub$.add(this.activePortalElement$.subscribe());
+  }
+
+  clearUIObservables(): void {
+    this.sub$.unsubscribe();
+  }
 }
 

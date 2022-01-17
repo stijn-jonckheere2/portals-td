@@ -5,6 +5,7 @@ import { PortalElement } from '../portal-element.enum';
 export class ArcanePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
   static SPRITE_URL = 'assets/sprites/portals.png';
+  static PORTAL_ELEMENT = PortalElement.ARCANE;
 
   closestEnemy: BaseUnit;
   triggerTimer: Phaser.Time.TimerEvent;
@@ -14,9 +15,7 @@ export class ArcanePortal extends BaseUnit {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.speed = 100;
-    this.setBodySize(32, 32);
-    this.setFrame(PortalElement.ARCANE);
+    this.setFrame(ArcanePortal.PORTAL_ELEMENT);
     this.init();
     this.initEvents();
   }
@@ -24,13 +23,11 @@ export class ArcanePortal extends BaseUnit {
   override init(): void {
     super.init();
 
-    this.triggerTimer = this.scene.time.addEvent({
-      callback: this.absorbNearestTarget,
-      callbackScope: this,
-      delay: 100, // 1000 = 1 second
-      loop: true
-    });
+    this.firingSpeed = 300;
+    this.maxRange = 200;
 
+    this.body.setSize(40, 40);
+    this.startShooting();
   }
 
   override preUpdate(time, delta): void {
@@ -40,6 +37,15 @@ export class ArcanePortal extends BaseUnit {
 
   override update(time, delta): void {
     super.update(time, delta);
+  }
+
+  startShooting(): void {
+    this.triggerTimer = this.scene.time.addEvent({
+      callback: this.absorbNearestTarget,
+      callbackScope: this,
+      delay: this.firingSpeed, // 1000 = 1 second
+      loop: true
+    });
   }
 
   absorbNearestTarget(): void {

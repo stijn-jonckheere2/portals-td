@@ -1,5 +1,26 @@
-<div class="game-menu">
-  <a class="button" [routerLink]="['/home']">Go back</a>
+<div class="game-menu-wrapper">
+  <div class="game-stats"></div>
+  <div class="game-portals">
+
+    <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.FIRE">
+      <div
+        class="game-portal-option game-portal-fire"
+        (click)="onActivatePortal(PortalElement.FIRE)">
+      </div>
+    </div>
+
+    <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE">
+      <div
+        class="game-portal-option game-portal-arcane"
+        (click)="onActivatePortal(PortalElement.ARCANE)">
+      </div>
+    </div>
+
+  </div>
+  <div class="game-actions">
+    <a class="button" [routerLink]="['/home']">Go back</a>
+    <a class="button button-warn" (click)="onDeactivatePortal()" *ngIf="(activePortalElement$|async) !== null">Cancel</a>
+  </div>
 </div>
 
 <div class="game-wrapper">

@@ -31,6 +31,7 @@ export class PortalPlaceholder extends BaseUnit {
 
   override init(): void {
     super.init();
+    this.body.setSize(40, 40);
   }
 
   override preUpdate(time, delta): void {

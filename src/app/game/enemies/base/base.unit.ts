@@ -7,6 +7,9 @@ import { PortalElement } from '../../portals/portal-element.enum';
 export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
   speed: number = 100;
   health: number = 100;
+  firingSpeed: number = 1000;
+  maxRange: number = 200;
+
   dead: boolean = false;
   id: string;
 

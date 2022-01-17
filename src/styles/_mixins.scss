@@ -25,8 +25,12 @@
     cursor: pointer;
   }
 
-  &+a {
-    margin-top: 8px;
+  &-warn {
+    background-color: darken(lightcoral, 10%);
+
+    &:hover {
+      background-color: lightcoral;
+    }
   }
 
 }
