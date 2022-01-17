@@ -16,7 +16,7 @@ export abstract class BaseGameScene extends BaseScene {
   activePortals: GamePortal[] = [];
   portalPlaceholder: PortalPlaceholder;
 
-  portalElementSubject$: Subject<PortalElement>;
+  portalSelectedSubject$: Subject<PortalElement>;
   activePortalElement$: Observable<PortalElement>;
   sub$ = new Subscription();
 
@@ -126,11 +126,12 @@ export abstract class BaseGameScene extends BaseScene {
   hidePortalPlaceholder(): void {
     this.portalPlaceholder.destroyEnemy();
     this.portalPlaceholder = null;
-    this.portalElementSubject$.next(null);
+    this.portalSelectedSubject$.next(null);
   }
 
   addPortal(portal: GamePortal): void {
     this.activePortals.push(portal);
+    this.spendGold(portal.price);
     this.updateEnemyColliders();
   }
 
@@ -161,9 +162,9 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   createUIObservables(): void {
-    this.portalElementSubject$ = (window as any).portalsTD.portalElementSubject$;
+    this.portalSelectedSubject$ = (window as any).portalsTD.portalSelectedSubject$;
 
-    this.activePortalElement$ = this.portalElementSubject$.asObservable().pipe(
+    this.activePortalElement$ = this.portalSelectedSubject$.asObservable().pipe(
       tap((element: PortalElement) => {
         if (element !== null) {
           this.showPortalPlaceholder(element);

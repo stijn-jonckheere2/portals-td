@@ -3,12 +3,14 @@ import { BaseScene } from '../../scenes/base.scene';
 import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
 import { PortalElement } from '../../portals/portal-element.enum';
+import { PortalPrice } from '../../portals/portal-price.enum';
 
 export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
   speed: number = 100;
   health: number = 100;
   firingSpeed: number = 1000;
   maxRange: number = 200;
+  price: PortalPrice;
 
   dead: boolean = false;
   id: string;

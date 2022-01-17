@@ -3,6 +3,7 @@ import { BaseUnit } from '../../enemies/base/base.unit';
 import { FireballGroup } from '../../projectiles/fireball/fireball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
+import { PortalPrice } from '../portal-price.enum';
 
 export class FirePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
@@ -28,6 +29,7 @@ export class FirePortal extends BaseUnit {
     this.firingSpeed = 300;
     this.maxRange = 200;
 
+    this.price = PortalPrice.FIRE;
     this.fireballs = new FireballGroup(this.baseScene);
     this.body.setSize(40, 40);
 

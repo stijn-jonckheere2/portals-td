@@ -1,26 +1,38 @@
 <div class="game-menu-wrapper">
-  <div class="game-stats"></div>
+  <div class="game-stats">
+    <div class="health">
+      <img src="../../../assets/images/heart-icon.png" width="40" />
+      {{ levelHealthSubject$?.value }}
+    </div>
+    <div class="gold">
+      <img src="../../../assets/images/gold-icon.png" width="40" />
+      {{ levelGoldSubject$?.value }}
+    </div>
+  </div>
   <div class="game-portals">
 
-    <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.FIRE">
-      <div
-        class="game-portal-option game-portal-fire"
-        (click)="onActivatePortal(PortalElement.FIRE)">
-      </div>
+    <div class="game-portal"
+        [class.enabled]="portalPurchasable(PortalPrice.FIRE)"
+        [class.active]="(activePortalElement$ | async ) == PortalElement.FIRE"
+        (click)="onActivatePortal(PortalElement.FIRE, PortalPrice.FIRE)">
+      <div class="game-portal-option game-portal-fire"></div>
+      <p>{{ PortalPrice.FIRE }}</p>
     </div>
 
-    <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.ICE">
-      <div
-        class="game-portal-option game-portal-ice"
-        (click)="onActivatePortal(PortalElement.ICE)">
-      </div>
+    <div class="game-portal"
+        [class.enabled]="portalPurchasable(PortalPrice.ICE)"
+        [class.active]="(activePortalElement$ | async ) == PortalElement.ICE"
+        (click)="onActivatePortal(PortalElement.ICE, PortalPrice.ICE)">
+      <div class="game-portal-option game-portal-ice"></div>
+      <p>{{ PortalPrice.ICE }}</p>
     </div>
 
-    <div class="game-portal" [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE">
-      <div
-        class="game-portal-option game-portal-arcane"
-        (click)="onActivatePortal(PortalElement.ARCANE)">
-      </div>
+    <div class="game-portal"
+        [class.enabled]="portalPurchasable(PortalPrice.ARCANE)"
+        [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE"
+        (click)="onActivatePortal(PortalElement.ARCANE, PortalPrice.ARCANE)">
+      <div class="game-portal-option game-portal-arcane"></div>
+      <p>{{ PortalPrice.ARCANE }}</p>
     </div>
 
   </div>

@@ -3,6 +3,7 @@ import { BaseUnit } from '../../enemies/base/base.unit';
 import { SnowballGroup } from '../../projectiles/snowball/snowball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
+import { PortalPrice } from '../portal-price.enum';
 
 export class IcePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
@@ -30,6 +31,7 @@ export class IcePortal extends BaseUnit {
 
     this.snowballs = new SnowballGroup(this.baseScene);
     this.body.setSize(40, 40);
+    this.price = PortalPrice.ICE;
 
     this.startShooting();
   }

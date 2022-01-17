@@ -1,6 +1,7 @@
 import { BaseUnit } from '../../enemies/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
+import { PortalPrice } from '../portal-price.enum';
 
 export class ArcanePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
@@ -25,6 +26,7 @@ export class ArcanePortal extends BaseUnit {
 
     this.firingSpeed = 300;
     this.maxRange = 200;
+    this.price = PortalPrice.ARCANE;
 
     this.body.setSize(40, 40);
     this.startShooting();

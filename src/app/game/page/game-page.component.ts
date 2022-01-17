@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import * as Phaser from 'phaser';
-import { Observable, Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject, tap } from "rxjs";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { PortalElement } from "../portals/portal-element.enum";
+import { PortalPrice } from "../portals/portal-price.enum";
 import { GrasslandScene } from "../scenes/grassland.scene";
 import { PreloadScene } from "../scenes/preload.scene";
 
@@ -17,9 +18,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
   portalsTDGame: Phaser.Game;
   config: SceneConfig;
   PortalElement = PortalElement;
+  PortalPrice = PortalPrice;
 
   activePortalElement$: Observable<PortalElement>;
-  portalElementSubject$ = new Subject<PortalElement>();
+  portalSelectedSubject$ = new Subject<PortalElement>();
+
+  levelGoldSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
+  levelHealthSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor() {
   }
@@ -44,23 +49,37 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
     this.portalsTDGame = new Phaser.Game(this.config);
 
-    this.activePortalElement$ = this.portalElementSubject$.asObservable();
-
-    (window as any).portalsTD = {
-      portalElementSubject$: this.portalElementSubject$
-    };
+    this.activePortalElement$ = this.portalSelectedSubject$.asObservable();
+    this.setupWindowSubjects();
   }
 
-  onActivatePortal(element: PortalElement): void {
-    this.portalElementSubject$.next(null);
-    this.portalElementSubject$.next(element);
+  onActivatePortal(element: PortalElement, price: PortalPrice): void {
+    if (!this.portalPurchasable(price)) {
+      return;
+    }
+
+    this.portalSelectedSubject$.next(null);
+    this.portalSelectedSubject$.next(element);
   }
 
   onDeactivatePortal(): void {
-    this.portalElementSubject$.next(null);
+    this.portalSelectedSubject$.next(null);
   }
 
   ngOnDestroy(): void {
     this.portalsTDGame.destroy(true);
+  }
+
+  portalPurchasable(price: PortalPrice): boolean {
+    return this.levelGoldSubject$?.value >= price;
+  }
+
+  private setupWindowSubjects(): void {
+    (window as any).portalsTD = {
+      ...(window as any).portalsTD,
+      portalSelectedSubject$: this.portalSelectedSubject$,
+      levelGoldSubject$: this.levelGoldSubject$,
+      levelHealthSubject$: this.levelHealthSubject$,
+    };
   }
 }
