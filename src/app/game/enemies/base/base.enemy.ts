@@ -89,13 +89,13 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     const distanceToDestination = Phaser.Math.Distance.Between(
-      this.body.position.x,
-      this.body.position.y,
+      this.body.center.x,
+      this.body.center.y,
       this.currentDestination.x,
       this.currentDestination.y,
     );
 
-    if (distanceToDestination <= 20) {
+    if (distanceToDestination <= 10) {
       this.body.reset(this.currentDestination.x, this.currentDestination.y);
 
       if (this.nextDestinationIndex) {

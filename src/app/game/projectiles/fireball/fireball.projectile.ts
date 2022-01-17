@@ -22,7 +22,7 @@ export class FireballProjectile extends BaseProjectile {
     this.damage = 50;
 
     this.setFrame(OrbElement.FIRE);
-    this.setBodySize(32, 32);
+    this.setBodySize(16, 16);
   }
 
   initEvents(): void {

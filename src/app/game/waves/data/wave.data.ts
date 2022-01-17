@@ -1,5 +1,6 @@
 import { AxolotlEnemy } from "../../enemies/axolotl/axolotl.enemy";
 import { MoleEnemy } from "../../enemies/mole/mole.enemy";
+import { ReptileEnemy } from "../../enemies/reptile/reptile.enemy";
 import { generateEnemy } from "./generate-enemy.util";
 
 export const waveData = {
@@ -94,17 +95,6 @@ export const waveData = {
     ...generateEnemy(MoleEnemy, 15),
   ],
   10: [
-    ...generateEnemy(AxolotlEnemy, 20),
-    ...generateEnemy(MoleEnemy, 20),
-    ...generateEnemy(AxolotlEnemy, 20),
-    ...generateEnemy(MoleEnemy, 20),
-    ...generateEnemy(AxolotlEnemy, 20),
-    ...generateEnemy(MoleEnemy, 20),
-    ...generateEnemy(AxolotlEnemy, 20),
-    ...generateEnemy(MoleEnemy, 20),
-    ...generateEnemy(AxolotlEnemy, 20),
-    ...generateEnemy(MoleEnemy, 20),
-    ...generateEnemy(AxolotlEnemy, 20),
-    ...generateEnemy(MoleEnemy, 20),
+    ...generateEnemy(ReptileEnemy, 1),
   ],
 }

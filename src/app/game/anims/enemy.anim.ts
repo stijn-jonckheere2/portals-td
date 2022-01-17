@@ -1,8 +1,6 @@
 
 
-export function initEnemyAnim(anims: any, spriteKey: string): void {
-  const frameRate = 8;
-
+export function initEnemyAnim(anims: any, spriteKey: string, frameRate = 8): void {
   anims.create({
     key: 'walkDown',
     frames: anims.generateFrameNumbers(spriteKey, {

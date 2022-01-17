@@ -1,6 +1,7 @@
 import { Observable, Observer, Subject, Subscription, tap } from "rxjs";
 import { BaseEnemy } from "../enemies/base/base.enemy";
 import { BaseUnit } from "../enemies/base/base.unit";
+import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { FirePortal } from "../portals/fire/fire.portal";
@@ -191,15 +192,21 @@ export abstract class BaseGameScene extends BaseScene {
       if (index == enemyClasses.length) {
         clearInterval(interval);
       }
-    }, 500)
+    }, 500);
   }
 
   spawnEnemy(EnemyClass): void {
     const enemy = new EnemyClass(this, this.spawnPoint.x, this.spawnPoint.y) as BaseEnemy;
 
-    enemy
+    if (enemy instanceof ReptileEnemy) {
+      enemy
+      .setScale(4)
+      .setOrigin(0.5);
+    } else {
+      enemy
       .setScale(2)
       .setOrigin(0.5);
+    }
 
     enemy.addCollider(this.getCollidingProjectiles(), this.onUnitHit)
     enemy.startMoving();

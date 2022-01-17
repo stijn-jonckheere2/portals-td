@@ -27,7 +27,7 @@ export class FirePortal extends BaseUnit {
     super.init();
 
     this.firingSpeed = 300;
-    this.maxRange = 200;
+    this.maxRange = 250;
 
     this.price = PortalPrice.FIRE;
     this.fireballs = new FireballGroup(this.baseScene);
