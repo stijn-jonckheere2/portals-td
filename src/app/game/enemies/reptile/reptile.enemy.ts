@@ -5,7 +5,7 @@ import { BaseEnemy } from '../base/base.enemy';
 export class ReptileEnemy extends BaseEnemy {
   static SPRITE_KEY = 'reptile';
   static SPRITE_URL = 'assets/sprites/reptile.png';
-  static override MIN_WAVE: number = 10;
+  static override MIN_WAVE: number = 20;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, ReptileEnemy.SPRITE_KEY);
