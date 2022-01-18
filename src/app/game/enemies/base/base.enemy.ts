@@ -4,6 +4,8 @@ import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
 
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
+  static MIN_WAVE: number = 1;
+
   baseSpeed: number = 100;
   health: number = 100;
   gold: number = 10;

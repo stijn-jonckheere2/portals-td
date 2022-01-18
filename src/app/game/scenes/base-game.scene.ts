@@ -11,6 +11,7 @@ import { PortalPlaceholder } from "../portals/placeholder/placeholder.portal";
 import { PortalElement } from "../portals/portal-element.enum";
 import { BaseProjectile } from "../projectiles/base/base.projectile";
 import { BaseScene } from "./base.scene";
+import * as _ from 'lodash';
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
@@ -43,15 +44,14 @@ export abstract class BaseGameScene extends BaseScene {
     this.createMap();
     this.createLayers();
     this.createPoints();
-    this.spawnEnemies();
 
     setInterval(() => {
       if (this.enemies?.length === 0) {
-        this.earnGold(this.wavesManager.getRoundWonReward());
+        this.earnGold(this.wavesManager.goldReward);
         this.wavesManager.startNextWave();
         this.spawnEnemies();
       }
-    }, 1500);
+    }, 2000);
   }
 
   createMap(): void {
@@ -175,42 +175,40 @@ export abstract class BaseGameScene extends BaseScene {
     projectile.onHitTarget(enemy);
   }
 
-  startNextWave(): void {
-    this.wavesManager.startNextWave();
+  startNextWave(requestedWave?: number): void {
+    this.wavesManager.startNextWave(requestedWave);
     this.spawnEnemies();
   }
 
   spawnEnemies(): void {
     const enemyClasses = this.wavesManager.getEnemies();
-    let index = 0;
+    console.log(enemyClasses);
 
-    const interval = setInterval(() => {
-      const enemyClass = enemyClasses[index];
-      this.spawnEnemy(enemyClass);
-      index++;
+    Object.keys(enemyClasses).forEach(key => {
+      let index = 0;
+      let groupData = enemyClasses[key];
 
-      if (index == enemyClasses.length) {
-        clearInterval(interval);
-      }
-    }, 500);
+      const interval = setInterval(() => {
+        const enemyClass = groupData[index];
+        this.spawnEnemy(enemyClass);
+        index++;
+
+        if (index == groupData.length) {
+          clearInterval(interval);
+        }
+      }, this.wavesManager.spawnRate);
+    });
   }
 
   spawnEnemy(EnemyClass): void {
     const enemy = new EnemyClass(this, this.spawnPoint.x, this.spawnPoint.y) as BaseEnemy;
 
-    if (enemy instanceof ReptileEnemy) {
-      enemy
-        .setScale(4)
-        .setOrigin(0.5);
-    } else {
-      enemy
-        .setScale(2)
-        .setOrigin(0.5);
-    }
+    enemy
+      .setScale(2)
+      .setOrigin(0.5);
 
-    enemy.addCollider(this.getCollidingProjectiles(), this.onUnitHit)
+    enemy.addCollider(this.getCollidingProjectiles(), this.onUnitHit);
     enemy.startMoving();
-
     this.enemies.push(enemy);
   }
 

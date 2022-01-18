@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import { BaseScene } from '../../scenes/base.scene';
 import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
-import { PortalElement } from '../../portals/portal-element.enum';
 import { PortalPrice } from '../../portals/portal-price.enum';
 
 export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {

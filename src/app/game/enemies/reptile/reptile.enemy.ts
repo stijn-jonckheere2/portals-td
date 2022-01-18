@@ -5,6 +5,7 @@ import { BaseEnemy } from '../base/base.enemy';
 export class ReptileEnemy extends BaseEnemy {
   static SPRITE_KEY = 'reptile';
   static SPRITE_URL = 'assets/sprites/reptile.png';
+  static override MIN_WAVE: number = 10;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, ReptileEnemy.SPRITE_KEY);
@@ -18,10 +19,9 @@ export class ReptileEnemy extends BaseEnemy {
   override init(): void {
     super.init();
 
-    this.gold = 500;
-    this.baseSpeed = 50;
-    this.health = 10000;
-    this.damage = 100;
+    this.gold = 50;
+    this.baseSpeed = 150;
+    this.health = 400;
   }
 
   override preUpdate(time, delta): void {
