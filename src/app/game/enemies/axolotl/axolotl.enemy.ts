@@ -20,7 +20,7 @@ export class AxolotlEnemy extends BaseEnemy {
     super.init();
 
     this.gold = 5;
-    this.speed = 200;
+    this.baseSpeed = 200;
   }
 
   override preUpdate(time, delta): void {

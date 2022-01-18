@@ -19,7 +19,7 @@ export class MoleEnemy extends BaseEnemy {
     super.init();
 
     this.gold = 37;
-    this.speed = 100;
+    this.baseSpeed = 100;
     this.health = 200;
   }
 

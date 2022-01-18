@@ -19,7 +19,7 @@ export class ReptileEnemy extends BaseEnemy {
     super.init();
 
     this.gold = 500;
-    this.speed = 50;
+    this.baseSpeed = 50;
     this.health = 10000;
     this.damage = 100;
   }

@@ -4,13 +4,22 @@ import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
 
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
-  speed: number = 100;
+  baseSpeed: number = 100;
   health: number = 100;
   gold: number = 10;
   damage: number = 1;
 
-  dead: boolean = false;
+  isDead: boolean = false;
+  isSlowed: boolean = false;
   id: string;
+
+  get actualSpeed(): number {
+    if (this.isSlowed) {
+      return this.baseSpeed / 2;
+    }
+
+    return this.baseSpeed;
+  }
 
   onUpdate: EventEmitter<BaseEnemy> = new EventEmitter();
 
@@ -43,8 +52,8 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
     this.onUpdate.emit(this);
 
-    if (!this.dead && this.health <= 0) {
-      this.dead = true;
+    if (!this.isDead && this.health <= 0) {
+      this.isDead = true;
       this.setTint(0xff0000);
 
       setTimeout(() => {
@@ -125,7 +134,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   moveToCurrentDestination(): void {
     const { x, y } = this.currentDestination;
-    this.scene.physics.moveTo(this, x, y, this.speed);
+    this.scene.physics.moveTo(this, x, y, this.actualSpeed);
   }
 
   takeDamage(damage: number): void {
