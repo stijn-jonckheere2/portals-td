@@ -39,8 +39,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       physics: {
         default: 'arcade',
         arcade: {
-          // timeScale: 2
-          // debug: true,
+          debug: true,
         }
       },
       scale: {

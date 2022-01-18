@@ -67,12 +67,12 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   }
 
   destroyEnemy(): void {
+    this.trackingSub$.unsubscribe();
     this.setActive(false);
     this.setVisible(false);
     this.body.reset(0, 0);
     this.traveledDistanceX = 0;
     this.traveledDistanceY = 0;
-    this.trackingSub$.unsubscribe();
   }
 
   abstract fire(x: number, y: number): void;
