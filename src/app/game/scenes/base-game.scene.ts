@@ -1,4 +1,4 @@
-import { Observable, Observer, Subject, Subscription, tap } from "rxjs";
+import { filter, Observable, Observer, Subject, Subscription, tap } from "rxjs";
 import { BaseEnemy } from "../enemies/base/base.enemy";
 import { BaseUnit } from "../enemies/base/base.unit";
 import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
@@ -200,12 +200,12 @@ export abstract class BaseGameScene extends BaseScene {
 
     if (enemy instanceof ReptileEnemy) {
       enemy
-      .setScale(4)
-      .setOrigin(0.5);
+        .setScale(4)
+        .setOrigin(0.5);
     } else {
       enemy
-      .setScale(2)
-      .setOrigin(0.5);
+        .setScale(2)
+        .setOrigin(0.5);
     }
 
     enemy.addCollider(this.getCollidingProjectiles(), this.onUnitHit)
@@ -250,11 +250,24 @@ export abstract class BaseGameScene extends BaseScene {
       }
     }, this);
 
+    const fastForward$ = this.levelFastForwardSubject$.pipe(
+      filter(value => value !== null),
+      tap(value => {
+        if (value) {
+          this.physics.world.timeScale = 0.5;
+          return;
+        }
+
+        this.physics.world.timeScale = 1;
+      })
+    );
+
     this.events.on('destroy', () => {
       this.clearUIObservables();
     }, this);
 
     this.sub$.add(this.activePortalElement$.subscribe());
+    this.sub$.add(fastForward$.subscribe());
   }
 
   clearUIObservables(): void {

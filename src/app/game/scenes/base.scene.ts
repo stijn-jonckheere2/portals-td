@@ -20,6 +20,7 @@ export abstract class BaseScene extends Phaser.Scene {
 
   levelGoldSubject$: BehaviorSubject<number>;
   levelHealthSubject$: BehaviorSubject<number>;
+  levelFastForwardSubject$: BehaviorSubject<number>;
 
   enemies: BaseEnemy[] = [];
   wavesManager: WavesManager = new WavesManager(0);
@@ -58,5 +59,8 @@ export abstract class BaseScene extends Phaser.Scene {
 
     this.levelHealthSubject$ = (window as any).portalsTD.levelHealthSubject$;
     this.levelHealthSubject$.next(this.startingHealth);
+
+    this.levelFastForwardSubject$ = (window as any).portalsTD.levelFastForwardSubject$;
+    this.levelFastForwardSubject$.next(this.physics.world.timeScale);
   }
 }

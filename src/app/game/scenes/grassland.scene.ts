@@ -10,7 +10,7 @@ export class GrasslandScene extends BaseGameScene {
     super({
       ...config,
       key: GrasslandScene.KEY,
-      tilesetConfig: tilesetsConfig.grassland
+      tilesetConfig: tilesetsConfig.grassland,
     });
   }
 
@@ -32,5 +32,4 @@ export class GrasslandScene extends BaseGameScene {
   createWaves(): void {
     this.wavesManager.setMaxWaves(10);
   }
-
 }

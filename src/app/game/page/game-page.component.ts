@@ -27,6 +27,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   levelHealthSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
   currentWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
   lastWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
+  levelFastForwardSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() {
   }
@@ -38,6 +39,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       physics: {
         default: 'arcade',
         arcade: {
+          // timeScale: 2
           // debug: true,
         }
       },
@@ -76,6 +78,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
     return this.levelGoldSubject$?.value >= price;
   }
 
+  toggleFastForward(): void {
+    this.levelFastForwardSubject$.next(!this.levelFastForwardSubject$.value);
+  }
+
   private setupWindowSubjects(): void {
     (window as any).portalsTD = {
       ...(window as any).portalsTD,
@@ -84,6 +90,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       levelHealthSubject$: this.levelHealthSubject$,
       currentWaveSubject$: this.currentWaveSubject$,
       lastWaveSubject$: this.lastWaveSubject$,
+      levelFastForwardSubject$: this.levelFastForwardSubject$,
     };
   }
 }

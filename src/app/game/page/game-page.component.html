@@ -1,15 +1,15 @@
 <div class="game-menu-wrapper">
   <div class="game-stats">
     <div class="health">
-      <img src="../../../assets/images/heart-icon.png" width="40" />
+      <img src="../../../assets/images/heart-icon.png" />
       {{ levelHealthSubject$?.value }}
     </div>
     <div class="gold">
-      <img src="../../../assets/images/gold-icon.png" width="40" />
+      <img src="../../../assets/images/gold-icon.png" />
       {{ levelGoldSubject$?.value }}
     </div>
     <div class="waves">
-      <img src="../../../assets/images/wave-icon.png" height="30" />
+      <img src="../../../assets/images/wave-icon.png" />
       {{ currentWaveSubject$?.value }} / {{ lastWaveSubject$?.value }}
     </div>
   </div>
@@ -41,8 +41,21 @@
 
   </div>
   <div class="game-actions">
-    <a class="button" [routerLink]="['/home']">Go back</a>
-    <a class="button button-warn" (click)="onDeactivatePortal()" *ngIf="(activePortalElement$|async) !== null">Cancel</a>
+    <button mat-icon-button color="primary" *ngIf="levelFastForwardSubject$ | async" (click)="toggleFastForward()">
+      <mat-icon>fast_forward</mat-icon>
+    </button>
+
+    <button mat-icon-button color="primary" *ngIf="!(levelFastForwardSubject$ | async)" (click)="toggleFastForward()">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+
+    <button mat-icon-button color="primary" [routerLink]="['/home']">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+
+    <button mat-icon-button color="warn" (click)="onDeactivatePortal()" *ngIf="(activePortalElement$|async) !== null">
+      <mat-icon>clear</mat-icon>
+    </button>
   </div>
 </div>
 

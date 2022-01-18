@@ -1,4 +1,18 @@
+@use 'node_modules/@angular/material/theming';
 @import 'variables';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include theming.mat-core();
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+
+$theme-foreground: mat-light-theme-foreground($font-color, $mat-divider);
+$portalstd-theme-custom: map-merge($portalstd-app-theme, (foreground: $theme-foreground));
+@include theming.angular-material-theme($portalstd-theme-custom);
 
 /* You can add global styles to this file, and also import other style files */
 html,
@@ -35,3 +49,6 @@ h3 {
 a {
   text-decoration: none;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,3 +1,19 @@
+@use 'sass:map';
+@use 'node_modules/@angular/material/theming';
+@use 'variables';
+
+// Functions
+@function primaryColor($color-value:500, $opacity: 1) {
+  $primary: map-get(variables.$portalstd-app-theme, primary);
+  @return theming.mat-get-color-from-palette($primary, $color-value, $opacity);
+}
+
+@function accentColor($color-value:500, $opacity: 1) {
+  $accent: map-get(variables.$portalstd-app-theme, accent);
+  @return theming.mat-get-color-from-palette($accent, $color-value, $opacity);
+}
+
+
 @mixin pageComponent() {
   display: flex;
   flex-direction: column;

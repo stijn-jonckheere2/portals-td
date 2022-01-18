@@ -31,6 +31,18 @@
   display: flex;
   flex-wrap: wrap;
 
+  .health img {
+    height: 40px;
+  }
+
+  .gold img {
+    height: 40px;
+  }
+
+  .waves img {
+    height: 30px;
+  }
+
   div {
     display: flex;
     align-items: center;
@@ -132,6 +144,14 @@
   justify-content: flex-end;
   align-items: center;
   flex-basis: 25%;
+
+  &.active {
+    color: white;
+  }
+
+  button {
+    transform: scale(1.5);
+  }
 }
 
 .game-wrapper {

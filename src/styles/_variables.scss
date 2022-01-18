@@ -1,3 +1,11 @@
+@use 'sass:map';
+@use 'node_modules/@angular/material/theming';
+@use '../styles/portalstd-material-theme' as theme;
+
+$portalstd-app-theme: theme.$portalstd-app-theme;
 
 $app-background: #252525;
-
+$font-color: #404348;
+$font-color-light: #919297;
+$mat-divider: #f3f3f3;
+$mat-divider-dark: #696969;
