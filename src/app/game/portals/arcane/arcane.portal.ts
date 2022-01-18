@@ -1,3 +1,4 @@
+import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseUnit } from '../../enemies/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
@@ -8,7 +9,6 @@ export class ArcanePortal extends BaseUnit {
   static SPRITE_URL = 'assets/sprites/portals.png';
   static PORTAL_ELEMENT = PortalElement.ARCANE;
 
-  closestEnemy: BaseUnit;
   triggerTimer: Phaser.Time.TimerEvent;
 
   constructor(scene: BaseScene, x: number, y: number) {
@@ -51,30 +51,31 @@ export class ArcanePortal extends BaseUnit {
   }
 
   absorbNearestTarget(): void {
-    const closest = this.scene.physics.closest(this, this.baseScene.enemies);
+    const aliveEnemies = this.baseScene.enemies.filter(e => !e.isDead);
+    const closest = this.scene.physics.closest(this, aliveEnemies);
 
     if (!closest) {
       return;
     }
 
-    this.closestEnemy = closest as BaseUnit;
+    const closestEnemy = closest as BaseEnemy;
 
     const distanceToClosest = Phaser.Math.Distance.Between(
-      this.closestEnemy.body.position.x,
-      this.closestEnemy.body.position.y,
+      closestEnemy.body.position.x,
+      closestEnemy.body.position.y,
       this.body.position.x,
       this.body.position.y,
     );
 
     if (distanceToClosest <= 200) {
-      this.scene.physics.moveTo(this.closestEnemy, this.body.position.x + 32, this.body.position.y + 32, this.speed);
-      this.closestEnemy.tintFill = false;
-      this.closestEnemy.setTint(0x250095);
-    }
+      this.scene.physics.moveTo(closestEnemy, this.body.position.x + 32, this.body.position.y + 32, 200);
+      closestEnemy.isDead = true;
+      closestEnemy.tintFill = false;
+      closestEnemy.setTint(0x250095);
 
-    if (distanceToClosest <= 40) {
-      this.closestEnemy.destroyEnemy();
-      this.closestEnemy = null;
+      setTimeout(() => {
+        closestEnemy.destroyEnemy();
+      }, 300);
     }
   }
 
