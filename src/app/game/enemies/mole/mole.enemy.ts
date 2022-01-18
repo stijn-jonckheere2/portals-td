@@ -19,7 +19,7 @@ export class MoleEnemy extends BaseEnemy {
   override init(): void {
     super.init();
 
-    this.gold = 5;
+    this.gold = 8;
     this.baseSpeed = 100;
     this.health = 200;
   }
