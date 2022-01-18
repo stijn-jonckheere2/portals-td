@@ -1,9 +1,9 @@
 
 export enum PortalPrice {
-  ARCANE = 950,
+  ARCANE = 1500,
   WATER = 10,
-  FIRE = 200,
+  FIRE = 250,
   HOLY = 10,
   POISON = 10,
-  ICE = 500,
+  ICE = 800,
 }

@@ -19,7 +19,7 @@ export class ReptileEnemy extends BaseEnemy {
   override init(): void {
     super.init();
 
-    this.gold = 50;
+    this.gold = 10;
     this.baseSpeed = 150;
     this.health = 400;
   }

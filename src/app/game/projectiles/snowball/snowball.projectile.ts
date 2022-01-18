@@ -22,7 +22,7 @@ export class SnowballProjectile extends BaseProjectile {
 
     this.speed = 400;
     this.maxDistance = 400;
-    this.damage = 50;
+    this.damage = 5;
 
     this.setFrame(OrbElement.ICE);
     this.setBodySize(32, 32);
