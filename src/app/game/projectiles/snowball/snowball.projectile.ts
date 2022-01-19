@@ -48,7 +48,7 @@ export class SnowballProjectile extends BaseProjectile {
 
   override onHitTarget(target: BaseEnemy): void {
     if (this.slowTimer) {
-      clearTimeout(this.slowTimer);
+      this.slowTimer.remove();
     }
 
     this.effectManager.playEffectOn(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.EFFECT_KEY, target);
@@ -59,10 +59,13 @@ export class SnowballProjectile extends BaseProjectile {
     target.setTintFill(0xB3C3D2);
     target.tintFill = false;
 
-    this.slowTimer = setTimeout(() => {
-      target.isSlowed = false;
-      target.clearTint();
-    }, 7000);
+    this.slowTimer = this.baseScene.time.addEvent({
+      delay: 7000,
+      callback: () => {
+        target.isSlowed = false;
+        target.clearTint();
+      }
+    });
 
     super.destroyEnemy();
   }

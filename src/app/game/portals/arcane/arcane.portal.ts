@@ -73,9 +73,11 @@ export class ArcanePortal extends BaseUnit {
       closestEnemy.tintFill = false;
       closestEnemy.setTint(0x250095);
 
-      setTimeout(() => {
-        closestEnemy.destroyEnemy();
-      }, 300);
+      this.scene.time.addEvent({
+        delay: 300,
+        repeat: 0,
+        callback: () => closestEnemy.destroy()
+      });
     }
   }
 

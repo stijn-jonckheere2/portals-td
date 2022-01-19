@@ -7,13 +7,8 @@ import { waveData } from './data/wave.data';
 
 export class WavesManager {
   private DIFF_MOD: number = 1.16;
-
   private currentDifficulty: number = 1;
   private enemies: any;
-
-  private increaseDifficulty(): void {
-    this.currentDifficulty = +(this.currentDifficulty * this.DIFF_MOD).toFixed(2);
-  }
 
   currentWave: number = 1;
   maxWaves: number;
@@ -59,18 +54,12 @@ export class WavesManager {
 
   startNextWave(requestedWave?: number): void {
     if (requestedWave) {
-      for (let i = 0; i < requestedWave; i++) {
-        this.increaseDifficulty();
-      }
-
       this.currentWave = requestedWave;
       this.currentWaveSubject$.next(this.currentWave);
       return;
     }
 
     if (this.currentWave < this.maxWaves) {
-      this.increaseDifficulty();
-
       this.currentWave++;
       this.currentWaveSubject$.next(this.currentWave);
     }
@@ -85,6 +74,10 @@ export class WavesManager {
   resetWaves(): void {
     this.currentWave = 1;
     this.currentWaveSubject$.next(this.currentWave);
+  }
+
+  private calculateDifficultyForWave(wave: number): void {
+    this.currentDifficulty = +(wave * this.DIFF_MOD).toFixed(2);
   }
 
   private calculateGoldForCurrentWave(wave: number): number {

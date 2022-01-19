@@ -22,6 +22,8 @@ export abstract class BaseGameScene extends BaseScene {
   activePortalElement$: Observable<PortalElement>;
   sub$ = new Subscription();
 
+  waveTimer: Phaser.Time.TimerEvent;
+
   constructor(config: SceneConfig) {
     super(config);
 
@@ -45,13 +47,8 @@ export abstract class BaseGameScene extends BaseScene {
     this.createLayers();
     this.createPoints();
 
-    setInterval(() => {
-      if (this.enemies?.length === 0) {
-        this.earnGold(this.wavesManager.goldReward);
-        this.wavesManager.startNextWave();
-        this.spawnEnemies();
-      }
-    }, 2000);
+    this.startWaveInterval();
+    this.events.on('destroy', () => this.onDestroy());
   }
 
   createMap(): void {
@@ -175,28 +172,51 @@ export abstract class BaseGameScene extends BaseScene {
     projectile.onHitTarget(enemy);
   }
 
-  startNextWave(requestedWave?: number): void {
-    this.wavesManager.startNextWave(requestedWave);
-    this.spawnEnemies();
+  startWaveInterval(): void {
+    this.waveTimer = this.time.addEvent({
+      delay: 2000,
+      loop: true,
+      callback: () => this.checkCurrentWave()
+    });
   }
 
-  spawnEnemies(): void {
+  checkCurrentWave(): void {
+    if (this.enemies?.length === 0) {
+      this.earnGold(this.wavesManager.goldReward);
+      this.wavesManager.startNextWave();
+      this.setupEnemySpawners();
+    }
+  }
+
+  startNextWave(requestedWave?: number): void {
+    this.wavesManager.startNextWave(requestedWave);
+    this.setupEnemySpawners();
+  }
+
+  setupEnemySpawners(): void {
     const enemyClasses = this.wavesManager.getEnemies();
-    console.log(enemyClasses);
+    console.log('enemyClasses', enemyClasses);
 
-    Object.keys(enemyClasses).forEach(key => {
-      let index = 0;
-      let groupData = enemyClasses[key];
+    const enemyClassKey = Object.keys(enemyClasses);
+    console.log('enemyClassKey', enemyClassKey);
 
-      const interval = setInterval(() => {
-        const enemyClass = groupData[index];
-        this.spawnEnemy(enemyClass);
-        index++;
+    enemyClassKey.forEach(key => {
+      const enemiesToSpawn = enemyClasses[key];
+      console.log('enemiesToSpawn', enemiesToSpawn);
 
-        if (index == groupData.length) {
-          clearInterval(interval);
-        }
-      }, this.wavesManager.spawnRate);
+      setTimeout(() => {
+        this.spawnEnemies(enemiesToSpawn);
+      }, 1);
+    });
+  }
+
+  spawnEnemies(enemiesToSpawn: (typeof BaseEnemy)[]): void {
+    const spawnEvent = this.time.addEvent({
+      delay: 500,
+      repeat: enemiesToSpawn.length - 1,
+      callback: () => {
+        this.spawnEnemy(enemiesToSpawn[spawnEvent.repeatCount]);
+      },
     });
   }
 
@@ -252,24 +272,34 @@ export abstract class BaseGameScene extends BaseScene {
       filter(value => value !== null),
       tap(value => {
         if (value) {
-          this.physics.world.timeScale = 0.5;
+          this.setTimeScale(0.5);
           return;
         }
 
-        this.physics.world.timeScale = 1;
+        this.setTimeScale(1);
       })
     );
-
-    this.events.on('destroy', () => {
-      this.clearUIObservables();
-    }, this);
 
     this.sub$.add(this.activePortalElement$.subscribe());
     this.sub$.add(fastForward$.subscribe());
   }
 
-  clearUIObservables(): void {
+  setTimeScale(scale: number): void {
+    this.tweens.timeScale = scale; // tweens
+    this.physics.world.timeScale = scale; // physics
+    this.time.timeScale = scale; // time events
+    this.anims.globalTimeScale = scale;
+
+    this.children.list.forEach((child) => {
+      if (child.type === "ParticleEmitterManager") {
+        (child as any).timeScale = 0.5;
+      }
+    });
+  }
+
+  onDestroy(): void {
     this.sub$.unsubscribe();
+    this.waveTimer.remove(false);
   }
 }
 

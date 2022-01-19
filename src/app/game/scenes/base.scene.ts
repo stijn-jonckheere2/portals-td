@@ -36,6 +36,7 @@ export abstract class BaseScene extends Phaser.Scene {
   create(): void {
     this.setupWindowSubjects();
     this.wavesManager.init();
+    this.physics.world.setFPS(60);
   }
 
   earnGold(gold: number): void {

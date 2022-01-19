@@ -13,7 +13,7 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   traveledDistanceX: number = 0;
   traveledDistanceY: number = 0;
 
-  slowTimer: any;
+  slowTimer: Phaser.Time.TimerEvent;
 
   effectManager: EffectManager;
   trackingSub$ = new Subscription();

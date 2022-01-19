@@ -44,9 +44,10 @@ export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
       this.dead = true;
       this.setTint(0xff0000);
 
-      setTimeout(() => {
-        this.destroyEnemy();
-      }, 200);
+      this.baseScene.time.addEvent({
+        delay: 200,
+        callback: () => this.destroyEnemy()
+      });
     }
   }
 
