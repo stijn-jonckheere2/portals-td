@@ -224,6 +224,7 @@ export abstract class BaseGameScene extends BaseScene {
   spawnEnemy(EnemyClass, spawnX?: number, spawnY?: number, scale?: number, nextDestinationIndex?: number): void {
     const x = spawnX || this.spawnPoint.x;
     const y = spawnY || this.spawnPoint.y;
+
     const enemy = new EnemyClass(this, x, y) as BaseEnemy;
 
     enemy

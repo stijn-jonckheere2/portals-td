@@ -25,4 +25,8 @@ export class ButterflyEnemy extends BaseEnemy {
     this.gold = 4;
     this.baseSpeed = 200;
   }
+
+  override update(time, delta): void {
+    super.update(time, delta);
+  }
 }

@@ -111,8 +111,8 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   setNextDestination(nextDestinationIndex?: number): void {
     const myScene = this.scene as BaseScene;
-    const nextIndex = nextDestinationIndex ?? this.nextDestinationIndex;
-    const nextDestination = myScene.waypoints[nextIndex];
+    this.nextDestinationIndex = nextDestinationIndex ?? this.nextDestinationIndex;
+    const nextDestination = myScene.waypoints[this.nextDestinationIndex];
 
     if (nextDestination) {
       this.currentDestination = nextDestination;

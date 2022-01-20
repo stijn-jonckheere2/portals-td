@@ -39,20 +39,23 @@ export class LarvaEnemy extends BaseEnemy {
 
   override update(time, delta): void {
     super.update(time, delta);
+
+    console.log('moving to', this.nextDestinationIndex, this.currentDestination)
   }
 
   override destroyEnemy(receiveGold?: boolean): void {
     const gameScene = this.baseScene as BaseGameScene;
-    const nextDestinationIndex = this.nextDestinationIndex - 1;
+    const currentDestinationIndex: number = this.nextDestinationIndex - 1;
+
     const { x, y } = this;
 
     for (let i = 0; i < 5; i++) {
-      gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, nextDestinationIndex)
+      gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
 
       gameScene.time.addEvent({
         repeat: 5,
         delay: 200,
-        callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, nextDestinationIndex)
+        callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
       });
     }
 
