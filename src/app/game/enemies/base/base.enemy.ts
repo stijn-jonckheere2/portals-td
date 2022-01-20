@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 import { BaseScene } from '../../scenes/base.scene';
 import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
+import { AilmentType } from '../../ailments/ailment-type.enum';
+import { BaseUnit } from '../../portals/base/base.unit';
+import { FrozenAilment } from '../../ailments/frozen/frozen.ailment';
 
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   static MIN_WAVE: number = 1;
@@ -18,6 +21,8 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   isSlowed: boolean = false;
   id: string;
   currentHealth: number;
+
+  frozenAilment: { ailment: FrozenAilment, timer: Phaser.Time.TimerEvent };
 
   get actualSpeed(): number {
     if (this.isSlowed) {
@@ -150,6 +155,39 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.currentHealth -= damage;
   }
 
+  setAilment(type: AilmentType, duration: number): void {
+    const { x, y } = this.body;
+
+    switch (type) {
+      case AilmentType.FROZEN:
+        let ailment: FrozenAilment = this.frozenAilment?.ailment;
+
+        if (ailment) {
+          this.frozenAilment.timer.remove();
+        } else {
+          this.isSlowed = true;
+          ailment = new FrozenAilment(this.baseScene, x - 10, y - 10, this);
+        }
+
+        this.frozenAilment = {
+          ailment,
+          timer: this.baseScene.time.addEvent({
+            delay: duration,
+            callback: () => {
+              this.frozenAilment.ailment.destroyEnemy();
+              this.frozenAilment = null;
+              this.isSlowed = false;
+              this.moveToCurrentDestination();
+            }
+          })
+        }
+
+        break;
+    };
+
+
+  }
+
   addCollider(collisionTarget, callback?): void {
     this.scene.physics.add.collider(this, collisionTarget, callback, null, this);
   }
@@ -164,7 +202,13 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
+  clearAilments(): void {
+    this.frozenAilment?.timer.remove();
+    this.frozenAilment?.ailment.destroyEnemy();
+  }
+
   destroyEnemy(receiveGold = true): void {
+    this.clearAilments();
     this.stopEvents();
     this.baseScene.enemies = this.baseScene.enemies.filter(e => e.id !== this.id);
 

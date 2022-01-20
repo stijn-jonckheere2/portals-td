@@ -1,7 +1,6 @@
 import { ExplosionSnowEffect } from "../effects/explosion/explosion-snow.effect";
 import { ExplosionEffect } from "../effects/explosion/explosion.effect";
 
-
 export function initExplosionAnim(anims): void {
   const frameRate = 10;
 

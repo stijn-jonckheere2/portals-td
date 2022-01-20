@@ -1,5 +1,5 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../../enemies/base/base.unit';
+import { BaseUnit } from '../base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
@@ -10,6 +10,8 @@ export class ArcanePortal extends BaseUnit {
   static PORTAL_ELEMENT = PortalElement.ARCANE;
 
   triggerTimer: Phaser.Time.TimerEvent;
+
+  closestEnemy: BaseEnemy;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, ArcanePortal.SPRITE_KEY);
@@ -24,8 +26,8 @@ export class ArcanePortal extends BaseUnit {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 300;
-    this.maxRange = 200;
+    this.firingSpeed = 1000;
+    this.maxRange = 300;
     this.price = PortalPrice.ARCANE;
 
     this.body.setSize(40, 40);
@@ -51,32 +53,31 @@ export class ArcanePortal extends BaseUnit {
   }
 
   absorbNearestTarget(): void {
-    const aliveEnemies = this.baseScene.enemies.filter(e => !e.isDead);
-    const closest = this.scene.physics.closest(this, aliveEnemies);
+    if (this.closestEnemy) {
+      return;
+    }
+
+    const closest = this.getClosestEnemy();
 
     if (!closest) {
       return;
     }
 
-    const closestEnemy = closest as BaseEnemy;
-
     const distanceToClosest = Phaser.Math.Distance.Between(
-      closestEnemy.body.position.x,
-      closestEnemy.body.position.y,
+      closest.body.position.x,
+      closest.body.position.y,
       this.body.position.x,
       this.body.position.y,
     );
 
-    if (distanceToClosest <= 200) {
-      this.scene.physics.moveTo(closestEnemy, this.body.position.x + 32, this.body.position.y + 32, 200);
-      closestEnemy.isDead = true;
-      closestEnemy.tintFill = false;
-      closestEnemy.setTint(0x250095);
+    if (distanceToClosest <= 250) {
+      this.closestEnemy = closest;
+      this.closestEnemy.isDead = true;
+      this.scene.physics.moveTo(this.closestEnemy, this.body.position.x + 32, this.body.position.y + 32, 200);
 
-      this.scene.time.addEvent({
-        delay: 300,
-        repeat: 0,
-        callback: () => closestEnemy.destroy()
+      this.addCollider(this.closestEnemy, () => {
+        this.closestEnemy.destroyEnemy();
+        this.closestEnemy = null;
       });
     }
   }

@@ -1,6 +1,6 @@
 
 
-import { BaseUnit } from '../../enemies/base/base.unit';
+import { BaseUnit } from '../base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 

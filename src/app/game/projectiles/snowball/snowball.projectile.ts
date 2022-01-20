@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 import { OrbElement } from '../orb-element.enum';
 import { BaseScene } from '../../scenes/base.scene';
 import { BaseProjectile } from '../base/base.projectile';
-import { BaseUnit } from '../../enemies/base/base.unit';
 import { ExplosionSnowEffect } from '../../effects/explosion/explosion-snow.effect';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { AilmentType } from '../../ailments/ailment-type.enum';
 
 export class SnowballProjectile extends BaseProjectile {
   static SPRITE_KEY = 'orbs';
@@ -47,25 +47,10 @@ export class SnowballProjectile extends BaseProjectile {
   }
 
   override onHitTarget(target: BaseEnemy): void {
-    if (this.slowTimer) {
-      this.slowTimer.remove();
-    }
-
     this.effectManager.playEffectOn(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.EFFECT_KEY, target);
 
-    target.isSlowed = true;
+    target.setAilment(AilmentType.FROZEN, 7000);
     target.moveToCurrentDestination();
-
-    target.setTintFill(0xB3C3D2);
-    target.tintFill = false;
-
-    this.slowTimer = this.baseScene.time.addEvent({
-      delay: 7000,
-      callback: () => {
-        target.isSlowed = false;
-        target.clearTint();
-      }
-    });
 
     super.destroyEnemy();
   }

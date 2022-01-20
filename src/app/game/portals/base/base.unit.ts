@@ -2,7 +2,8 @@ import Phaser from 'phaser';
 import { BaseScene } from '../../scenes/base.scene';
 import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
-import { PortalPrice } from '../../portals/portal-price.enum';
+import { PortalPrice } from '../portal-price.enum';
+import { BaseEnemy } from '../../enemies/base/base.enemy';
 
 export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
   speed: number = 100;
@@ -57,6 +58,11 @@ export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
 
   addCollider(collisionTarget, callback?): void {
     this.scene.physics.add.collider(this, collisionTarget, callback, null, this);
+  }
+
+  getClosestEnemy(): BaseEnemy {
+    const aliveEnemies = this.baseScene.enemies.filter(e => !e.isDead);
+    return this.baseScene.physics.closest(this, aliveEnemies) as BaseEnemy;
   }
 
   abstract destroyEnemy(): void;

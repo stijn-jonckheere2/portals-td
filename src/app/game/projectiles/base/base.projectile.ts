@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 import { EffectManager } from '../../effects/manager/effect.manager';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../../enemies/base/base.unit';
+import { BaseUnit } from '../../portals/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 
 export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
@@ -12,8 +12,6 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   maxDistance: number = 200;
   traveledDistanceX: number = 0;
   traveledDistanceY: number = 0;
-
-  slowTimer: Phaser.Time.TimerEvent;
 
   effectManager: EffectManager;
   trackingSub$ = new Subscription();

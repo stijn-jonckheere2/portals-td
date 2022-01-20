@@ -1,6 +1,6 @@
 import { filter, Observable, Observer, Subject, Subscription, tap } from "rxjs";
 import { BaseEnemy } from "../enemies/base/base.enemy";
-import { BaseUnit } from "../enemies/base/base.unit";
+import { BaseUnit } from "../portals/base/base.unit";
 import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
@@ -200,6 +200,7 @@ export abstract class BaseGameScene extends BaseScene {
   setupEnemySpawners(): void {
     const enemyClasses = this.wavesManager.getEnemies();
     const enemyClassKey = Object.keys(enemyClasses);
+    
     enemyClassKey.forEach(key => {
       const enemiesToSpawn = enemyClasses[key];
       const enemySiblingDistance = enemiesToSpawn[0].DISTANCE_TO_SIBLING;

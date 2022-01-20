@@ -1,5 +1,5 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../../enemies/base/base.unit';
+import { BaseUnit } from '../base/base.unit';
 import { SnowballGroup } from '../../projectiles/snowball/snowball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
@@ -56,7 +56,7 @@ export class IcePortal extends BaseUnit {
   }
 
   shootNearestTarget(): void {
-    const closest = this.scene.physics.closest(this, this.baseScene.enemies);
+    const closest = this.getClosestEnemy();
 
     if (!closest || !(closest as BaseEnemy).body) {
       return;

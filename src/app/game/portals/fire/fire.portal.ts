@@ -1,5 +1,5 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../../enemies/base/base.unit';
+import { BaseUnit } from '../base/base.unit';
 import { FireballGroup } from '../../projectiles/fireball/fireball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
@@ -56,7 +56,7 @@ export class FirePortal extends BaseUnit {
   }
 
   shootNearestTarget(): void {
-    const closest = this.scene.physics.closest(this, this.baseScene.enemies);
+    const closest = this.getClosestEnemy();
 
     if (!closest || !(closest as BaseEnemy).body) {
       return;
