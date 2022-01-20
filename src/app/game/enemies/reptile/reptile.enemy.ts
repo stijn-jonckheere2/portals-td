@@ -5,7 +5,10 @@ import { BaseEnemy } from '../base/base.enemy';
 export class ReptileEnemy extends BaseEnemy {
   static SPRITE_KEY = 'reptile';
   static SPRITE_URL = 'assets/sprites/reptile.png';
-  static override MIN_WAVE: number = 20;
+  static override MIN_WAVE: number = 10;
+  static override MAX_WAVE: number = 150;
+  static override HEALTH: number = BaseEnemy.BASE_HEALTH * 10;
+  static override DISTANCE_TO_SIBLING: number = 1000;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, ReptileEnemy.SPRITE_KEY);
@@ -19,9 +22,9 @@ export class ReptileEnemy extends BaseEnemy {
   override init(): void {
     super.init();
 
+    this.currentHealth = ReptileEnemy.HEALTH;
     this.gold = 12;
-    this.baseSpeed = 150;
-    this.health = 400;
+    this.baseSpeed = 200;
   }
 
   override preUpdate(time, delta): void {

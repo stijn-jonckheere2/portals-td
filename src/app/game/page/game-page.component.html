@@ -41,11 +41,11 @@
 
   </div>
   <div class="game-actions">
-    <button mat-icon-button color="primary" *ngIf="levelFastForwardSubject$ | async" (click)="toggleFastForward()">
+    <button mat-icon-button color="primary" *ngIf="fastForwardState$ | async" (click)="toggleFastForward(false)">
       <mat-icon>fast_forward</mat-icon>
     </button>
 
-    <button mat-icon-button color="primary" *ngIf="!(levelFastForwardSubject$ | async)" (click)="toggleFastForward()">
+    <button mat-icon-button color="primary" *ngIf="!(fastForwardState$ | async)" (click)="toggleFastForward(true)">
       <mat-icon>play_arrow</mat-icon>
     </button>
 

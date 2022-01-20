@@ -12,6 +12,7 @@ export abstract class BaseScene extends Phaser.Scene {
   tilesetConfig: TilesetConfig;
   map: Phaser.Tilemaps.Tilemap;
   layers: { [key: string]: Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.ObjectLayer };
+  pathLayer: Phaser.Tilemaps.TilemapLayer;
 
   spawnPoint: Phaser.Types.Tilemaps.TiledObject;
   endPoint: Phaser.Types.Tilemaps.TiledObject;
@@ -62,6 +63,5 @@ export abstract class BaseScene extends Phaser.Scene {
     this.levelHealthSubject$.next(this.startingHealth);
 
     this.levelFastForwardSubject$ = (window as any).portalsTD.levelFastForwardSubject$;
-    this.levelFastForwardSubject$.next(this.physics.world.timeScale);
   }
 }

@@ -5,15 +5,19 @@ import { EventEmitter } from '@angular/core';
 
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   static MIN_WAVE: number = 1;
+  static MAX_WAVE: number = 100;
+  static BASE_HEALTH: number = 25;
+  static HEALTH: number = 100;
+  static DISTANCE_TO_SIBLING: number = 500;
 
   baseSpeed: number = 100;
-  health: number = 100;
   gold: number = 10;
   damage: number = 1;
 
   isDead: boolean = false;
   isSlowed: boolean = false;
   id: string;
+  currentHealth: number;
 
   get actualSpeed(): number {
     if (this.isSlowed) {
@@ -54,7 +58,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
     this.onUpdate.emit(this);
 
-    if (!this.isDead && this.health <= 0) {
+    if (!this.isDead && this.currentHealth <= 0) {
       this.isDead = true;
       this.setTint(0xff0000);
 
@@ -143,7 +147,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   takeDamage(damage: number): void {
-    this.health -= damage;
+    this.currentHealth -= damage;
   }
 
   addCollider(collisionTarget, callback?): void {

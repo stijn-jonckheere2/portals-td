@@ -67,9 +67,10 @@ export abstract class BaseGameScene extends BaseScene {
 
     this.layers = {
       background: backgroundLayer,
-      path: pathLayer,
       zones: zoneLayer,
     };
+
+    this.pathLayer = pathLayer;
   }
 
   createPoints(): void {
@@ -104,11 +105,13 @@ export abstract class BaseGameScene extends BaseScene {
       .setOrigin(0.5)
       .addCollider(this.activePortals);
 
-    const portalIsOverlapping = this.activePortals.some(activePortal => {
+    const portalsAreOverlapping = this.activePortals.some(activePortal => {
       return this.physics.overlap(portal, activePortal);
     });
 
-    if (portalIsOverlapping) {
+    const portalIsOnPath = this.physics.overlapTiles(portal, this.pathLayer.culledTiles);
+
+    if (portalsAreOverlapping || portalIsOnPath) {
       portal.destroyEnemy();
     } else {
       this.addPortal(portal);
@@ -176,7 +179,8 @@ export abstract class BaseGameScene extends BaseScene {
     this.waveTimer = this.time.addEvent({
       delay: 2000,
       loop: true,
-      callback: () => this.checkCurrentWave()
+      callback: () => this.checkCurrentWave(),
+      timeScale: this.physics.world.timeScale
     });
   }
 
@@ -195,24 +199,20 @@ export abstract class BaseGameScene extends BaseScene {
 
   setupEnemySpawners(): void {
     const enemyClasses = this.wavesManager.getEnemies();
-    console.log('enemyClasses', enemyClasses);
-
     const enemyClassKey = Object.keys(enemyClasses);
-    console.log('enemyClassKey', enemyClassKey);
-
     enemyClassKey.forEach(key => {
       const enemiesToSpawn = enemyClasses[key];
-      console.log('enemiesToSpawn', enemiesToSpawn);
+      const enemySiblingDistance = enemiesToSpawn[0].DISTANCE_TO_SIBLING;
 
       setTimeout(() => {
-        this.spawnEnemies(enemiesToSpawn);
+        this.spawnEnemies(enemiesToSpawn, enemySiblingDistance);
       }, 1);
     });
   }
 
-  spawnEnemies(enemiesToSpawn: (typeof BaseEnemy)[]): void {
+  spawnEnemies(enemiesToSpawn: (typeof BaseEnemy)[], enemySiblingDistance: number): void {
     const spawnEvent = this.time.addEvent({
-      delay: 500,
+      delay: enemySiblingDistance,
       repeat: enemiesToSpawn.length - 1,
       callback: () => {
         this.spawnEnemy(enemiesToSpawn[spawnEvent.repeatCount]);
@@ -269,7 +269,6 @@ export abstract class BaseGameScene extends BaseScene {
     }, this);
 
     const fastForward$ = this.levelFastForwardSubject$.pipe(
-      filter(value => value !== null),
       tap(value => {
         if (value) {
           this.setTimeScale(0.5);
@@ -285,10 +284,16 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   setTimeScale(scale: number): void {
-    this.tweens.timeScale = scale; // tweens
+    let timeScale: number = scale;
+
+    if (scale === 0.5) {
+      timeScale = 2;
+    }
+
+    this.tweens.timeScale = timeScale; // tweens
     this.physics.world.timeScale = scale; // physics
-    this.time.timeScale = scale; // time events
-    this.anims.globalTimeScale = scale;
+    this.time.timeScale = timeScale; // time events
+    this.anims.globalTimeScale = timeScale;
 
     this.children.list.forEach((child) => {
       if (child.type === "ParticleEmitterManager") {

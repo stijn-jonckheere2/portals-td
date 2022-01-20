@@ -21,6 +21,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   PortalPrice = PortalPrice;
 
   activePortalElement$: Observable<PortalElement>;
+  fastForwardState$: Observable<boolean>;
   portalSelectedSubject$ = new Subject<PortalElement>();
 
   levelGoldSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -34,7 +35,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.config = {
-      type: Phaser.AUTO,
+      type: Phaser.CANVAS,
       scene: [PreloadScene, GrasslandScene],
       physics: {
         default: 'arcade',
@@ -53,6 +54,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.portalsTDGame = new Phaser.Game(this.config);
 
     this.activePortalElement$ = this.portalSelectedSubject$.asObservable();
+    this.fastForwardState$ = this.levelFastForwardSubject$.asObservable();
+
     this.setupWindowSubjects();
   }
 
@@ -77,8 +80,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
     return this.levelGoldSubject$?.value >= price;
   }
 
-  toggleFastForward(): void {
-    this.levelFastForwardSubject$.next(!this.levelFastForwardSubject$.value);
+  toggleFastForward(flag: boolean): void {
+    this.levelFastForwardSubject$.next(flag);
   }
 
   private setupWindowSubjects(): void {
