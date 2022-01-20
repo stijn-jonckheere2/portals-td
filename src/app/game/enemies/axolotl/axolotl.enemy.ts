@@ -6,7 +6,7 @@ export class AxolotlEnemy extends BaseEnemy {
   static SPRITE_KEY = 'axolotl';
   static SPRITE_URL = 'assets/sprites/axolotl.png';
   static override MIN_WAVE: number = 1;
-  static override MAX_WAVE: number = 40;
+  static override MAX_WAVE: number = 60;
   static override HEALTH: number = BaseEnemy.BASE_HEALTH * 1;
 
   constructor(scene: BaseScene, x: number, y: number) {

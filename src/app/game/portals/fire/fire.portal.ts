@@ -26,7 +26,7 @@ export class FirePortal extends BaseUnit {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 300;
+    this.firingSpeed = 450;
     this.maxRange = 250;
 
     this.price = PortalPrice.FIRE;

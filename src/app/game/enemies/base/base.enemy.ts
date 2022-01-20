@@ -5,6 +5,8 @@ import { EventEmitter } from '@angular/core';
 import { AilmentType } from '../../ailments/ailment-type.enum';
 import { BaseUnit } from '../../portals/base/base.unit';
 import { FrozenAilment } from '../../ailments/frozen/frozen.ailment';
+import { ThisReceiver } from '@angular/compiler';
+import { first } from 'rxjs';
 
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   static MIN_WAVE: number = 1;
@@ -12,6 +14,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   static BASE_HEALTH: number = 25;
   static HEALTH: number = 100;
   static DISTANCE_TO_SIBLING: number = 500;
+  static SCALE: number = 2;
 
   baseSpeed: number = 100;
   gold: number = 10;
@@ -102,8 +105,31 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  startMoving(): void {
-    this.setNextDestination();
+  startMoving(nextDestinationIndex?: number): void {
+    this.setNextDestination(nextDestinationIndex);
+  }
+
+  setNextDestination(nextDestinationIndex?: number): void {
+    const myScene = this.scene as BaseScene;
+    const nextIndex = nextDestinationIndex ?? this.nextDestinationIndex;
+    const nextDestination = myScene.waypoints[nextIndex];
+
+    if (nextDestination) {
+      this.currentDestination = nextDestination;
+      this.nextDestinationIndex++;
+      this.moveToCurrentDestination();
+
+      return;
+    }
+
+    this.nextDestinationIndex = null;
+    this.currentDestination = myScene.endPoint;
+    this.moveToCurrentDestination();
+  }
+
+  moveToCurrentDestination(): void {
+    const { x, y } = this.currentDestination;
+    this.scene.physics.moveTo(this, x, y, this.actualSpeed);
   }
 
   checkCurrentMovement(): void {
@@ -128,27 +154,6 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
         this.destroyEnemy(false);
       }
     }
-  }
-
-  setNextDestination(): void {
-    const myScene = this.scene as BaseScene;
-    const nextDestination = myScene.waypoints[this.nextDestinationIndex];
-
-    if (nextDestination) {
-      this.currentDestination = nextDestination;
-      this.nextDestinationIndex++;
-      this.moveToCurrentDestination();
-      return;
-    }
-
-    this.nextDestinationIndex = null;
-    this.currentDestination = myScene.endPoint;
-    this.moveToCurrentDestination();
-  }
-
-  moveToCurrentDestination(): void {
-    const { x, y } = this.currentDestination;
-    this.scene.physics.moveTo(this, x, y, this.actualSpeed);
   }
 
   takeDamage(damage: number): void {

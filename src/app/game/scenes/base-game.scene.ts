@@ -200,7 +200,7 @@ export abstract class BaseGameScene extends BaseScene {
   setupEnemySpawners(): void {
     const enemyClasses = this.wavesManager.getEnemies();
     const enemyClassKey = Object.keys(enemyClasses);
-    
+
     enemyClassKey.forEach(key => {
       const enemiesToSpawn = enemyClasses[key];
       const enemySiblingDistance = enemiesToSpawn[0].DISTANCE_TO_SIBLING;
@@ -221,15 +221,17 @@ export abstract class BaseGameScene extends BaseScene {
     });
   }
 
-  spawnEnemy(EnemyClass): void {
-    const enemy = new EnemyClass(this, this.spawnPoint.x, this.spawnPoint.y) as BaseEnemy;
+  spawnEnemy(EnemyClass, spawnX?: number, spawnY?: number, scale?: number, nextDestinationIndex?: number): void {
+    const x = spawnX || this.spawnPoint.x;
+    const y = spawnY || this.spawnPoint.y;
+    const enemy = new EnemyClass(this, x, y) as BaseEnemy;
 
     enemy
-      .setScale(2)
+      .setScale(scale || EnemyClass.SCALE)
       .setOrigin(0.5);
 
     enemy.addCollider(this.getCollidingProjectiles(), this.onUnitHit);
-    enemy.startMoving();
+    enemy.startMoving(nextDestinationIndex);
     this.enemies.push(enemy);
   }
 

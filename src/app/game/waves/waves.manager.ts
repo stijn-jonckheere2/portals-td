@@ -4,6 +4,7 @@ import { BaseEnemy } from '../enemies/base/base.enemy';
 import { MoleEnemy } from '../enemies/mole/mole.enemy';
 import { ReptileEnemy } from '../enemies/reptile/reptile.enemy';
 import { orderBy, times } from 'lodash';
+import { LarvaEnemy } from '../enemies/larva/larva.enemy';
 
 export class WavesManager {
   currentWave: number = 1;
@@ -28,6 +29,7 @@ export class WavesManager {
     AxolotlEnemy,
     MoleEnemy,
     ReptileEnemy,
+    LarvaEnemy,
   ];
 
   constructor(maxWaves: number, currentWave = 1) {

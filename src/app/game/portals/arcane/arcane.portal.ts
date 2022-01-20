@@ -26,7 +26,7 @@ export class ArcanePortal extends BaseUnit {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 1000;
+    this.firingSpeed = 5000;
     this.maxRange = 300;
     this.price = PortalPrice.ARCANE;
 

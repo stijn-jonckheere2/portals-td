@@ -2,6 +2,8 @@ import { FrozenAilment } from "../ailments/frozen/frozen.ailment";
 import { ExplosionSnowEffect } from "../effects/explosion/explosion-snow.effect";
 import { ExplosionEffect } from "../effects/explosion/explosion.effect";
 import { AxolotlEnemy } from "../enemies/axolotl/axolotl.enemy";
+import { ButterflyEnemy } from "../enemies/butterfly/butterfly.enemy";
+import { LarvaEnemy } from "../enemies/larva/larva.enemy";
 import { MoleEnemy } from "../enemies/mole/mole.enemy";
 import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
@@ -34,6 +36,16 @@ export class PreloadScene extends BaseScene {
     });
 
     this.load.spritesheet(ReptileEnemy.SPRITE_KEY, ReptileEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(LarvaEnemy.SPRITE_KEY, LarvaEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(ButterflyEnemy.SPRITE_KEY, ButterflyEnemy.SPRITE_URL, {
       frameWidth: 16,
       frameHeight: 16
     });
