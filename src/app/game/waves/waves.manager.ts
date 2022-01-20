@@ -69,7 +69,7 @@ export class WavesManager {
         // And more than 1 enemy of the current type could fit
         // Then only spawn 60% of the current type to allow for wave variety
 
-        enemiesThatFit = Math.floor(enemiesThatFit * 0.8);
+        enemiesThatFit = Math.floor(enemiesThatFit * 0.55);
       }
 
       waveEnemies[enemy.name] = [];

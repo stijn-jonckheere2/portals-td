@@ -7,7 +7,7 @@ export class ButterflyEnemy extends BaseEnemy {
   static SPRITE_URL = 'assets/sprites/butterfly.png';
   static override MIN_WAVE: number = 0;
   static override MAX_WAVE: number = 0;
-  static override HEALTH: number = BaseEnemy.BASE_HEALTH * 2;
+  static override HEALTH: number = BaseEnemy.BASE_HEALTH * 0.5;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, ButterflyEnemy.SPRITE_KEY);
