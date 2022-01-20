@@ -39,8 +39,6 @@ export class LarvaEnemy extends BaseEnemy {
 
   override update(time, delta): void {
     super.update(time, delta);
-
-    console.log('moving to', this.nextDestinationIndex, this.currentDestination)
   }
 
   override destroyEnemy(receiveGold?: boolean): void {

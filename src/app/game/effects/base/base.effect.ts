@@ -18,9 +18,6 @@ export class BaseEffect extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: BaseScene, x: number, y: number, spriteKey: string, effectKey: string) {
     super(scene, x, y, spriteKey, effectKey);
 
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-
     this.effectKey = effectKey;
 
     this.on('animationcomplete', (animation) => {
@@ -28,6 +25,9 @@ export class BaseEffect extends Phaser.Physics.Arcade.Sprite {
         this.destroy();
       }
     }, this);
+
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
   }
 
   override preUpdate(time: number, delta: number): void {

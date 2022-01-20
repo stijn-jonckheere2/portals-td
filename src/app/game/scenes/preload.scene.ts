@@ -25,6 +25,16 @@ export class PreloadScene extends BaseScene {
   override preload(): void {
     super.preload();
 
+    this.load.spritesheet(ExplosionEffect.SPRITE_KEY, ExplosionEffect.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
     this.load.spritesheet(AxolotlEnemy.SPRITE_KEY, AxolotlEnemy.SPRITE_URL, {
       frameWidth: 16,
       frameHeight: 16
@@ -61,16 +71,6 @@ export class PreloadScene extends BaseScene {
     });
 
     this.load.spritesheet(SnowballProjectile.SPRITE_KEY, SnowballProjectile.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(ExplosionEffect.SPRITE_KEY, ExplosionEffect.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.SPRITE_URL, {
       frameWidth: 32,
       frameHeight: 32
     });
