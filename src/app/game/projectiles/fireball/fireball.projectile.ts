@@ -54,7 +54,7 @@ export class FireballProjectile extends BaseProjectile {
   }
 
   onHitTarget(target: BaseEnemy): void {
-    this.damageEnemy(target, this.damage/7);
+    this.damageEnemy(target, this.damage);
 
     if (!this.explosive) {
       this.destroyEnemy();
@@ -94,7 +94,7 @@ export class FireballProjectile extends BaseProjectile {
 
     enemiesByDistance.some((enemy, i) => {
       if (i < 4) {
-        this.damageEnemy(enemy, this.damage/7);
+        this.damageEnemy(enemy, this.damage);
         return false;
       }
       return true;
