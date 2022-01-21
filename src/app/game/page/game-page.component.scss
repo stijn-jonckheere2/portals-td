@@ -5,7 +5,7 @@
 }
 
 .game-menu-wrapper {
-  padding: 12px 32px;
+  padding: 12px 24px;
   width: 100%;
   max-width: 70%;
 
@@ -106,7 +106,7 @@
     }
 
     &.active {
-      background-color: white;
+      background-color: mixins.accentColor(200);
     }
 
     &.enabled {
