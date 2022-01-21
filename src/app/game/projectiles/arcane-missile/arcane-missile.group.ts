@@ -5,6 +5,8 @@ import { ArcaneMissileProjectile } from './arcane-missile.projectile';
 
 export class ArcaneMissileGroup extends Phaser.Physics.Arcade.Group {
 
+  upgradedDamage: number;
+
   constructor(scene: BaseScene) {
     super(scene.physics.world, scene);
 
@@ -25,10 +27,12 @@ export class ArcaneMissileGroup extends Phaser.Physics.Arcade.Group {
       return;
     }
 
+    projectile.damage = this.upgradedDamage ?? projectile.damage;
+
     if (projectile) {
       projectile.setScale(0.5);
       projectile.fire(target.body.center.x, target.body.center.y);
-      projectile.trackTarget(target);
+      // projectile.trackTarget(target);
     }
   }
 }

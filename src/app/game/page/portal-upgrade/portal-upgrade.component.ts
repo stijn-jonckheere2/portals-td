@@ -1,9 +1,12 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { ArcanePortal } from "../../portals/arcane/arcane.portal";
 import { BasePortal } from "../../portals/base/base.portal";
 import { FirePortal } from "../../portals/fire/fire.portal";
 import { GamePortal } from "../../portals/game-portal.type";
 import { IcePortal } from "../../portals/ice/ice.portal";
 import { PoisonPortal } from "../../portals/poison/poison.portal";
+import { ArcaneBarrageUpgrade } from "../../upgrades/arcane/arcane-barrage/arcane-barrage.upgrade";
+import { ArcaneTurretUpgrade } from "../../upgrades/arcane/arcane-turret/arcane-turret.upgrade";
 import { BaseUpgrade } from "../../upgrades/base/base.upgrade";
 import { ExplosiveBulletsUpgrade } from "../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade";
 import { FasterBulletsUpgrade } from "../../upgrades/fire/faster-bullets/faster-bullets.upgrade";
@@ -56,6 +59,14 @@ export class PortalUpgradeComponent implements OnChanges {
       this.possibleUpgrades = [
         PoisonCloudIUpgrade,
         PoisonCloudIIUpgrade,
+      ];
+      return;
+    }
+
+    if(this.portal instanceof ArcanePortal) {
+      this.possibleUpgrades = [
+        ArcaneBarrageUpgrade,
+        ArcaneTurretUpgrade,
       ];
       return;
     }

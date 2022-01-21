@@ -6,6 +6,9 @@ import { FirePortalUpgrades } from '../../upgrades/fire/fire-portal-upgrades.typ
 import { BasePortal } from '../base/base.portal';
 import { ExplosiveBulletsUpgrade } from '../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade';
 import { ArcaneMissileGroup } from '../../projectiles/arcane-missile/arcane-missile.group';
+import { ArcanePortalUpgrades } from '../../upgrades/arcane/arcane-portal-upgrades.type';
+import { ArcaneBarrageUpgrade } from '../../upgrades/arcane/arcane-barrage/arcane-barrage.upgrade';
+import { ArcaneTurretUpgrade } from '../../upgrades/arcane/arcane-turret/arcane-turret.upgrade';
 
 export class ArcanePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ARCANE;
@@ -58,6 +61,7 @@ export class ArcanePortal extends BasePortal {
   }
 
   shootNearestTarget(): void {
+    console.log('arcane firing speed', this.firingSpeed);
     const closest = this.getClosestEnemy();
 
     if (!closest || !(closest as BaseEnemy).body) {
@@ -80,8 +84,12 @@ export class ArcanePortal extends BasePortal {
     }
   }
 
-  addUpgrade(upgrade: FirePortalUpgrades): void {
+  addUpgrade(upgrade: ArcanePortalUpgrades): void {
     this.upgrade();
+
+    if (upgrade instanceof ArcaneTurretUpgrade) {
+      this.arcaneMissiles.upgradedDamage = 100;
+    }
   }
 
   initEvents(): void {

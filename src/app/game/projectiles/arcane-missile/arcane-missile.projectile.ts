@@ -20,12 +20,12 @@ export class ArcaneMissileProjectile extends BaseProjectile {
   override init(): void {
     super.init();
 
-    this.speed = 2000;
+    this.speed = 2500;
     this.maxDistance = 2000;
     this.damage = 50;
 
     this.setFrame(OrbElement.FIRE);
-    this.setBodySize(16, 16);
+    this.setBodySize(64, 64);
   }
 
   initEvents(): void {

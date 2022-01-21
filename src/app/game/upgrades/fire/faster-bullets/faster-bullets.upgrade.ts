@@ -16,7 +16,7 @@ export class FasterBulletsUpgrade extends BaseUpgrade {
   override onPurchase(): void {
     super.onPurchase();
     this.parent.stopShooting();
-    this.parent.firingSpeed = Math.ceil(this.parent.firingSpeed * 1.35);
+    this.parent.firingSpeed = Math.ceil(this.parent.firingSpeed * 0.85);
     this.parent.startShooting();
   }
 }
