@@ -155,8 +155,8 @@ export class WavesManager {
     let healthPoolForCurrentWave: number;
 
     const x = wave;
-    const x0 = 50; // lowest amount of gold per round
-    const L = 30000; // highest amount of gold per round
+    const x0 = 50; // lowest HP pool per round
+    const L = 25000; // highest HP pool per round
     const k = 0.08;
 
     const pow = (-k * x) - (-k * x0); // -k(x - x0)

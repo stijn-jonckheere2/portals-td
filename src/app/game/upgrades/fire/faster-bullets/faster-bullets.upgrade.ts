@@ -4,18 +4,19 @@ import { BaseUpgrade } from "../../base/base.upgrade";
 export class FasterBulletsUpgrade extends BaseUpgrade {
   static UPGRADE_NAME: string = 'Faster bullets';
   static UPGRADE_DESCRIPTION: string = 'More fire orbs is always better';
-  static UPGRADE_COST: number = 400;
+  static UPGRADE_COST: number = 1600;
 
   override parent: FirePortal;
 
   constructor(parent: FirePortal) {
     super(parent);
+    this.cost = FasterBulletsUpgrade.UPGRADE_COST;
   }
 
   override onPurchase(): void {
-      super.onPurchase();
-      this.parent.stopShooting();
-      this.parent.firingSpeed = Math.ceil(this.parent.firingSpeed * 1.35);
-      this.parent.startShooting();
+    super.onPurchase();
+    this.parent.stopShooting();
+    this.parent.firingSpeed = Math.ceil(this.parent.firingSpeed * 1.35);
+    this.parent.startShooting();
   }
 }

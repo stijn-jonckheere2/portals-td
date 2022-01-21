@@ -82,7 +82,7 @@ export abstract class BaseGameScene extends BaseScene {
 
     this.spawnPoint = zoneLayer.find(z => z.name === 'spawn-point');
     this.endPoint = zoneLayer.find(z => z.name === 'end-point');
-    this.waypoints = waypointsLayer.sort(wp => wp.id);
+    this.waypoints = _.orderBy(waypointsLayer, ['id'], ['asc']);
   }
 
   createPortal(x: number, y: number, element: PortalElement): void {
