@@ -30,7 +30,7 @@ export class GrasslandScene extends BaseGameScene {
   }
 
   createWaves(): void {
-    this.levelGoldSubject$.next(55000);
+    this.levelGoldSubject$.next(550);
     this.wavesManager.setMaxWaves(1000);
     this.startNextWave(1);
   }
