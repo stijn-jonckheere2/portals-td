@@ -1,4 +1,4 @@
-import { filter, Observable, Observer, Subject, Subscription, tap } from "rxjs";
+import { BehaviorSubject, filter, Observable, Observer, Subject, Subscription, tap } from "rxjs";
 import { BaseEnemy } from "../enemies/base/base.enemy";
 import { BaseUnit } from "../portals/base/base.unit";
 import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
@@ -12,13 +12,16 @@ import { PortalElement } from "../portals/portal-element.enum";
 import { BaseProjectile } from "../projectiles/base/base.projectile";
 import { BaseScene } from "./base.scene";
 import * as _ from 'lodash';
+import { BasePortal } from "../portals/base/base.portal";
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
   activePortals: GamePortal[] = [];
   portalPlaceholder: PortalPlaceholder;
 
-  portalSelectedSubject$: Subject<PortalElement>;
+  portalElementSelectedSubject$: Subject<PortalElement>;
+  portalSelectedSubject$: BehaviorSubject<BasePortal>;
+
   activePortalElement$: Observable<PortalElement>;
   sub$ = new Subscription();
 
@@ -103,6 +106,7 @@ export abstract class BaseGameScene extends BaseScene {
     portal
       .setScale(2)
       .setOrigin(0.5)
+      .setInteractive()
       .addCollider(this.activePortals);
 
     const portalsAreOverlapping = this.activePortals.some(activePortal => {
@@ -115,6 +119,7 @@ export abstract class BaseGameScene extends BaseScene {
       portal.destroyEnemy();
     } else {
       this.addPortal(portal);
+      portal.startShooting();
     }
   }
 
@@ -140,7 +145,7 @@ export abstract class BaseGameScene extends BaseScene {
   hidePortalPlaceholder(): void {
     this.portalPlaceholder.destroyEnemy();
     this.portalPlaceholder = null;
-    this.portalSelectedSubject$.next(null);
+    this.portalElementSelectedSubject$.next(null);
   }
 
   addPortal(portal: GamePortal): void {
@@ -171,7 +176,6 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   onUnitHit(enemy: BaseEnemy, projectile: BaseProjectile): void {
-    enemy.takeDamage(projectile.damage);
     projectile.onHitTarget(enemy);
   }
 
@@ -241,9 +245,10 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   createUIObservables(): void {
+    this.portalElementSelectedSubject$ = (window as any).portalsTD.portalElementSelectedSubject$;
     this.portalSelectedSubject$ = (window as any).portalsTD.portalSelectedSubject$;
 
-    this.activePortalElement$ = this.portalSelectedSubject$.asObservable().pipe(
+    this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable().pipe(
       tap((element: PortalElement) => {
         if (element !== null) {
           this.showPortalPlaceholder(element);
@@ -263,10 +268,20 @@ export abstract class BaseGameScene extends BaseScene {
       }
     }, this);
 
-    this.input.on('pointerdown', pointer => {
+    this.input.on('gameobjectdown', (pointer, gameObject) => {
+      if (gameObject instanceof BasePortal) {
+        this.portalSelectedSubject$.next(gameObject);
+      }
+    });
+
+    this.input.on('pointerdown', (pointer, objectsUnderMouse) => {
       if (this.portalPlaceholder) {
         this.createPortal(pointer.x, pointer.y, this.portalPlaceholder.PORTAL_ELEMENT);
         this.hidePortalPlaceholder();
+      }
+
+      if (objectsUnderMouse.length === 0) {
+        this.portalSelectedSubject$.next(null);
       }
     }, this);
 

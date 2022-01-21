@@ -18,7 +18,9 @@ import { SkullEnemy } from "../enemies/skull/skull.enemy";
 import { SlimeEnemy } from "../enemies/slime/slime.enemy";
 import { SpiritEnemy } from "../enemies/spirit/spirit.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
+import { ArrowDown } from "../other/arrow.sprite";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
+import { BasePortal } from "../portals/base/base.portal";
 import { FireballProjectile } from "../projectiles/fireball/fireball.projectile";
 import { SnowballProjectile } from "../projectiles/snowball/snowball.projectile";
 import { BaseScene } from "./base.scene";
@@ -126,7 +128,17 @@ export class PreloadScene extends BaseScene {
       frameHeight: 16
     });
 
-    this.load.spritesheet(ArcanePortal.SPRITE_KEY, ArcanePortal.SPRITE_URL, {
+    this.load.spritesheet(BasePortal.SPRITE_KEY, BasePortal.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(BasePortal.SPRITE_1_KEY, BasePortal.SPRITE_1_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(BasePortal.SPRITE_2_KEY, BasePortal.SPRITE_2_URL, {
       frameWidth: 32,
       frameHeight: 32
     });
@@ -144,6 +156,11 @@ export class PreloadScene extends BaseScene {
     this.load.spritesheet(FrozenAilment.SPRITE_KEY, FrozenAilment.SPRITE_URL, {
       frameWidth: 32,
       frameHeight: 32
+    });
+
+    this.load.spritesheet(ArrowDown.SPRITE_KEY, ArrowDown.SPRITE_URL, {
+      frameWidth: 50,
+      frameHeight: 50
     });
   }
 

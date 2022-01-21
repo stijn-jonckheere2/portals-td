@@ -5,6 +5,8 @@ import { FireballProjectile } from './fireball.projectile';
 
 export class FireballGroup extends Phaser.Physics.Arcade.Group {
 
+  explosive: boolean = false;
+
   constructor(scene: BaseScene) {
     super(scene.physics.world, scene);
 
@@ -17,8 +19,13 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
     });
   }
 
+  enableExplosiveProjectiles(): void {
+    this.explosive = true;
+  }
+
   fireProjectile(spawnX: number, spawnY: number, target: BaseEnemy): void {
     const projectile: FireballProjectile = this.getFirstDead(false, spawnX, spawnY);
+    projectile.explosive = this.explosive;
 
     if (projectile) {
       projectile.setScale(1);

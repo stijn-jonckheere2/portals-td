@@ -1,0 +1,50 @@
+.portal-upgrades {
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 26px;
+  width: 300px;
+}
+
+.portal-upgrade {
+  h2 {
+    padding-top: 16px;
+    margin: 0;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px black;
+    font-size: 20px;
+    line-height: 20px;
+    text-transform: uppercase;
+
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      margin-left: 8px;
+      text-shadow: none;
+      background: white;
+      border-radius: 26px;
+      transform: scale(0.8);
+    }
+  }
+
+  p {
+    color: white;
+    text-shadow: 2px 2px black;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  button {
+    color: white;
+    text-shadow: 2px 2px black;
+
+    img {
+      height: 20px;
+    }
+  }
+
+  &+.portal-upgrade {
+    margin-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+  }
+}

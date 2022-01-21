@@ -1,26 +1,20 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../base/base.unit';
 import { FireballGroup } from '../../projectiles/fireball/fireball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
-import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
 import { FirePortalUpgrades } from '../../upgrades/fire/fire-portal-upgrades.type';
+import { BasePortal } from '../base/base.portal';
+import { ExplosiveBulletsUpgrade } from '../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade';
 
-export class FirePortal extends BaseUnit {
-  static SPRITE_KEY = 'portals';
-  static SPRITE_URL = 'assets/sprites/portals.png';
+export class FirePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.FIRE;
 
   triggerTimer: Phaser.Time.TimerEvent;
   fireballs: FireballGroup;
 
-  upgrades = {
-    explosiveBullets: false
-  };
-
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, FirePortal.SPRITE_KEY);
+    super(scene, x, y, BasePortal.SPRITE_KEY, PortalElement.FIRE);
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
@@ -38,8 +32,6 @@ export class FirePortal extends BaseUnit {
     this.price = PortalPrice.FIRE;
     this.fireballs = new FireballGroup(this.baseScene);
     this.body.setSize(40, 40);
-
-    this.startShooting();
   }
 
   override preUpdate(time, delta): void {
@@ -59,6 +51,10 @@ export class FirePortal extends BaseUnit {
       delay: this.firingSpeed, // 1000 = 1 second
       loop: true
     });
+  }
+
+  stopShooting(): void {
+    this.triggerTimer.remove();
   }
 
   shootNearestTarget(): void {
@@ -84,9 +80,12 @@ export class FirePortal extends BaseUnit {
     }
   }
 
-  addUpgrade(upgrade: any): void {
-    const up = new upgrade(this) as FirePortalUpgrades;
-    up.onPurchase();
+  addUpgrade(upgrade: FirePortalUpgrades): void {
+    this.upgrade();
+
+    if (upgrade instanceof ExplosiveBulletsUpgrade) {
+      this.fireballs.enableExplosiveProjectiles();
+    }
   }
 
   initEvents(): void {
@@ -101,7 +100,7 @@ export class FirePortal extends BaseUnit {
 
   destroyEnemy(): void {
     this.stopEvents();
-    this.triggerTimer.destroy();
+    this.triggerTimer?.destroy();
     this.destroy(true);
   }
 }

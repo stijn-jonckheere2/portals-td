@@ -62,3 +62,11 @@
 <div class="game-wrapper">
   <div id="portals-td-container"></div>
 </div>
+
+<div class="portal-upgrade-container">
+  <app-portal-upgrade
+    [portal]="currentPortal$ | async"
+    [currentGold]="levelGoldSubject$?.value">
+  </app-portal-upgrade>
+</div>
+

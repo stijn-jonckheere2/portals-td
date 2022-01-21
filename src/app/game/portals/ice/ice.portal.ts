@@ -1,20 +1,19 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../base/base.unit';
 import { SnowballGroup } from '../../projectiles/snowball/snowball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
+import { BasePortal } from '../base/base.portal';
+import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
 
-export class IcePortal extends BaseUnit {
-  static SPRITE_KEY = 'portals';
-  static SPRITE_URL = 'assets/sprites/portals.png';
+export class IcePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ICE;
 
   triggerTimer: Phaser.Time.TimerEvent;
   snowballs: SnowballGroup;
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, IcePortal.SPRITE_KEY);
+    super(scene, x, y, BasePortal.SPRITE_KEY, PortalElement.ICE);
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
@@ -32,8 +31,6 @@ export class IcePortal extends BaseUnit {
     this.snowballs = new SnowballGroup(this.baseScene);
     this.body.setSize(40, 40);
     this.price = PortalPrice.ICE;
-
-    this.startShooting();
   }
 
   override preUpdate(time, delta): void {
@@ -78,6 +75,10 @@ export class IcePortal extends BaseUnit {
     }
   }
 
+  addUpgrade(upgrade: BaseUpgrade): void {
+
+  }
+
   initEvents(): void {
     this.scene.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -90,7 +91,7 @@ export class IcePortal extends BaseUnit {
 
   destroyEnemy(): void {
     this.stopEvents();
-    this.triggerTimer.destroy();
+    this.triggerTimer?.destroy();
     this.destroy(true);
   }
 }

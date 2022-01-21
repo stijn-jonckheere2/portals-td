@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 70%;
 
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   border-bottom-left-radius: 23px;
   border-bottom-right-radius: 23px;
 
@@ -83,7 +83,7 @@
 
       background-repeat: no-repeat;
       background-size: cover;
-      background-image: url('../../../assets/sprites/portals.png');
+      background-image: url('../../../assets/sprites/portals/portals.png');
     }
 
     p {
@@ -160,6 +160,14 @@
 
 #portals-td-container {
   text-align: center;
+}
+
+.portal-upgrade-container {
+  display: flex;
+  position: fixed;
+  right: 5vw;
+  top: 25vh;
+  height: 50vh;
 }
 
 @media (max-width: 1280px) {

@@ -6,10 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { CoreModule } from '../core/core.module';
 import { GameRoutingModule } from './game-routing.module';
 import { GamePageComponent } from './page/game-page.component';
+import { PortalUpgradeComponent } from './page/portal-upgrade/portal-upgrade.component';
 
 @NgModule({
   declarations: [
-    GamePageComponent
+    GamePageComponent,
+    PortalUpgradeComponent,
   ],
   imports: [
     CommonModule,

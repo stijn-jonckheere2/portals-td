@@ -1,12 +1,11 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
+import { BasePortal } from '../base/base.portal';
+import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
 
-export class ArcanePortal extends BaseUnit {
-  static SPRITE_KEY = 'portals';
-  static SPRITE_URL = 'assets/sprites/portals.png';
+export class ArcanePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ARCANE;
 
   triggerTimer: Phaser.Time.TimerEvent;
@@ -14,7 +13,7 @@ export class ArcanePortal extends BaseUnit {
   closestEnemy: BaseEnemy;
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, ArcanePortal.SPRITE_KEY);
+    super(scene, x, y, BasePortal.SPRITE_KEY, ArcanePortal.PORTAL_ELEMENT);
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
@@ -31,7 +30,6 @@ export class ArcanePortal extends BaseUnit {
     this.price = PortalPrice.ARCANE;
 
     this.body.setSize(10, 10);
-    this.startShooting();
   }
 
   override preUpdate(time, delta): void {
@@ -84,6 +82,10 @@ export class ArcanePortal extends BaseUnit {
     }
   }
 
+  addUpgrade(upgrade: BaseUpgrade): void {
+
+  }
+
   initEvents(): void {
     this.scene.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -96,7 +98,7 @@ export class ArcanePortal extends BaseUnit {
 
   destroyEnemy(): void {
     this.stopEvents();
-    this.triggerTimer.destroy();
+    this.triggerTimer?.destroy();
     this.destroy(true);
   }
 }
