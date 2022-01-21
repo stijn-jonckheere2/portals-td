@@ -48,13 +48,11 @@ export class LarvaEnemy extends BaseEnemy {
 
     gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
 
-    for (let i = 0; i < 9; i++) {
-      gameScene.time.addEvent({
-        repeat: 5,
-        delay: ButterflyEnemy.DISTANCE_TO_SIBLING,
-        callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
-      });
-    }
+    gameScene.time.addEvent({
+      repeat: 9,
+      delay: ButterflyEnemy.DISTANCE_TO_SIBLING,
+      callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
+    });
 
     super.destroyEnemy(receiveGold);
   }

@@ -41,8 +41,8 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     this.effectManager = new EffectManager(this.baseScene);
   }
 
-  override update(time, delta): void {
-    super.update(time, delta);
+  override preUpdate(time, delta): void {
+    super.preUpdate(time, delta);
 
     if (this.body && this.active) {
       this.traveledDistanceX += this.body.deltaAbsX();
