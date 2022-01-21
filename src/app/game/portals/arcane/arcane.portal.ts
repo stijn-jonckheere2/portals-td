@@ -2,18 +2,19 @@ import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
+import { FirePortalUpgrades } from '../../upgrades/fire/fire-portal-upgrades.type';
 import { BasePortal } from '../base/base.portal';
-import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
+import { ExplosiveBulletsUpgrade } from '../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade';
+import { ArcaneMissileGroup } from '../../projectiles/arcane-missile/arcane-missile.group';
 
 export class ArcanePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ARCANE;
 
   triggerTimer: Phaser.Time.TimerEvent;
-
-  closestEnemy: BaseEnemy;
+  arcaneMissiles: ArcaneMissileGroup;
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, BasePortal.SPRITE_KEY, ArcanePortal.PORTAL_ELEMENT);
+    super(scene, x, y, BasePortal.SPRITE_KEY, PortalElement.ARCANE);
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
@@ -25,10 +26,11 @@ export class ArcanePortal extends BasePortal {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 4000;
-    this.maxRange = 350;
-    this.price = PortalPrice.ARCANE;
+    this.firingSpeed = 500;
+    this.maxRange = 2000;
 
+    this.price = PortalPrice.ARCANE;
+    this.arcaneMissiles = new ArcaneMissileGroup(this.baseScene);
     this.body.setSize(40, 40);
   }
 
@@ -39,51 +41,47 @@ export class ArcanePortal extends BasePortal {
 
   override update(time, delta): void {
     super.update(time, delta);
+
   }
 
   startShooting(): void {
     this.triggerTimer = this.scene.time.addEvent({
-      callback: this.absorbNearestTarget,
+      callback: this.shootNearestTarget,
       callbackScope: this,
       delay: this.firingSpeed, // 1000 = 1 second
       loop: true
     });
   }
 
-  absorbNearestTarget(): void {
-    if (this.closestEnemy) {
-      return;
-    }
+  stopShooting(): void {
+    this.triggerTimer.remove();
+  }
 
+  shootNearestTarget(): void {
     const closest = this.getClosestEnemy();
 
-    if (!closest) {
+    if (!closest || !(closest as BaseEnemy).body) {
       return;
     }
 
+    const closestEnemy = closest as BaseEnemy;
+
     const distanceToClosest = Phaser.Math.Distance.Between(
-      closest.body.position.x,
-      closest.body.position.y,
+      closestEnemy.body.position.x,
+      closestEnemy.body.position.y,
       this.body.position.x,
       this.body.position.y,
     );
 
-    if (distanceToClosest <= 250) {
-      this.closestEnemy = closest;
-      this.closestEnemy.isDead = true;
-
-      this.closestEnemy.addCollider(this, () => {
-        console.log('collide')
-        this.closestEnemy.destroyEnemy();
-        this.closestEnemy = null;
-      });
-
-      this.scene.physics.moveTo(this.closestEnemy, this.body.center.x, this.body.center.y, 150, 1000);
+    if (distanceToClosest <= this.maxRange) {
+      const fireballX = this.body.position.x + 32;
+      const fireballY = this.body.position.y + 32;
+      this.arcaneMissiles.fireProjectile(fireballX, fireballY, closestEnemy);
     }
   }
 
-  addUpgrade(upgrade: BaseUpgrade): void {
-
+  addUpgrade(upgrade: FirePortalUpgrades): void {
+    this.upgrade();
   }
 
   initEvents(): void {

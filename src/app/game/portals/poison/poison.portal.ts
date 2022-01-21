@@ -102,10 +102,10 @@ export class PoisonPortal extends BasePortal {
         enemy.setAilment(AilmentType.POISONED, 5000, 5, 1000);
         break;
       case 1:
-        enemy.setAilment(AilmentType.POISONED, 5000, 10, 850);
+        enemy.setAilment(AilmentType.POISONED, 5000, 15, 850);
         break;
       case 2:
-        enemy.setAilment(AilmentType.POISONED, 5000, 20, 600);
+        enemy.setAilment(AilmentType.POISONED, 5000, 40, 600);
         break;
     }
   }

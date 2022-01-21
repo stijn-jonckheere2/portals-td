@@ -168,8 +168,13 @@ export abstract class BaseGameScene extends BaseScene {
       if (portal instanceof FirePortal) {
         projectiles.push((portal as FirePortal).fireballs);
       }
+      
       if (portal instanceof IcePortal) {
         projectiles.push((portal as IcePortal).snowballs);
+      }
+
+      if (portal instanceof ArcanePortal) {
+        projectiles.push((portal as ArcanePortal).arcaneMissiles);
       }
     });
 

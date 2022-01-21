@@ -1,4 +1,5 @@
 import { FrozenAilment } from "../ailments/frozen/frozen.ailment";
+import { ArcaneExplosionEffect } from "../effects/explosion/explosion-arcane.effect";
 import { ExplosionSnowEffect } from "../effects/explosion/explosion-snow.effect";
 import { ExplosionEffect } from "../effects/explosion/explosion.effect";
 import { AxolotlEnemy } from "../enemies/axolotl/axolotl.enemy";
@@ -44,6 +45,11 @@ export class PreloadScene extends BaseScene {
     });
 
     this.load.spritesheet(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(ArcaneExplosionEffect.SPRITE_KEY, ArcaneExplosionEffect.SPRITE_URL, {
       frameWidth: 32,
       frameHeight: 32
     });
