@@ -1,12 +1,24 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, last } from 'rxjs';
 import { AxolotlEnemy } from '../enemies/axolotl/axolotl.enemy';
 import { BaseEnemy } from '../enemies/base/base.enemy';
 import { MoleEnemy } from '../enemies/mole/mole.enemy';
 import { ReptileEnemy } from '../enemies/reptile/reptile.enemy';
 import { orderBy, times } from 'lodash';
 import { LarvaEnemy } from '../enemies/larva/larva.enemy';
+import { BabySlimeEnemy } from '../enemies/baby-slime/baby-slime.enemy';
+import { BambooEnemy } from '../enemies/bamboo/bamboo.enemy';
+import { BeastEnemy } from '../enemies/beast/beast.enemy';
+import { DragonEnemy } from '../enemies/dragon/dragon.enemy';
+import { FlameEnemy } from '../enemies/flame/flame.enemy';
+import { LizardEnemy } from '../enemies/lizard/lizard.enemy';
+import { OctopusEnemy } from '../enemies/octopus/octopus.enemy';
+import { OwlEnemy } from '../enemies/owl/owl.enemy';
+import { SkullEnemy } from '../enemies/skull/skull.enemy';
+import { SlimeEnemy } from '../enemies/slime/slime.enemy';
+import { SpiritEnemy } from '../enemies/spirit/spirit.enemy';
 
 export class WavesManager {
+  private enemyVarietyFactor = 0.30; // lower means more variety
   currentWave: number = 1;
   maxWaves: number;
 
@@ -30,6 +42,17 @@ export class WavesManager {
     MoleEnemy,
     ReptileEnemy,
     LarvaEnemy,
+    BambooEnemy,
+    BeastEnemy,
+    DragonEnemy,
+    FlameEnemy,
+    LizardEnemy,
+    OctopusEnemy,
+    OwlEnemy,
+    ReptileEnemy,
+    SkullEnemy,
+    SlimeEnemy,
+    SpiritEnemy,
   ];
 
   constructor(maxWaves: number, currentWave = 1) {
@@ -67,18 +90,22 @@ export class WavesManager {
       } else if (!lastEnemy && enemiesThatFit > 1) {
         // If we still have other types of enemies to spawn
         // And more than 1 enemy of the current type could fit
-        // Then only spawn 60% of the current type to allow for wave variety
+        // Then only spawn X% of the current type to allow for wave variety
+        // Always spawn at least 1
 
-        enemiesThatFit = Math.floor(enemiesThatFit * 0.55);
+        const flooredEnemies = Math.floor(enemiesThatFit * this.enemyVarietyFactor);
+        enemiesThatFit = flooredEnemies > 0 ? flooredEnemies : 1;
       }
 
-      waveEnemies[enemy.name] = [];
+      if (enemiesThatFit > 0) {
+        waveEnemies[enemy.name] = [];
 
-      // while the enemy fits inside the pool, add it
-      times(enemiesThatFit, () => {
-        waveEnemies[enemy.name].push(enemy);
-        remainingHealthPool -= enemy.HEALTH;
-      });
+        // while the enemy fits inside the pool, add it
+        times(enemiesThatFit, () => {
+          waveEnemies[enemy.name].push(enemy);
+          remainingHealthPool -= enemy.HEALTH;
+        });
+      }
 
       // X% of the wave is allowed to remain unaccounted for
       // This will prevent low levels mobs from spawning on higher levels

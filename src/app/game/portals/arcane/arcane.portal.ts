@@ -26,11 +26,11 @@ export class ArcanePortal extends BaseUnit {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 5000;
-    this.maxRange = 300;
+    this.firingSpeed = 4000;
+    this.maxRange = 350;
     this.price = PortalPrice.ARCANE;
 
-    this.body.setSize(40, 40);
+    this.body.setSize(10, 10);
     this.startShooting();
   }
 
@@ -73,12 +73,14 @@ export class ArcanePortal extends BaseUnit {
     if (distanceToClosest <= 250) {
       this.closestEnemy = closest;
       this.closestEnemy.isDead = true;
-      this.scene.physics.moveTo(this.closestEnemy, this.body.position.x + 32, this.body.position.y + 32, 200);
 
-      this.addCollider(this.closestEnemy, () => {
+      this.closestEnemy.addCollider(this, () => {
+        console.log('collide')
         this.closestEnemy.destroyEnemy();
         this.closestEnemy = null;
       });
+
+      this.scene.physics.moveTo(this.closestEnemy, this.body.center.x, this.body.center.y, 150, 1000);
     }
   }
 

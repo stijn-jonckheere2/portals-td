@@ -4,6 +4,8 @@ import { FireballGroup } from '../../projectiles/fireball/fireball.group';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
+import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
+import { FirePortalUpgrades } from '../../upgrades/fire/fire-portal-upgrades.type';
 
 export class FirePortal extends BaseUnit {
   static SPRITE_KEY = 'portals';
@@ -12,6 +14,10 @@ export class FirePortal extends BaseUnit {
 
   triggerTimer: Phaser.Time.TimerEvent;
   fireballs: FireballGroup;
+
+  upgrades = {
+    explosiveBullets: false
+  };
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, FirePortal.SPRITE_KEY);
@@ -76,6 +82,11 @@ export class FirePortal extends BaseUnit {
       const fireballY = this.body.position.y + 32;
       this.fireballs.fireProjectile(fireballX, fireballY, closestEnemy);
     }
+  }
+
+  addUpgrade(upgrade: any): void {
+    const up = new upgrade(this) as FirePortalUpgrades;
+    up.onPurchase();
   }
 
   initEvents(): void {

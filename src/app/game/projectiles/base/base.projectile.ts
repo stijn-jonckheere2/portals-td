@@ -54,7 +54,7 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   trackTarget(target: BaseEnemy): void {
     this.trackingSub$ = target.onUpdate.asObservable().subscribe(newTarget => {
       if (newTarget && newTarget.body) {
-        this.fire(newTarget.body.x, newTarget.body.y);
+        this.fire(newTarget.body.center.x, newTarget.body.center.y);
       }
     });
   }

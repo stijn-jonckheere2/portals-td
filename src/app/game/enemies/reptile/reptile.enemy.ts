@@ -1,14 +1,15 @@
 import { initEnemyAnim } from '../../anims/enemy.anim';
 import { BaseScene } from '../../scenes/base.scene';
 import { BaseEnemy } from '../base/base.enemy';
+import { EnemyDifficultySettings } from '../enemy.difficulty';
 
 export class ReptileEnemy extends BaseEnemy {
   static SPRITE_KEY = 'reptile';
   static SPRITE_URL = 'assets/sprites/reptile.png';
-  static override MIN_WAVE: number = 30;
-  static override MAX_WAVE: number = 150;
-  static override HEALTH: number = BaseEnemy.BASE_HEALTH * 20;
-  static override DISTANCE_TO_SIBLING: number = 1000;
+  static override MIN_WAVE: number = EnemyDifficultySettings[ReptileEnemy.name].minWave;
+  static override MAX_WAVE: number = EnemyDifficultySettings[ReptileEnemy.name].maxWave;
+  static override HEALTH: number = BaseEnemy.BASE_HEALTH * EnemyDifficultySettings[ReptileEnemy.name].healthEquivalent;
+  static override DISTANCE_TO_SIBLING: number = EnemyDifficultySettings[ReptileEnemy.name].distanceToSibling;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, ReptileEnemy.SPRITE_KEY);
@@ -24,7 +25,7 @@ export class ReptileEnemy extends BaseEnemy {
 
     this.currentHealth = ReptileEnemy.HEALTH;
     this.gold = 12;
-    this.baseSpeed = 200;
+    this.baseSpeed = EnemyDifficultySettings[ReptileEnemy.name].speed;
   }
 
   override preUpdate(time, delta): void {

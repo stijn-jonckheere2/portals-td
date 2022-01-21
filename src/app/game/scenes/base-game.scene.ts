@@ -202,12 +202,16 @@ export abstract class BaseGameScene extends BaseScene {
     const enemyClassKey = Object.keys(enemyClasses);
 
     enemyClassKey.forEach(key => {
-      const enemiesToSpawn = enemyClasses[key];
-      const enemySiblingDistance = enemiesToSpawn[0].DISTANCE_TO_SIBLING;
+      try {
+        const enemiesToSpawn = enemyClasses[key];
+        const enemySiblingDistance = enemiesToSpawn[0].DISTANCE_TO_SIBLING;
 
-      setTimeout(() => {
-        this.spawnEnemies(enemiesToSpawn, enemySiblingDistance);
-      }, 1);
+        setTimeout(() => {
+          this.spawnEnemies(enemiesToSpawn, enemySiblingDistance);
+        }, 1);
+      } catch (e) {
+        debugger;
+      }
     });
   }
 

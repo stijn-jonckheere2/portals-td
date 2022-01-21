@@ -57,7 +57,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   init(): void {
     this.setImmovable(true);
-    this.setBodySize(16, 16);
+    this.setBodySize(10, 10);
     this.initEvents();
   }
 

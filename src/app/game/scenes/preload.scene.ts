@@ -2,10 +2,21 @@ import { FrozenAilment } from "../ailments/frozen/frozen.ailment";
 import { ExplosionSnowEffect } from "../effects/explosion/explosion-snow.effect";
 import { ExplosionEffect } from "../effects/explosion/explosion.effect";
 import { AxolotlEnemy } from "../enemies/axolotl/axolotl.enemy";
+import { BabySlimeEnemy } from "../enemies/baby-slime/baby-slime.enemy";
+import { BambooEnemy } from "../enemies/bamboo/bamboo.enemy";
+import { BeastEnemy } from "../enemies/beast/beast.enemy";
 import { ButterflyEnemy } from "../enemies/butterfly/butterfly.enemy";
+import { DragonEnemy } from "../enemies/dragon/dragon.enemy";
+import { FlameEnemy } from "../enemies/flame/flame.enemy";
 import { LarvaEnemy } from "../enemies/larva/larva.enemy";
+import { LizardEnemy } from "../enemies/lizard/lizard.enemy";
 import { MoleEnemy } from "../enemies/mole/mole.enemy";
+import { OctopusEnemy } from "../enemies/octopus/octopus.enemy";
+import { OwlEnemy } from "../enemies/owl/owl.enemy";
 import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
+import { SkullEnemy } from "../enemies/skull/skull.enemy";
+import { SlimeEnemy } from "../enemies/slime/slime.enemy";
+import { SpiritEnemy } from "../enemies/spirit/spirit.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { FireballProjectile } from "../projectiles/fireball/fireball.projectile";
@@ -56,6 +67,61 @@ export class PreloadScene extends BaseScene {
     });
 
     this.load.spritesheet(ButterflyEnemy.SPRITE_KEY, ButterflyEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(BabySlimeEnemy.SPRITE_KEY, BabySlimeEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(BambooEnemy.SPRITE_KEY, BambooEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(BeastEnemy.SPRITE_KEY, BeastEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(DragonEnemy.SPRITE_KEY, DragonEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(FlameEnemy.SPRITE_KEY, FlameEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(LizardEnemy.SPRITE_KEY, LizardEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(OctopusEnemy.SPRITE_KEY, OctopusEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(OwlEnemy.SPRITE_KEY, OwlEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(SkullEnemy.SPRITE_KEY, SkullEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(SlimeEnemy.SPRITE_KEY, SlimeEnemy.SPRITE_URL, {
+      frameWidth: 16,
+      frameHeight: 16
+    });
+
+    this.load.spritesheet(SpiritEnemy.SPRITE_KEY, SpiritEnemy.SPRITE_URL, {
       frameWidth: 16,
       frameHeight: 16
     });

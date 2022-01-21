@@ -1,18 +1,17 @@
 import { initEnemyAnim } from '../../anims/enemy.anim';
 import { BaseGameScene } from '../../scenes/base-game.scene';
 import { BaseScene } from '../../scenes/base.scene';
-import { GrasslandScene } from '../../scenes/grassland.scene';
 import { BaseEnemy } from '../base/base.enemy';
-import { times } from 'lodash';
 import { ButterflyEnemy } from '../butterfly/butterfly.enemy';
+import { EnemyDifficultySettings } from '../enemy.difficulty';
 
 export class LarvaEnemy extends BaseEnemy {
   static SPRITE_KEY = 'larva';
   static SPRITE_URL = 'assets/sprites/larva.png';
-  static override MIN_WAVE: number = 15;
-  static override MAX_WAVE: number = 100;
-  static override HEALTH: number = BaseEnemy.BASE_HEALTH * 15;
-  static override DISTANCE_TO_SIBLING: number = 5000;
+  static override MIN_WAVE: number = EnemyDifficultySettings[LarvaEnemy.name].minWave;
+  static override MAX_WAVE: number = EnemyDifficultySettings[LarvaEnemy.name].maxWave;
+  static override HEALTH: number = BaseEnemy.BASE_HEALTH * EnemyDifficultySettings[LarvaEnemy.name].healthEquivalent;
+  static override DISTANCE_TO_SIBLING: number = EnemyDifficultySettings[LarvaEnemy.name].distanceToSibling;
   static override SCALE: number = 4;
 
   constructor(scene: BaseScene, x: number, y: number) {
@@ -29,8 +28,8 @@ export class LarvaEnemy extends BaseEnemy {
 
     this.currentHealth = LarvaEnemy.HEALTH;
     this.gold = 12;
-    this.baseSpeed = 75;
     this.damage = 36;
+    this.baseSpeed = EnemyDifficultySettings[LarvaEnemy.name].speed;
   }
 
   override preUpdate(time, delta): void {
@@ -52,7 +51,7 @@ export class LarvaEnemy extends BaseEnemy {
 
       gameScene.time.addEvent({
         repeat: 5,
-        delay: 200,
+        delay: ButterflyEnemy.DISTANCE_TO_SIBLING,
         callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
       });
     }
