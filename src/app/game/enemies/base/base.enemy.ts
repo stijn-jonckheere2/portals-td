@@ -189,8 +189,6 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
         break;
     };
-
-
   }
 
   addCollider(collisionTarget, callback?): void {
@@ -198,13 +196,13 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   initEvents(): void {
-    this.scene.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
-    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene?.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
+    this.scene?.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
   stopEvents(): void {
-    this.scene.events.off(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
-    this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene?.events.off(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
+    this.scene?.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
   clearAilments(): void {
@@ -218,7 +216,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.baseScene.enemies = this.baseScene.enemies.filter(e => e.id !== this.id);
 
     if (receiveGold) {
-      this.baseScene.earnGold(this.gold);
+      this.baseScene?.earnGold(this.gold);
     }
 
     this.destroy();
