@@ -2,15 +2,15 @@
   <div class="game-stats">
     <div class="health">
       <img src="../../../assets/images/heart-icon.png" />
-      {{ levelHealthSubject$?.value }}
+      <span>{{ levelHealthSubject$?.value }}</span>
     </div>
     <div class="gold">
       <img src="../../../assets/images/gold-icon.png" />
-      {{ levelGoldSubject$?.value }}
+      <span>{{ levelGoldSubject$?.value }}</span>
     </div>
     <div class="waves">
       <img src="../../../assets/images/wave-icon.png" />
-      {{ currentWaveSubject$?.value }} / {{ lastWaveSubject$?.value }}
+      <span>{{ currentWaveSubject$?.value }} / {{ lastWaveSubject$?.value }}</span>
     </div>
   </div>
   <div class="game-portals">
@@ -41,19 +41,19 @@
 
   </div>
   <div class="game-actions">
-    <button mat-icon-button color="primary" *ngIf="fastForwardState$ | async" (click)="toggleFastForward(false)">
+    <button mat-fab color="accent" *ngIf="fastForwardState$ | async" (click)="toggleFastForward(false)">
       <mat-icon>fast_forward</mat-icon>
     </button>
 
-    <button mat-icon-button color="primary" *ngIf="!(fastForwardState$ | async)" (click)="toggleFastForward(true)">
+    <button mat-fab color="accent" *ngIf="!(fastForwardState$ | async)" (click)="toggleFastForward(true)">
       <mat-icon>play_arrow</mat-icon>
     </button>
 
-    <button mat-icon-button color="primary" [routerLink]="['/home']">
+    <button mat-fab color="accent" [routerLink]="['/home']">
       <mat-icon>exit_to_app</mat-icon>
     </button>
 
-    <button mat-icon-button color="warn" (click)="onDeactivatePortal()" *ngIf="(activePortalElement$|async) !== null">
+    <button mat-fab color="warn" (click)="onDeactivatePortal()" *ngIf="(activePortalElement$|async) !== null">
       <mat-icon>clear</mat-icon>
     </button>
   </div>

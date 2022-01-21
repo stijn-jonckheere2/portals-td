@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import * as Phaser from 'phaser';
 import { BehaviorSubject, Observable, Subject, tap } from "rxjs";
 import { SceneConfig } from "../interfaces/scene-config.interface";
+import { GamePortal } from "../portals/game-portal.type";
 import { PortalElement } from "../portals/portal-element.enum";
 import { PortalPrice } from "../portals/portal-price.enum";
 import { GrasslandScene } from "../scenes/grassland.scene";
@@ -22,7 +23,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   activePortalElement$: Observable<PortalElement>;
   fastForwardState$: Observable<boolean>;
-  portalSelectedSubject$ = new Subject<PortalElement>();
+  currentPortal$: Observable<GamePortal>;
+
+  portalElementSelectedSubject$ = new Subject<PortalElement>();
+  portalSelectedSubject$ = new Subject<GamePortal>();
 
   levelGoldSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
   levelHealthSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -53,8 +57,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
     this.portalsTDGame = new Phaser.Game(this.config);
 
-    this.activePortalElement$ = this.portalSelectedSubject$.asObservable();
+    this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable();
     this.fastForwardState$ = this.levelFastForwardSubject$.asObservable();
+    this.currentPortal$ = this.portalSelectedSubject$.asObservable();
 
     this.setupWindowSubjects();
   }
@@ -64,12 +69,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.portalSelectedSubject$.next(null);
-    this.portalSelectedSubject$.next(element);
+    this.portalElementSelectedSubject$.next(null);
+    this.portalElementSelectedSubject$.next(element);
   }
 
   onDeactivatePortal(): void {
-    this.portalSelectedSubject$.next(null);
+    this.portalElementSelectedSubject$.next(null);
   }
 
   ngOnDestroy(): void {
@@ -87,12 +92,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
   private setupWindowSubjects(): void {
     (window as any).portalsTD = {
       ...(window as any).portalsTD,
-      portalSelectedSubject$: this.portalSelectedSubject$,
+      portalElementSelectedSubject$: this.portalElementSelectedSubject$,
       levelGoldSubject$: this.levelGoldSubject$,
       levelHealthSubject$: this.levelHealthSubject$,
       currentWaveSubject$: this.currentWaveSubject$,
       lastWaveSubject$: this.lastWaveSubject$,
       levelFastForwardSubject$: this.levelFastForwardSubject$,
+      portalSelectedSubject$: this.portalSelectedSubject$,
     };
   }
 }
