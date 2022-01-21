@@ -88,7 +88,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
     minWave: 0,
     maxWave: 0,
     healthEquivalent: 12,
-    distanceToSibling: 3000,
+    distanceToSibling: 2000,
     speed: 75,
   },
 

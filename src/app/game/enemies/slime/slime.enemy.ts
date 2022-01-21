@@ -34,6 +34,7 @@ export class SlimeEnemy extends BaseEnemy {
 
     this.babyTimer = this.baseScene.time.addEvent({
       delay: BabySlimeEnemy.DISTANCE_TO_SIBLING,
+      loop: true,
       callback: () => this.spawnBabySlime()
     });
   }
