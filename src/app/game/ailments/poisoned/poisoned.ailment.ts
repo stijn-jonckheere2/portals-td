@@ -12,13 +12,14 @@ export class PoisonedAilment extends BaseUnit {
   tickDamage: number;
   tickTimer: Phaser.Time.TimerEvent;
 
-  constructor(scene: BaseScene, x: number, y: number, tickDamage: number, parent: BaseEnemy) {
+  constructor(scene: BaseScene, x: number, y: number, tickDamage: number, firingSpeed: number, parent: BaseEnemy) {
     super(scene, x, y, PoisonedAilment.SPRITE_KEY);
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
     this.parent = parent;
     this.tickDamage = tickDamage;
+    this.firingSpeed = firingSpeed;
 
     this.setFrame(PoisonedAilment.AILMENT_TYPE);
     this.init();
@@ -30,7 +31,7 @@ export class PoisonedAilment extends BaseUnit {
 
     this.tickTimer = this.baseScene.time.addEvent({
       loop: true,
-      delay: 1000,
+      delay: this.firingSpeed,
       callback: () => this.parent.takeDamage(this.tickDamage)
     });
 

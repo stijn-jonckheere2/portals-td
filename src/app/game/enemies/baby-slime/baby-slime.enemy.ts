@@ -6,6 +6,7 @@ import { EnemyDifficultySettings } from '../enemy.difficulty';
 export class BabySlimeEnemy extends BaseEnemy {
   static SPRITE_KEY = 'baby-slime';
   static SPRITE_URL = 'assets/sprites/baby-slime.png';
+  
   static override MIN_WAVE: number = EnemyDifficultySettings[BabySlimeEnemy.name].minWave;
   static override MAX_WAVE: number = EnemyDifficultySettings[BabySlimeEnemy.name].maxWave;
   static override HEALTH: number = BaseEnemy.BASE_HEALTH * EnemyDifficultySettings[BabySlimeEnemy.name].healthEquivalent;

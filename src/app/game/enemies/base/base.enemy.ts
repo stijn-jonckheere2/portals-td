@@ -159,7 +159,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.currentHealth -= damage;
   }
 
-  setAilment(type: AilmentType, duration: number, tickDamage?: number): void {
+  setAilment(type: AilmentType, duration: number, tickDamage?: number, firingSpeed?: number): void {
     const { x, y } = this.body;
 
     switch (type) {
@@ -167,7 +167,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
         this.setFrozenAilment(x, y, duration);
         break;
       case AilmentType.POISONED:
-        this.setPoisonedAilment(x, y, duration, tickDamage);
+        this.setPoisonedAilment(x, y, duration, tickDamage, firingSpeed);
         break;
     };
   }
@@ -196,13 +196,13 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  private setPoisonedAilment(x: number, y: number, duration: number, tickDamage: number): void {
+  private setPoisonedAilment(x: number, y: number, duration: number, tickDamage: number, firingSpeed: number): void {
     let ailment: PoisonedAilment = this.poisonedAilment?.ailment;
 
     if (ailment) {
       this.poisonedAilment.timer.remove();
     } else {
-      ailment = new PoisonedAilment(this.baseScene, x - 10, y - 10, tickDamage, this);
+      ailment = new PoisonedAilment(this.baseScene, x - 10, y - 10, tickDamage, firingSpeed, this);
     }
 
     this.poisonedAilment = {

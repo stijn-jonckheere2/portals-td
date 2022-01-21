@@ -87,8 +87,8 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   BabySlimeEnemy: {
     minWave: 0,
     maxWave: 0,
-    healthEquivalent: 12,
-    distanceToSibling: 3500,
+    healthEquivalent: 8,
+    distanceToSibling: 5500,
     speed: 75,
   },
 

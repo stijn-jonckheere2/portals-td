@@ -48,7 +48,7 @@ export class SlimeEnemy extends BaseEnemy {
     const currentDestinationIndex: number = this.nextDestinationIndex - 1;
 
     const { x, y } = this;
-    gameScene.spawnEnemy(BabySlimeEnemy, x, y, 2, currentDestinationIndex)
+    gameScene.spawnEnemy(BabySlimeEnemy, x, y, 2, currentDestinationIndex);
   }
 
   override destroyEnemy(receiveGold?: boolean): void {

@@ -88,7 +88,7 @@ export class PoisonPortal extends BasePortal {
     });
 
     enemiesByDistance.some((enemy, i) => {
-      if (i < 3) {
+      if (i < 4) {
         this.poisonEnemy(enemy);
         return false;
       }
@@ -99,13 +99,13 @@ export class PoisonPortal extends BasePortal {
   poisonEnemy(enemy: BaseEnemy): void {
     switch (this.upgradeLevel) {
       case 0:
-        enemy.setAilment(AilmentType.POISONED, 5000, 5);
+        enemy.setAilment(AilmentType.POISONED, 5000, 1000, 5);
         break;
       case 1:
-        enemy.setAilment(AilmentType.POISONED, 5000, 10);
+        enemy.setAilment(AilmentType.POISONED, 5000, 850, 10);
         break;
       case 2:
-        enemy.setAilment(AilmentType.POISONED, 5000, 20);
+        enemy.setAilment(AilmentType.POISONED, 5000, 600, 20);
         break;
     }
   }
