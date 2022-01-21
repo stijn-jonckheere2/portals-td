@@ -3,11 +3,14 @@ import { BasePortal } from "../../portals/base/base.portal";
 import { FirePortal } from "../../portals/fire/fire.portal";
 import { GamePortal } from "../../portals/game-portal.type";
 import { IcePortal } from "../../portals/ice/ice.portal";
+import { PoisonPortal } from "../../portals/poison/poison.portal";
 import { BaseUpgrade } from "../../upgrades/base/base.upgrade";
 import { ExplosiveBulletsUpgrade } from "../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade";
 import { FasterBulletsUpgrade } from "../../upgrades/fire/faster-bullets/faster-bullets.upgrade";
 import { BiggerSnowballsUpgrade } from "../../upgrades/ice/bigger-snowballs/bigger-snowballs.upgrade";
 import { MassiveSnowballsUpgrade } from "../../upgrades/ice/massive-snowballs/massive-snowballs.upgrade";
+import { PoisonCloudIUpgrade } from "../../upgrades/poison/poison-cloud-i/poison-cloud-i.upgrade";
+import { PoisonCloudIIUpgrade } from "../../upgrades/poison/poison-cloud-ii/poison-cloud-ii.upgrade";
 
 @Component({
   selector: "app-portal-upgrade",
@@ -45,6 +48,14 @@ export class PortalUpgradeComponent implements OnChanges {
       this.possibleUpgrades = [
         BiggerSnowballsUpgrade,
         MassiveSnowballsUpgrade,
+      ];
+      return;
+    }
+
+    if(this.portal instanceof PoisonPortal) {
+      this.possibleUpgrades = [
+        PoisonCloudIUpgrade,
+        PoisonCloudIIUpgrade,
       ];
       return;
     }

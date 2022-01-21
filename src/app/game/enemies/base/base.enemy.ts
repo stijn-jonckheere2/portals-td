@@ -3,10 +3,8 @@ import { BaseScene } from '../../scenes/base.scene';
 import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
 import { AilmentType } from '../../ailments/ailment-type.enum';
-import { BaseUnit } from '../../portals/base/base.unit';
 import { FrozenAilment } from '../../ailments/frozen/frozen.ailment';
-import { ThisReceiver } from '@angular/compiler';
-import { first } from 'rxjs';
+import { PoisonedAilment } from '../../ailments/poisoned/poisoned.ailment';
 
 export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   static MIN_WAVE: number = 1;
@@ -26,6 +24,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   currentHealth: number;
 
   frozenAilment: { ailment: FrozenAilment, timer: Phaser.Time.TimerEvent };
+  poisonedAilment: { ailment: PoisonedAilment, timer: Phaser.Time.TimerEvent };
 
   get actualSpeed(): number {
     if (this.isSlowed) {
@@ -160,35 +159,62 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.currentHealth -= damage;
   }
 
-  setAilment(type: AilmentType, duration: number): void {
+  setAilment(type: AilmentType, duration: number, tickDamage?: number): void {
     const { x, y } = this.body;
 
     switch (type) {
       case AilmentType.FROZEN:
-        let ailment: FrozenAilment = this.frozenAilment?.ailment;
-
-        if (ailment) {
-          this.frozenAilment.timer.remove();
-        } else {
-          this.isSlowed = true;
-          ailment = new FrozenAilment(this.baseScene, x - 10, y - 10, this);
-        }
-
-        this.frozenAilment = {
-          ailment,
-          timer: this.baseScene.time.addEvent({
-            delay: duration,
-            callback: () => {
-              this.frozenAilment.ailment.destroyEnemy();
-              this.frozenAilment = null;
-              this.isSlowed = false;
-              this.moveToCurrentDestination();
-            }
-          })
-        }
-
+        this.setFrozenAilment(x, y, duration);
+        break;
+      case AilmentType.POISONED:
+        this.setPoisonedAilment(x, y, duration, tickDamage);
         break;
     };
+  }
+
+  private setFrozenAilment(x: number, y: number, duration: number): void {
+    let ailment: FrozenAilment = this.frozenAilment?.ailment;
+
+    if (ailment) {
+      this.frozenAilment.timer.remove();
+    } else {
+      this.isSlowed = true;
+      ailment = new FrozenAilment(this.baseScene, x - 10, y - 10, this);
+    }
+
+    this.frozenAilment = {
+      ailment,
+      timer: this.baseScene.time.addEvent({
+        delay: duration,
+        callback: () => {
+          this.frozenAilment.ailment.destroyEnemy();
+          this.frozenAilment = null;
+          this.isSlowed = false;
+          this.moveToCurrentDestination();
+        }
+      })
+    }
+  }
+
+  private setPoisonedAilment(x: number, y: number, duration: number, tickDamage: number): void {
+    let ailment: PoisonedAilment = this.poisonedAilment?.ailment;
+
+    if (ailment) {
+      this.poisonedAilment.timer.remove();
+    } else {
+      ailment = new PoisonedAilment(this.baseScene, x - 10, y - 10, tickDamage, this);
+    }
+
+    this.poisonedAilment = {
+      ailment,
+      timer: this.baseScene.time.addEvent({
+        delay: duration,
+        callback: () => {
+          this.poisonedAilment.ailment.destroyEnemy();
+          this.poisonedAilment = null;
+        }
+      })
+    }
   }
 
   addCollider(collisionTarget, callback?): void {
@@ -208,6 +234,9 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   clearAilments(): void {
     this.frozenAilment?.timer.remove();
     this.frozenAilment?.ailment.destroyEnemy();
+
+    this.poisonedAilment?.timer.remove();
+    this.poisonedAilment?.ailment.destroyEnemy();
   }
 
   destroyEnemy(receiveGold = true): void {

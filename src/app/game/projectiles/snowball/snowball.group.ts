@@ -38,7 +38,6 @@ export class SnowballGroup extends Phaser.Physics.Arcade.Group {
 
     projectile.biggerBalls = this.biggerBalls;
     projectile.massiveBalls = this.massiveBalls;
-    projectile.speed = projectile.massiveBalls ? projectile.speed * 0.9 : projectile.speed;
 
     const snowballScale = projectile.massiveBalls ? 1.5 : 1;
 

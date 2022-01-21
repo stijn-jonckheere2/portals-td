@@ -13,6 +13,7 @@ import { BaseProjectile } from "../projectiles/base/base.projectile";
 import { BaseScene } from "./base.scene";
 import * as _ from 'lodash';
 import { BasePortal } from "../portals/base/base.portal";
+import { PoisonPortal } from "../portals/poison/poison.portal";
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
@@ -101,6 +102,9 @@ export abstract class BaseGameScene extends BaseScene {
       case PortalElement.ICE:
         portal = new IcePortal(this, x, y);
         break;
+      case PortalElement.POISON:
+        portal = new PoisonPortal(this, x, y);
+        break;
     }
 
     portal
@@ -135,6 +139,9 @@ export abstract class BaseGameScene extends BaseScene {
         break;
       case PortalElement.ICE:
         parentClass = IcePortal;
+        break;
+      case PortalElement.POISON:
+        parentClass = PoisonPortal;
         break;
     }
 

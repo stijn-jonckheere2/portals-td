@@ -59,8 +59,12 @@ export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
   }
 
   getClosestEnemy(): BaseEnemy {
-    const aliveEnemies = this.baseScene.enemies.filter(e => !e.isDead);
+    const aliveEnemies = this.getAliveEnemies();
     return this.baseScene.physics.closest(this, aliveEnemies) as BaseEnemy;
+  }
+
+  getAliveEnemies(): BaseEnemy[] {
+    return this.baseScene.enemies.filter(e => !e.isDead);
   }
 
   abstract destroyEnemy(): void;
