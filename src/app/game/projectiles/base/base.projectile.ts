@@ -2,7 +2,6 @@ import { Subscription } from 'rxjs';
 import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 import { EffectManager } from '../../effects/manager/effect.manager';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { BaseUnit } from '../../portals/base/base.unit';
 import { BaseScene } from '../../scenes/base.scene';
 
 export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
@@ -42,11 +41,13 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     this.effectManager = new EffectManager(this.baseScene);
   }
 
-  override preUpdate(time, delta): void {
-    super.preUpdate(time, delta);
+  override update(time, delta): void {
+    super.update(time, delta);
 
-    this.traveledDistanceX += this.body.deltaAbsX();
-    this.traveledDistanceY += this.body.deltaAbsY();
+    if (this.body && this.active) {
+      this.traveledDistanceX += this.body.deltaAbsX();
+      this.traveledDistanceY += this.body.deltaAbsY();
+    }
 
     if (this.isMaxRange) {
       this.destroyEnemy();

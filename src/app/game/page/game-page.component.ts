@@ -51,7 +51,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
         mode: Phaser.Scale.FIT,
         parent: 'portals-td-container',
         width: 1920,
-        height: 1080
+        height: 1080,
+      },
+      fps: {
+        target: 60,
+        min: 30,
+        forceSetTimeOut: true
       },
     };
 

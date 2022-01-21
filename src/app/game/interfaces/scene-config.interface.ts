@@ -6,5 +6,6 @@ export interface SceneConfig extends Phaser.Types.Scenes.SettingsConfig {
   scene: any[];
   scale: any;
   tilesetConfig?: TilesetConfig;
+  fps: any;
 }
 
