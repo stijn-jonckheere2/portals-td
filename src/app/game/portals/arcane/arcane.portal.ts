@@ -29,7 +29,7 @@ export class ArcanePortal extends BasePortal {
     this.maxRange = 350;
     this.price = PortalPrice.ARCANE;
 
-    this.body.setSize(10, 10);
+    this.body.setSize(40, 40);
   }
 
   override preUpdate(time, delta): void {
