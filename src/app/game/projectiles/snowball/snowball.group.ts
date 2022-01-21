@@ -5,11 +5,13 @@ import { SnowballProjectile } from './snowball.projectile';
 
 export class SnowballGroup extends Phaser.Physics.Arcade.Group {
 
+  biggerBalls: boolean = false;
+
   constructor(scene: BaseScene) {
     super(scene.physics.world, scene);
 
     this.createMultiple({
-      frameQuantity: 10,
+      frameQuantity: 25,
       active: false,
       visible: false,
       key: SnowballProjectile.SPRITE_KEY,
@@ -17,12 +19,23 @@ export class SnowballGroup extends Phaser.Physics.Arcade.Group {
     });
   }
 
+  enableBiggerSnowballs(): void {
+    this.biggerBalls = true;
+  }
+
   fireProjectile(spawnX: number, spawnY: number, target: BaseEnemy): void {
     const projectile: SnowballProjectile = this.getFirstDead(false, spawnX, spawnY);
 
+    if (!projectile) {
+      console.error('Could not find projectile!');
+      return;
+    }
+
+    projectile.biggerBalls = this.biggerBalls;
+
     if (projectile) {
       projectile.setScale(1);
-      projectile.fire(target.body.x, target.body.y);
+      projectile.fire(target.body.center.x, target.body.center.y);
       projectile.trackTarget(target);
     }
   }

@@ -4,7 +4,8 @@ import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
 import { BasePortal } from '../base/base.portal';
-import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
+import { IcePortalUpgrades } from '../../upgrades/ice/ice-portal-upgrades.type';
+import { BiggerSnowballsUpgrade } from '../../upgrades/ice/bigger-snowballs/bigger-snowballs.upgrade';
 
 export class IcePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ICE;
@@ -75,8 +76,12 @@ export class IcePortal extends BasePortal {
     }
   }
 
-  addUpgrade(upgrade: BaseUpgrade): void {
+  addUpgrade(upgrade: IcePortalUpgrades): void {
+    this.upgrade();
 
+    if (upgrade instanceof BiggerSnowballsUpgrade) {
+      this.snowballs.enableBiggerSnowballs();
+    }
   }
 
   initEvents(): void {

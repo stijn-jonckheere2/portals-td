@@ -35,7 +35,7 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
 
     if (projectile) {
       projectile.setScale(1);
-      projectile.fire(target.body.x, target.body.y);
+      projectile.fire(target.body.center.x, target.body.center.y);
       projectile.trackTarget(target);
     }
   }

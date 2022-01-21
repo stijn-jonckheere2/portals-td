@@ -2,9 +2,11 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/cor
 import { BasePortal } from "../../portals/base/base.portal";
 import { FirePortal } from "../../portals/fire/fire.portal";
 import { GamePortal } from "../../portals/game-portal.type";
+import { IcePortal } from "../../portals/ice/ice.portal";
 import { BaseUpgrade } from "../../upgrades/base/base.upgrade";
 import { ExplosiveBulletsUpgrade } from "../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade";
 import { FasterBulletsUpgrade } from "../../upgrades/fire/faster-bullets/faster-bullets.upgrade";
+import { BiggerSnowballsUpgrade } from "../../upgrades/ice/bigger-snowballs/bigger-snowballs.upgrade";
 
 @Component({
   selector: "app-portal-upgrade",
@@ -34,6 +36,13 @@ export class PortalUpgradeComponent implements OnChanges {
       this.possibleUpgrades = [
         FasterBulletsUpgrade,
         ExplosiveBulletsUpgrade,
+      ];
+      return;
+    }
+
+    if(this.portal instanceof IcePortal) {
+      this.possibleUpgrades = [
+        BiggerSnowballsUpgrade
       ];
       return;
     }

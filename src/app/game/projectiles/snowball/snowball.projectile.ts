@@ -5,10 +5,13 @@ import { BaseProjectile } from '../base/base.projectile';
 import { ExplosionSnowEffect } from '../../effects/explosion/explosion-snow.effect';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { AilmentType } from '../../ailments/ailment-type.enum';
+import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 
 export class SnowballProjectile extends BaseProjectile {
   static SPRITE_KEY = 'orbs';
   static SPRITE_URL = 'assets/sprites/orbs.png';
+
+  biggerBalls: boolean = false;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, SnowballProjectile.SPRITE_KEY);
@@ -46,13 +49,44 @@ export class SnowballProjectile extends BaseProjectile {
     super.update(time, delta);
   }
 
-  override onHitTarget(target: BaseEnemy): void {
-    this.effectManager.playEffectOn(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.EFFECT_KEY, target);
+  onHitTarget(target: BaseEnemy): void {
+    this.damageAndSlowEnemy(target, this.damage);
 
-    target.setAilment(AilmentType.FROZEN, 7000);
-    target.moveToCurrentDestination();
+    if (!this.biggerBalls) {
+      this.destroyEnemy();
+      return;
+    }
 
-    super.destroyEnemy();
+    const aliveEnemies = this.baseScene.enemies.filter(enemy => !enemy.isDead);
+
+    const closeEnemies = aliveEnemies.filter(enemy => {
+      const distance = Phaser.Math.Distance.Between(
+        enemy.body.center.x,
+        enemy.body.center.y,
+        this.body.center.x,
+        this.body.center.y,
+      );
+
+      return distance < 150;
+    });
+
+    closeEnemies.some((enemy, i) => {
+      if (i < 4) {
+        this.damageAndSlowEnemy(enemy, this.damage);
+        return false;
+      }
+      return true;
+    });
+
+    this.destroyEnemy();
+  }
+
+  private damageAndSlowEnemy(enemy: BaseEnemy, damage: number): void {
+    enemy.takeDamage(damage);
+    enemy.setAilment(AilmentType.FROZEN, 7000);
+    enemy.moveToCurrentDestination();
+
+    this.effectManager.playEffectOn(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.EFFECT_KEY, enemy);
   }
 
   override fire(x: number, y: number): void {

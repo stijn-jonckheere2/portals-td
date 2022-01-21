@@ -15,8 +15,6 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   effectManager: EffectManager;
   trackingSub$ = new Subscription();
 
-  explosive: boolean = false;
-
   get isMaxRange(): boolean {
     return this.traveledDistanceX > this.maxDistance || this.traveledDistanceY > this.maxDistance;
   }
@@ -62,39 +60,6 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  onHitTarget(target: BaseEnemy): void {
-    if (!this.explosive) {
-      target.takeDamage(this.damage);
-      this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, target);
-      this.destroyEnemy();
-      return;
-    }
-
-    const aliveEnemies = this.baseScene.enemies.filter(enemy => !enemy.isDead);
-
-    const closeEnemies = aliveEnemies.filter(enemy => {
-      const distance = Phaser.Math.Distance.Between(
-        enemy.body.center.x,
-        enemy.body.center.y,
-        this.body.center.x,
-        this.body.center.y,
-      );
-
-      return distance < 200;
-    });
-
-    closeEnemies.some((enemy, i) => {
-      if (i < 4) {
-        enemy.takeDamage(this.damage);
-        this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, enemy);
-        return false;
-      }
-      return true;
-    });
-
-    this.destroyEnemy();
-  }
-
   destroyEnemy(): void {
     this.trackingSub$.unsubscribe();
     this.setActive(false);
@@ -105,4 +70,5 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   }
 
   abstract fire(x: number, y: number): void;
+  abstract onHitTarget(target: BaseEnemy): void;
 }
