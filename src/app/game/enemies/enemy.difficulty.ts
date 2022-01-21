@@ -42,8 +42,8 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   LarvaEnemy: {
     minWave: 20,
     maxWave: 70,
-    healthEquivalent: 15,
-    distanceToSibling: 5000,
+    healthEquivalent: 22,
+    distanceToSibling: 4000,
     speed: 75,
   },
 
@@ -88,7 +88,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
     minWave: 0,
     maxWave: 0,
     healthEquivalent: 12,
-    distanceToSibling: 2000,
+    distanceToSibling: 3500,
     speed: 75,
   },
 
