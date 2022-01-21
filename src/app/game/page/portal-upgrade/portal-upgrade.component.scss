@@ -47,4 +47,19 @@
     margin-top: 16px;
     border-top: 1px solid rgba(255, 255, 255, 0.4);
   }
+
+  &+button {
+    margin-top: 16px;
+  }
+}
+
+.mat-stroked-button {
+  color: white;
+  text-shadow: 2px 2px black;
+  display: block;
+  margin: 0 auto;
+
+  img {
+    height: 20px;
+  }
 }

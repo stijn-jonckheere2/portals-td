@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { ArcanePortal } from "../../portals/arcane/arcane.portal";
 import { BasePortal } from "../../portals/base/base.portal";
 import { FirePortal } from "../../portals/fire/fire.portal";
@@ -23,6 +23,12 @@ import { PoisonCloudIIUpgrade } from "../../upgrades/poison/poison-cloud-ii/pois
 export class PortalUpgradeComponent implements OnChanges {
   @Input() portal: GamePortal;
   @Input() currentGold: number;
+
+  @Output() portalSold: EventEmitter<any> = new EventEmitter();
+
+  get portalSellingPrice(): number {
+    return Math.ceil(this.portal?.price * 0.7);
+  }
 
   possibleUpgrades: any[] = [];
 
@@ -88,5 +94,11 @@ export class PortalUpgradeComponent implements OnChanges {
     const levelAvailable = this.portal.upgradeLevel === upgradeType.UPGRADE_LEVEL - 1;
     const moneyAvailable = this.currentGold >= upgradeType.UPGRADE_COST;
     return !levelAvailable || !moneyAvailable;
+  }
+
+  onSellPortal(): void {
+    this.portal.baseScene.earnGold(this.portalSellingPrice);
+    this.portal.destroyEnemy();
+    this.portalSold.emit();
   }
 }

@@ -74,7 +74,8 @@
 <div class="portal-upgrade-container">
   <app-portal-upgrade
     [portal]="currentPortal$ | async"
-    [currentGold]="levelGoldSubject$?.value">
+    [currentGold]="levelGoldSubject$?.value"
+    (portalSold)="onPortalSold()">
   </app-portal-upgrade>
 </div>
 

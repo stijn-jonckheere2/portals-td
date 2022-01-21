@@ -94,6 +94,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.levelFastForwardSubject$.next(flag);
   }
 
+  onPortalSold(): void {
+    this.portalSelectedSubject$.next(null);
+  }
+
   private setupWindowSubjects(): void {
     (window as any).portalsTD = {
       ...(window as any).portalsTD,
