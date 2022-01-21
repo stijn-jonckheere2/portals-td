@@ -27,7 +27,9 @@ export class PortalUpgradeComponent implements OnChanges {
   @Output() portalSold: EventEmitter<any> = new EventEmitter();
 
   get portalSellingPrice(): number {
-    return Math.ceil(this.portal?.price * 0.7);
+    const portalPrice = this.portal?.price * 0.7;
+    const upgradeBonus = (this.portal?.upgradeLevel * portalPrice) * 0.7;
+    return Math.ceil(portalPrice + upgradeBonus);
   }
 
   possibleUpgrades: any[] = [];

@@ -25,6 +25,7 @@ export class DragonEnemy extends BaseEnemy {
     this.currentHealth = DragonEnemy.HEALTH;
     this.gold = 16;
     this.baseSpeed = EnemyDifficultySettings[DragonEnemy.name].speed;
+    this.setScale(3.5);
   }
 
   override preUpdate(time, delta): void {

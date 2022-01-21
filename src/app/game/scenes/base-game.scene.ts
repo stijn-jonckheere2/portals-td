@@ -168,7 +168,7 @@ export abstract class BaseGameScene extends BaseScene {
       if (portal instanceof FirePortal) {
         projectiles.push((portal as FirePortal).fireballs);
       }
-      
+
       if (portal instanceof IcePortal) {
         projectiles.push((portal as IcePortal).snowballs);
       }
@@ -193,7 +193,7 @@ export abstract class BaseGameScene extends BaseScene {
 
   startWaveInterval(): void {
     this.waveTimer = this.time.addEvent({
-      delay: 2000,
+      delay: 5000,
       loop: true,
       callback: () => this.checkCurrentWave(),
       timeScale: this.physics.world.timeScale

@@ -3,7 +3,7 @@ import { BaseUpgrade } from "../../base/base.upgrade";
 
 export class ArcaneTurretUpgrade extends BaseUpgrade {
   static UPGRADE_NAME: string = 'Arcane turret';
-  static UPGRADE_DESCRIPTION: string = 'You wanted a turret? Here\'s a turret!';
+  static UPGRADE_DESCRIPTION: string = 'A rapid fire death machine that never misses!';
   static UPGRADE_COST: number = 4150;
   static override UPGRADE_LEVEL: number = 2;
 

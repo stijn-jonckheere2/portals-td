@@ -29,7 +29,7 @@ export class ArcanePortal extends BasePortal {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 500;
+    this.firingSpeed = 450;
     this.maxRange = 2000;
 
     this.price = PortalPrice.ARCANE;

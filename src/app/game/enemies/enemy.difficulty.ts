@@ -59,7 +59,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // REPTILE
   ReptileEnemy: {
     minWave: 30,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 20,
     distanceToSibling: 1000,
     speed: 200,
@@ -68,7 +68,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // LIZARD
   LizardEnemy: {
     minWave: 40,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 17,
     distanceToSibling: 850,
     speed: 250,
@@ -77,7 +77,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // SLIME
   SlimeEnemy: {
     minWave: 50,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 24,
     distanceToSibling: 1000,
     speed: 100,
@@ -104,7 +104,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // BEAST
   BeastEnemy: {
     minWave: 60,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 14,
     distanceToSibling: 200,
     speed: 175,
@@ -113,7 +113,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // SPIRIT
   SpiritEnemy: {
     minWave: 70,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 9,
     distanceToSibling: 150,
     speed: 235,
@@ -122,7 +122,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // SKULL
   SkullEnemy: {
     minWave: 80,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 18,
     distanceToSibling: 250,
     speed: 185,
@@ -131,7 +131,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // DRAGON
   DragonEnemy: {
     minWave: 87,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 35,
     distanceToSibling: 500,
     speed: 145,
@@ -140,7 +140,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   // FLAME
   FlameEnemy: {
     minWave: 90,
-    maxWave: 100,
+    maxWave: 1000,
     healthEquivalent: 14,
     distanceToSibling: 400,
     speed: 275,
