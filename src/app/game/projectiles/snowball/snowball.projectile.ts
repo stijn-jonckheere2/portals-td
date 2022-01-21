@@ -72,7 +72,8 @@ export class SnowballProjectile extends BaseProjectile {
 
     closeEnemies.some((enemy, i) => {
       if (i < 4) {
-        this.damageAndSlowEnemy(enemy, this.damage);
+        // Don't damage the AoE snowballs
+        this.damageAndSlowEnemy(enemy, 0);
         return false;
       }
       return true;
