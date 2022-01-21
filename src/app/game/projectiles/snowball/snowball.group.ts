@@ -6,6 +6,7 @@ import { SnowballProjectile } from './snowball.projectile';
 export class SnowballGroup extends Phaser.Physics.Arcade.Group {
 
   biggerBalls: boolean = false;
+  massiveBalls: boolean = false;
 
   constructor(scene: BaseScene) {
     super(scene.physics.world, scene);
@@ -23,6 +24,10 @@ export class SnowballGroup extends Phaser.Physics.Arcade.Group {
     this.biggerBalls = true;
   }
 
+  enableMassiveSnowballs(): void {
+    this.massiveBalls = true;
+  }
+
   fireProjectile(spawnX: number, spawnY: number, target: BaseEnemy): void {
     const projectile: SnowballProjectile = this.getFirstDead(false, spawnX, spawnY);
 
@@ -32,9 +37,13 @@ export class SnowballGroup extends Phaser.Physics.Arcade.Group {
     }
 
     projectile.biggerBalls = this.biggerBalls;
+    projectile.massiveBalls = this.massiveBalls;
+    projectile.speed = projectile.massiveBalls ? projectile.speed * 0.9 : projectile.speed;
+
+    const snowballScale = projectile.massiveBalls ? 1.5 : 1;
 
     if (projectile) {
-      projectile.setScale(1);
+      projectile.setScale(snowballScale);
       projectile.fire(target.body.center.x, target.body.center.y);
       projectile.trackTarget(target);
     }

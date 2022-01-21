@@ -7,6 +7,7 @@ import { BaseUpgrade } from "../../upgrades/base/base.upgrade";
 import { ExplosiveBulletsUpgrade } from "../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade";
 import { FasterBulletsUpgrade } from "../../upgrades/fire/faster-bullets/faster-bullets.upgrade";
 import { BiggerSnowballsUpgrade } from "../../upgrades/ice/bigger-snowballs/bigger-snowballs.upgrade";
+import { MassiveSnowballsUpgrade } from "../../upgrades/ice/massive-snowballs/massive-snowballs.upgrade";
 
 @Component({
   selector: "app-portal-upgrade",
@@ -42,7 +43,8 @@ export class PortalUpgradeComponent implements OnChanges {
 
     if(this.portal instanceof IcePortal) {
       this.possibleUpgrades = [
-        BiggerSnowballsUpgrade
+        BiggerSnowballsUpgrade,
+        MassiveSnowballsUpgrade,
       ];
       return;
     }

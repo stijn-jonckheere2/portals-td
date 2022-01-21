@@ -12,6 +12,7 @@ export class SnowballProjectile extends BaseProjectile {
   static SPRITE_URL = 'assets/sprites/orbs.png';
 
   biggerBalls: boolean = false;
+  massiveBalls: boolean = false;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, SnowballProjectile.SPRITE_KEY);
@@ -52,7 +53,7 @@ export class SnowballProjectile extends BaseProjectile {
   onHitTarget(target: BaseEnemy): void {
     this.damageAndSlowEnemy(target, this.damage);
 
-    if (!this.biggerBalls) {
+    if (!this.biggerBalls && !this.massiveBalls) {
       this.destroyEnemy();
       return;
     }
@@ -71,11 +72,18 @@ export class SnowballProjectile extends BaseProjectile {
     });
 
     closeEnemies.some((enemy, i) => {
-      if (i < 4) {
+      if (this.biggerBalls && i < 4) {
         // Don't damage the AoE snowballs
         this.damageAndSlowEnemy(enemy, 0);
         return false;
       }
+
+      if (this.massiveBalls && i < 8) {
+        // Don't damage the AoE snowballs
+        this.damageAndSlowEnemy(enemy, 0);
+        return false;
+      }
+
       return true;
     });
 

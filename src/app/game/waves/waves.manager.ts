@@ -5,7 +5,6 @@ import { MoleEnemy } from '../enemies/mole/mole.enemy';
 import { ReptileEnemy } from '../enemies/reptile/reptile.enemy';
 import { orderBy, times } from 'lodash';
 import { LarvaEnemy } from '../enemies/larva/larva.enemy';
-import { BabySlimeEnemy } from '../enemies/baby-slime/baby-slime.enemy';
 import { BambooEnemy } from '../enemies/bamboo/bamboo.enemy';
 import { BeastEnemy } from '../enemies/beast/beast.enemy';
 import { DragonEnemy } from '../enemies/dragon/dragon.enemy';
