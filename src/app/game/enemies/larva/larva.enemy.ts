@@ -46,9 +46,9 @@ export class LarvaEnemy extends BaseEnemy {
 
     const { x, y } = this;
 
-    for (let i = 0; i < 5; i++) {
-      gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
+    gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
 
+    for (let i = 0; i < 9; i++) {
       gameScene.time.addEvent({
         repeat: 5,
         delay: ButterflyEnemy.DISTANCE_TO_SIBLING,

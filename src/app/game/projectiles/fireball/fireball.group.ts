@@ -11,7 +11,7 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene);
 
     this.createMultiple({
-      frameQuantity: 10,
+      frameQuantity: 25,
       active: false,
       visible: false,
       key: FireballProjectile.SPRITE_KEY,
@@ -25,6 +25,12 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
 
   fireProjectile(spawnX: number, spawnY: number, target: BaseEnemy): void {
     const projectile: FireballProjectile = this.getFirstDead(false, spawnX, spawnY);
+
+    if (!projectile) {
+      console.error('Could not find projectile!');
+      return;
+    }
+
     projectile.explosive = this.explosive;
 
     if (projectile) {
