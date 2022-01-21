@@ -1,5 +1,11 @@
 
 <div class="portal-upgrades" *ngIf="portal && possibleUpgrades?.length">
+  <button mat-stroked-button (click)="onSellPortal()">
+    Sell for
+    <img src="../../../../assets/images/gold-icon.png">
+    {{ portalSellingPrice }}
+  </button>
+  
   <div class="portal-upgrade" *ngFor="let upgrade of possibleUpgrades">
     <h2>
       {{ upgrade.UPGRADE_NAME }}
@@ -16,10 +22,4 @@
       {{ upgrade.UPGRADE_COST }}
     </button>
   </div>
-
-  <button mat-stroked-button (click)="onSellPortal()">
-    Sell for
-    <img src="../../../../assets/images/gold-icon.png">
-    {{ portalSellingPrice }}
-  </button>
 </div>
