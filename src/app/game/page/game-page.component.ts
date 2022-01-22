@@ -8,7 +8,6 @@ import { PortalElement } from "../portals/portal-element.enum";
 import { PortalPrice } from "../portals/portal-price.enum";
 import { GrasslandScene } from "../scenes/grassland.scene";
 import { PreloadScene } from "../scenes/preload.scene";
-import AnimatedTiles from '../../../assets/plugins/AnimatedTiles.js';
 import { KingInTheNorthScene } from "../scenes/king-in-the-north.scene";
 import { MatDialog } from "@angular/material/dialog";
 import { GameOverDialogComponent } from "./dialogs/game-over/game-over-dialog.component";
@@ -74,15 +73,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
         min: 30,
         forceSetTimeOut: true
       },
-      plugins: {
-        scene: [
-          {
-            key: 'AnimatedTiles',
-            plugin: AnimatedTiles,
-            mapping: 'animatedTiles'
-          }
-        ]
-      }
     };
 
     this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable();
@@ -224,11 +214,17 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   onExitGame(): void {
-    this.portalsTDGame.cache.destroy();
     this.router.navigate(['/levels']);
   }
 
   ngOnDestroy(): void {
+    this.portalsTDGame.registry.destroy();
+    this.portalsTDGame.anims.destroy();
+    this.portalsTDGame.textures.destroy();
+    this.portalsTDGame.scene.destroy();
+    this.portalsTDGame.renderer.destroy();
+    this.portalsTDGame.destroy(true);
+
     this.sub$.unsubscribe();
     delete (window as any).portalsTD;
   }

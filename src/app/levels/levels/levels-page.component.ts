@@ -40,10 +40,6 @@ export class LevelsPageComponent implements OnInit {
   }
 
   onLevelSelected(levelKey: string): void {
-    this.router.navigate(['/game'], {
-      queryParams: {
-        levelKey
-      }
-    });
+    this.router.navigateByUrl(`/game?levelKey=${levelKey}`);
   }
 }

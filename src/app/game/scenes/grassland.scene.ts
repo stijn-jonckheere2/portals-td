@@ -5,6 +5,7 @@ import { BaseGameScene } from './base-game.scene';
 
 export class GrasslandScene extends BaseGameScene {
   static KEY: string = 'grassland-scene';
+  static PLUGIN_KEY: string = 'animated-tiles-plugin';
   static NAME: string = 'Grasslands';
   static THUMBNAIL: string = 'assets/images/thumbnails/grasslands.png';
   static LEVEL: number = 1;
@@ -19,10 +20,15 @@ export class GrasslandScene extends BaseGameScene {
 
   override preload(): void {
     super.preload();
+
+    this.load.scenePlugin('AnimatedTiles', '../../../assets/plugins/AnimatedTiles.js', 'animatedTiles', GrasslandScene.PLUGIN_KEY);
   }
 
   override create(): void {
     super.create();
+
+    const pluginInstance = this[GrasslandScene.PLUGIN_KEY];
+    pluginInstance.init(this.map);
 
     this.startingGold = 550;
 

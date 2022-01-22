@@ -42,19 +42,7 @@ export class PreloadScene extends BaseScene {
     this.nextLevelKey = data.nextLevelKey;
   }
 
-  override create(): void {
-    super.create();
-
-    if (this.nextLevelKey) {
-      console.log('starting level', this.nextLevelKey)
-      this.scene.start(this.nextLevelKey);
-    }
-  }
-
-  override preload(): void {
-    super.preload();
-
-    console.log('preloaddd')
+  preload(): void {
     this.preloadEffects();
     this.preloadProjectiles();
     this.preloadPortals();
@@ -66,6 +54,14 @@ export class PreloadScene extends BaseScene {
         frameHeight: config.frameHeight,
       });
     });
+  }
+
+  override create(): void {
+    super.create();
+
+    if (this.nextLevelKey) {
+      this.scene.start(this.nextLevelKey);
+    }
   }
 
   private preloadEffects(): void {

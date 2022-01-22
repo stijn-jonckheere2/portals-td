@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeModule } from './home/home.module';
+import { LevelsModule } from './levels/levels.module';
+import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +16,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     CoreModule,
+    HomeModule,
+    LevelsModule,
+    GameModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],

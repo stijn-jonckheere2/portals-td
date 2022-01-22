@@ -4,6 +4,7 @@ import { BaseEnemy } from '../enemies/base/base.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
 import { WavesManager } from '../waves/waves.manager';
+import AnimatedTiles from '../../../assets/plugins/AnimatedTiles.js';
 
 export abstract class BaseScene extends Phaser.Scene {
   startingGold: number = 400;
@@ -29,9 +30,6 @@ export abstract class BaseScene extends Phaser.Scene {
   constructor(config: SceneConfig) {
     super(config);
     this.tilesetConfig = config.tilesetConfig || this.tilesetConfig;
-  }
-
-  preload(): void {
   }
 
   create(): void {

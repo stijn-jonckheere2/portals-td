@@ -37,9 +37,7 @@ export abstract class BaseGameScene extends BaseScene {
     this.mapKey = config.key;
   }
 
-  override preload(): void {
-    super.preload();
-
+  preload(): void {
     const { key, url } = this.tilesetConfig;
 
     this.load.tilemapTiledJSON(this.tilesetConfig.mapKey, this.tilesetConfig.mapUrl);
@@ -83,13 +81,6 @@ export abstract class BaseGameScene extends BaseScene {
     };
 
     this.pathLayer = pathLayer;
-
-    try {
-      const animatedTilesPlugin = (this.scene.systems as any).animatedTiles;
-      animatedTilesPlugin.init(this.map);
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   createPoints(): void {

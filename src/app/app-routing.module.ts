@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RootComponent } from './core/components/root/root.component';
+import { GamePageComponent } from './game/page/game-page.component';
+import { HomePageComponent } from './home/page/home-page.component';
+import { LevelsPageComponent } from './levels/levels/levels-page.component';
 
 const routes: Routes = [
   {
     path: '', component: RootComponent, children: [
       {
         path: 'home',
-        loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+        component: HomePageComponent,
       },
       {
         path: 'levels',
-        loadChildren: () => import('./levels/levels.module').then(m => m.LevelsModule),
+        component: LevelsPageComponent,
       },
       {
         path: 'game',
-        loadChildren: () => import('./game/game.module').then(m => m.GameModule),
+        component: GamePageComponent,
       },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],

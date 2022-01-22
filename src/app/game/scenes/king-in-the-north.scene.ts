@@ -5,6 +5,7 @@ import { BaseGameScene } from './base-game.scene';
 
 export class KingInTheNorthScene extends BaseGameScene {
   static KEY: string = 'king-in-the-north-scene';
+  static PLUGIN_KEY: string = 'animated-tiles-plugin';
   static NAME: string = 'King in the north';
   static THUMBNAIL: string = 'assets/images/thumbnails/king-in-the-north.png';
   static LEVEL: number = 2;
@@ -19,10 +20,17 @@ export class KingInTheNorthScene extends BaseGameScene {
 
   override preload(): void {
     super.preload();
+
+    this.load.scenePlugin('AnimatedTiles', '../../../assets/plugins/AnimatedTiles.js', 'animatedTiles', KingInTheNorthScene.PLUGIN_KEY);
   }
 
   override create(): void {
     super.create();
+
+    this.startingGold = 550;
+
+    const pluginInstance = this[KingInTheNorthScene.PLUGIN_KEY];
+    pluginInstance.init(this.map);
 
     this.createWaves();
     this.createAnims();
@@ -35,6 +43,5 @@ export class KingInTheNorthScene extends BaseGameScene {
   createWaves(): void {
     this.levelGoldSubject$.next(550);
     this.wavesManager.setMaxWaves(100);
-    this.startNextWave(1);
   }
 }
