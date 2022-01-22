@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import * as Phaser from 'phaser';
-import { BehaviorSubject, Observable, Subject, tap } from "rxjs";
+import { BehaviorSubject, filter, Observable, Subject, Subscription, tap } from "rxjs";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { GamePortal } from "../portals/game-portal.type";
 import { PortalElement } from "../portals/portal-element.enum";
@@ -10,6 +10,9 @@ import { GrasslandScene } from "../scenes/grassland.scene";
 import { PreloadScene } from "../scenes/preload.scene";
 import AnimatedTiles from '../../../assets/plugins/AnimatedTiles.js';
 import { KingInTheNorthScene } from "../scenes/king-in-the-north.scene";
+import { MatDialog } from "@angular/material/dialog";
+import { GameOverDialogComponent } from "./dialogs/game-over/game-over-dialog.component";
+import { GameFinishedDialogComponent } from "./dialogs/game-finished/game-finished-dialog.component";
 
 @Component({
   selector: "app-game-page",
@@ -19,28 +22,39 @@ import { KingInTheNorthScene } from "../scenes/king-in-the-north.scene";
 export class GamePageComponent implements OnInit, OnDestroy {
 
   portalsTDGame: Phaser.Game;
-  config: SceneConfig;
   PortalElement = PortalElement;
   PortalPrice = PortalPrice;
 
   activePortalElement$: Observable<PortalElement>;
   fastForwardState$: Observable<boolean>;
+  pausedState$: Observable<boolean>;
   currentPortal$: Observable<GamePortal>;
+  gameStarted$: Observable<number>;
 
   portalElementSelectedSubject$ = new Subject<PortalElement>();
   portalSelectedSubject$ = new Subject<GamePortal>();
 
-  levelGoldSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
-  levelHealthSubject$: BehaviorSubject<number> = new BehaviorSubject(0);
-  currentWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
-  lastWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
-  levelFastForwardSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  levelGoldSubject$: BehaviorSubject<number>;
+  levelHealthSubject$: BehaviorSubject<number>;
+  currentWaveSubject$: BehaviorSubject<number>;
+  lastWaveSubject$: BehaviorSubject<number>;
+  levelFastForwardSubject$: BehaviorSubject<boolean>;
+  gameOverSubject$: BehaviorSubject<boolean>;
+  gamePausedSubject$: BehaviorSubject<boolean>;
+  startGameSubject$: BehaviorSubject<number>;
+  restartGameSubject$: BehaviorSubject<any>;
 
-  constructor(private route: ActivatedRoute) {
+  sub$ = new Subscription();
+
+  constructor(private route: ActivatedRoute, private dialog: MatDialog, private router: Router) {
   }
 
-  ngOnInit() {
-    this.config = {
+  ngOnInit(): void {
+    console.log('game page init')
+
+    this.setupSubjects();
+
+    const config: SceneConfig = {
       type: Phaser.CANVAS,
       scene: [PreloadScene, GrasslandScene, KingInTheNorthScene],
       physics: {
@@ -71,19 +85,91 @@ export class GamePageComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.portalsTDGame = new Phaser.Game(this.config);
-
     this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable();
     this.fastForwardState$ = this.levelFastForwardSubject$.asObservable();
+    this.pausedState$ = this.gamePausedSubject$.asObservable();
     this.currentPortal$ = this.portalSelectedSubject$.asObservable();
+    this.gameStarted$ = this.startGameSubject$.asObservable();
+
+    this.portalsTDGame = new Phaser.Game(config);
+
+    const onGameOver$ = this.gameOverSubject$.asObservable().pipe(
+      filter(value => value !== null),
+      tap(value => {
+        if (value) {
+          this.handleGameFinished();
+          return;
+        }
+
+        this.handleGameOver();
+      })
+    );
+
+    this.sub$.add(onGameOver$.subscribe());
+
+    this.startLevelScene();
+  }
+
+  restartGame(): void {
+    this.restartGameSubject$.next(true);
+  }
+
+  setupSubjects(): void {
+    this.levelGoldSubject$ = new BehaviorSubject(0);
+    this.levelHealthSubject$ = new BehaviorSubject(0);
+    this.currentWaveSubject$ = new BehaviorSubject(1);
+    this.lastWaveSubject$ = new BehaviorSubject(1);
+    this.levelFastForwardSubject$ = new BehaviorSubject(false);
+    this.gameOverSubject$ = new BehaviorSubject(null);
+    this.gamePausedSubject$ = new BehaviorSubject(null);
+    this.startGameSubject$ = new BehaviorSubject(null);
+    this.restartGameSubject$ = new BehaviorSubject(null);
 
     this.setupWindowSubjects();
-    this.startLevelScene();
+  }
+
+  startGame(): void {
+    this.startGameSubject$.next(1);
+  }
+
+  togglePause(flag: boolean): void {
+    this.gamePausedSubject$.next(flag);
+  }
+
+  handleGameOver(): void {
+    const dialog = this.dialog.open(GameOverDialogComponent, {
+      width: '250px'
+    });
+
+    dialog.afterClosed().subscribe((result) => {
+      if (result?.accepted) {
+        this.restartGame();
+        return;
+      }
+
+      this.router.navigate(['/levels']);
+    });
+  }
+
+  handleGameFinished(): void {
+    const dialog = this.dialog.open(GameFinishedDialogComponent, {
+      width: '250px'
+    });
+
+    dialog.afterClosed().subscribe((result) => {
+      const playerProgress = this.getPlayerProgress();
+      this.savePlayerProgress(playerProgress + 1);
+
+      this.router.navigate(['/levels']);
+    });
   }
 
   startLevelScene(): void {
     const levelKey: string = this.route.snapshot.queryParams.levelKey;
-    this.portalsTDGame.scene.start(levelKey);
+
+    this.portalsTDGame.scene.start(PreloadScene.KEY, {
+      nextLevelKey: levelKey
+    });
   }
 
   onActivatePortal(element: PortalElement, price: PortalPrice): void {
@@ -99,10 +185,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.portalElementSelectedSubject$.next(null);
   }
 
-  ngOnDestroy(): void {
-    this.portalsTDGame.destroy(true);
-  }
-
   portalPurchasable(price: PortalPrice): boolean {
     return this.levelGoldSubject$?.value >= price;
   }
@@ -115,6 +197,15 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.portalSelectedSubject$.next(null);
   }
 
+  private getPlayerProgress(): number {
+    const progress = localStorage.getItem('portalstd_player-progress');
+    return progress !== null ? parseInt(progress) : null;
+  }
+
+  private savePlayerProgress(progress: number): void {
+    localStorage.setItem('portalstd_player-progress', progress.toString());
+  }
+
   private setupWindowSubjects(): void {
     (window as any).portalsTD = {
       ...(window as any).portalsTD,
@@ -125,6 +216,20 @@ export class GamePageComponent implements OnInit, OnDestroy {
       lastWaveSubject$: this.lastWaveSubject$,
       levelFastForwardSubject$: this.levelFastForwardSubject$,
       portalSelectedSubject$: this.portalSelectedSubject$,
+      gameOverSubject$: this.gameOverSubject$,
+      gamePausedSubject$: this.gamePausedSubject$,
+      startGameSubject$: this.startGameSubject$,
+      restartGameSubject$: this.restartGameSubject$,
     };
+  }
+
+  onExitGame(): void {
+    this.portalsTDGame.cache.destroy();
+    this.router.navigate(['/levels']);
+  }
+
+  ngOnDestroy(): void {
+    this.sub$.unsubscribe();
+    delete (window as any).portalsTD;
   }
 }

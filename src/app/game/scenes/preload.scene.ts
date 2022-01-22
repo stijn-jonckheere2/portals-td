@@ -27,6 +27,9 @@ import { SnowballProjectile } from "../projectiles/snowball/snowball.projectile"
 import { BaseScene } from "./base.scene";
 
 export class PreloadScene extends BaseScene {
+  static KEY: string = 'preload-scene';
+
+  nextLevelKey: string;
 
   constructor(config: SceneConfig) {
     super({
@@ -35,9 +38,23 @@ export class PreloadScene extends BaseScene {
     });
   }
 
+  init(data: any): void {
+    this.nextLevelKey = data.nextLevelKey;
+  }
+
+  override create(): void {
+    super.create();
+
+    if (this.nextLevelKey) {
+      console.log('starting level', this.nextLevelKey)
+      this.scene.start(this.nextLevelKey);
+    }
+  }
+
   override preload(): void {
     super.preload();
 
+    console.log('preloaddd')
     this.preloadEffects();
     this.preloadProjectiles();
     this.preloadPortals();

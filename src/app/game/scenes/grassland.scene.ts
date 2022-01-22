@@ -24,6 +24,8 @@ export class GrasslandScene extends BaseGameScene {
   override create(): void {
     super.create();
 
+    this.startingGold = 550;
+
     this.createWaves();
     this.createAnims();
   }
@@ -33,8 +35,7 @@ export class GrasslandScene extends BaseGameScene {
   }
 
   createWaves(): void {
-    this.levelGoldSubject$.next(550);
+    this.levelGoldSubject$.next(this.startingGold);
     this.wavesManager.setMaxWaves(100);
-    this.startNextWave(1);
   }
 }

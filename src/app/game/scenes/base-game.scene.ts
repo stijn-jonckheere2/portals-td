@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, Subject, Subscription, tap } from "rxjs";
+import { BehaviorSubject, filter, Observable, retryWhen, Subject, Subscription, tap } from "rxjs";
 import { BaseEnemy } from "../enemies/base/base.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
@@ -21,6 +21,10 @@ export abstract class BaseGameScene extends BaseScene {
 
   portalElementSelectedSubject$: Subject<PortalElement>;
   portalSelectedSubject$: BehaviorSubject<BasePortal>;
+  gameOverSubject$: BehaviorSubject<boolean>;
+  gamePausedSubject$: BehaviorSubject<boolean>;
+  startGameSubject$: BehaviorSubject<number>;
+  restartGameSubject$: BehaviorSubject<boolean>;
 
   activePortalElement$: Observable<PortalElement>;
   sub$ = new Subscription();
@@ -50,7 +54,6 @@ export abstract class BaseGameScene extends BaseScene {
     this.createLayers();
     this.createPoints();
 
-    this.startWaveInterval();
     this.events.on('destroy', () => this.onDestroy());
   }
 
@@ -81,8 +84,12 @@ export abstract class BaseGameScene extends BaseScene {
 
     this.pathLayer = pathLayer;
 
-    const animatedTilesPlugin = (this.scene.systems as any).animatedTiles;
-    animatedTilesPlugin.init(this.map);
+    try {
+      const animatedTilesPlugin = (this.scene.systems as any).animatedTiles;
+      animatedTilesPlugin.init(this.map);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   createPoints(): void {
@@ -209,11 +216,30 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   checkCurrentWave(): void {
-    if (this.enemies?.length === 0) {
-      this.earnGold(this.wavesManager.goldReward);
-      this.wavesManager.startNextWave();
-      this.setupEnemySpawners();
+    if (this.enemies?.length > 0) {
+      return;
     }
+
+    const remainingHealth = this.levelHealthSubject$.value;
+
+    // No more health, game over (loss)
+    if (remainingHealth <= 0) {
+      this.scene.pause();
+      this.gameOverSubject$.next(false);
+      return;
+    }
+
+    // Final round finished, game over (win)
+    if (this.wavesManager.currentWave === this.wavesManager.maxWaves) {
+      this.scene.pause();
+      this.gameOverSubject$.next(true);
+      return;
+    }
+
+    // Continue to the next wave
+    this.earnGold(this.wavesManager.goldReward);
+    this.wavesManager.startNextWave();
+    this.setupEnemySpawners();
   }
 
   startNextWave(requestedWave?: number): void {
@@ -267,6 +293,10 @@ export abstract class BaseGameScene extends BaseScene {
   createUIObservables(): void {
     this.portalElementSelectedSubject$ = (window as any).portalsTD.portalElementSelectedSubject$;
     this.portalSelectedSubject$ = (window as any).portalsTD.portalSelectedSubject$;
+    this.gameOverSubject$ = (window as any).portalsTD.gameOverSubject$;
+    this.gamePausedSubject$ = (window as any).portalsTD.gamePausedSubject$;
+    this.startGameSubject$ = (window as any).portalsTD.startGameSubject$;
+    this.restartGameSubject$ = (window as any).portalsTD.restartGameSubject$;
 
     this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable().pipe(
       tap((element: PortalElement) => {
@@ -322,8 +352,57 @@ export abstract class BaseGameScene extends BaseScene {
       })
     );
 
+    const startGame$ = this.startGameSubject$.pipe(
+      filter(value => value !== null),
+      tap(value => {
+        if (value) {
+          this.startNextWave(value);
+          this.startWaveInterval();
+        }
+      })
+    );
+
+    const gamePaused$ = this.gamePausedSubject$.pipe(
+      filter(value => value !== null),
+      tap(value => {
+        // Continue the game
+        if (value) {
+          this.scene.pause();
+          return;
+        }
+
+        // Pause the game
+        this.scene.resume();
+      })
+    );
+
+    const restartGame$ = this.restartGameSubject$.pipe(
+      filter(value => value !== null),
+      tap(value => {
+        if (!value) {
+          return;
+        }
+
+        this.enemies.forEach(enemy => {
+          enemy.destroyEnemy();
+        });
+
+        this.activePortals.forEach(portal => {
+          portal.destroyEnemy();
+        });
+
+        this.enemies = [];
+        this.activePortals = [];
+        this.wavesManager.resetWaves();
+        this.restartGame();
+      })
+    );
+
     this.sub$.add(this.activePortalElement$.subscribe());
     this.sub$.add(fastForward$.subscribe());
+    this.sub$.add(gamePaused$.subscribe());
+    this.sub$.add(startGame$.subscribe());
+    this.sub$.add(restartGame$.subscribe());
   }
 
   setTimeScale(scale: number): void {
@@ -346,8 +425,8 @@ export abstract class BaseGameScene extends BaseScene {
   }
 
   onDestroy(): void {
+    this.waveTimer?.remove(false);
     this.sub$.unsubscribe();
-    this.waveTimer.remove(false);
   }
 }
 

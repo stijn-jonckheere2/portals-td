@@ -49,15 +49,30 @@
 
   </div>
   <div class="game-actions">
-    <button mat-fab color="accent" *ngIf="fastForwardState$ | async" (click)="toggleFastForward(false)">
-      <mat-icon>fast_forward</mat-icon>
-    </button>
-
-    <button mat-fab color="accent" *ngIf="!(fastForwardState$ | async)" (click)="toggleFastForward(true)">
+    <button mat-fab color="primary" *ngIf="!(gameStarted$ | async)" (click)="startGame()">
       <mat-icon>play_arrow</mat-icon>
     </button>
 
-    <button mat-fab color="accent" [routerLink]="['/levels']">
+    <ng-container *ngIf="gameStarted$ | async">
+      <button mat-fab color="accent" *ngIf="!(pausedState$ | async)" (click)="togglePause(true)">
+        <mat-icon>pause</mat-icon>
+      </button>
+
+      <button mat-fab color="primary" *ngIf="pausedState$ | async" (click)="togglePause(false)">
+        <mat-icon>pause</mat-icon>
+      </button>
+
+      <button mat-fab color="primary" *ngIf="fastForwardState$ | async" (click)="toggleFastForward(false)">
+        <mat-icon>fast_forward</mat-icon>
+      </button>
+
+      <button mat-fab color="accent" *ngIf="!(fastForwardState$ | async)" (click)="toggleFastForward(true)">
+        <mat-icon>fast_forward</mat-icon>
+      </button>
+    </ng-container>
+
+
+    <button mat-fab color="accent" (click)="onExitGame()">
       <mat-icon>exit_to_app</mat-icon>
     </button>
 

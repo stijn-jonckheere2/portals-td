@@ -18,6 +18,8 @@ import { SpiritEnemy } from '../enemies/spirit/spirit.enemy';
 
 export class WavesManager {
   private enemyVarietyFactor = 0.30; // lower means more variety
+  private startingWave: number;
+
   currentWave: number = 1;
   maxWaves: number;
 
@@ -57,6 +59,7 @@ export class WavesManager {
   constructor(maxWaves: number, currentWave = 1) {
     this.maxWaves = maxWaves;
     this.currentWave = currentWave;
+    this.startingWave = currentWave;
   }
 
   init(): void {

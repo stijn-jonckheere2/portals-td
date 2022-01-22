@@ -1,13 +1,13 @@
 import * as Phaser from 'phaser';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { BaseEnemy } from '../enemies/base/base.enemy';
 import { SceneConfig } from '../interfaces/scene-config.interface';
 import { TilesetConfig } from '../interfaces/tileset-config.interface';
 import { WavesManager } from '../waves/waves.manager';
 
 export abstract class BaseScene extends Phaser.Scene {
-  private startingGold: number = 400;
-  private startingHealth: number = 100;
+  startingGold: number = 400;
+  startingHealth: number = 100;
 
   tilesetConfig: TilesetConfig;
   map: Phaser.Tilemaps.Tilemap;
@@ -53,6 +53,11 @@ export abstract class BaseScene extends Phaser.Scene {
   takeDamage(damage: number): void {
     const totalHealth = this.levelHealthSubject$.value - damage;
     this.levelHealthSubject$.next(totalHealth);
+  }
+
+  restartGame(): void {
+    this.levelHealthSubject$.next(this.startingHealth);
+    this.levelGoldSubject$.next(this.startingGold);
   }
 
   private setupWindowSubjects(): void {

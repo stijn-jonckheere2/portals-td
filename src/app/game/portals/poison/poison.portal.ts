@@ -115,13 +115,13 @@ export class PoisonPortal extends BasePortal {
   }
 
   initEvents(): void {
-    this.scene.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
-    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene?.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
+    this.scene?.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
   stopEvents(): void {
-    this.scene.events.off(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
-    this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene?.events.off(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
+    this.scene?.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
   destroyEnemy(): void {
