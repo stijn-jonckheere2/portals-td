@@ -3,17 +3,17 @@ import { SceneConfig } from '../interfaces/scene-config.interface';
 import { initExplosionAnim } from '../anims/explosion.anim';
 import { BaseGameScene } from './base-game.scene';
 
-export class GrasslandScene extends BaseGameScene {
-  static KEY: string = 'grassland-scene';
-  static NAME: string = 'Grasslands';
-  static THUMBNAIL: string = 'assets/images/thumbnails/grasslands.png';
-  static LEVEL: number = 1;
+export class KingInTheNorthScene extends BaseGameScene {
+  static KEY: string = 'king-in-the-north-scene';
+  static NAME: string = 'King in the north';
+  static THUMBNAIL: string = 'assets/images/thumbnails/king-in-the-north.png';
+  static LEVEL: number = 2;
 
   constructor(config: SceneConfig) {
     super({
       ...config,
-      key: GrasslandScene.KEY,
-      tilesetConfig: tilesetsConfig.grassland,
+      key: KingInTheNorthScene.KEY,
+      tilesetConfig: tilesetsConfig.kingInTheNorth,
     });
   }
 

@@ -16,8 +16,7 @@ h3 {
 }
 
 h1 {
-  margin: 0;
-  margin-bottom: 16px;
+  margin: 64px 0;
   text-align: center;
 }
 
@@ -31,14 +30,16 @@ h1 {
 
 .levels {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 32px;
+
   max-width: 1280px;
   margin: 0 auto;
 }
 
 .level {
   background-color: rgba(0, 0, 0, 0.3);
-  border: 2px solid mixins.primaryColor(600);
   border-radius: 26px;
   padding: 0 12px;
 
@@ -46,7 +47,7 @@ h1 {
     margin: 0;
     font-size: 20px;
     line-height: 20px;
-    padding: 12px 0;
+    padding: 24px 0;
   }
 
   &-image {
@@ -60,6 +61,19 @@ h1 {
 
   button {
     display: block;
-    margin: 16px auto;
+    margin: 24px auto;
+  }
+
+  p {
+    margin: 24px auto;
+    color: lightgrey;
+    text-align: center;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 11px 0;
+  }
+
+  &.active {
+    border: 2px solid mixins.primaryColor(600);
   }
 }

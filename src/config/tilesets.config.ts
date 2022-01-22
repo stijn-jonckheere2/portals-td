@@ -7,5 +7,12 @@ export const tilesetsConfig: { [key: string]: TilesetConfig } = {
     url: 'assets/tilesets/rpg_nature_tileset.png', // url to the tileset asset
     mapKey: 'grassland-map',
     mapUrl: 'assets/maps/grassland.json',
-  }
+  },
+  kingInTheNorth: {
+    key: 'tiles-ice', // choose yourself, used by phaser
+    id: 'rpg_ice_tileset', // must match the name of the tileset in Tiled
+    url: 'assets/tilesets/rpg_ice_tileset.png', // url to the tileset asset
+    mapKey: 'king-in-the-north-map',
+    mapUrl: 'assets/maps/king-in-the-north.json',
+  },
 }

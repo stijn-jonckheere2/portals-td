@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { BaseGameScene } from "src/app/game/scenes/base-game.scene";
 import { GrasslandScene } from "src/app/game/scenes/grassland.scene";
+import { KingInTheNorthScene } from "src/app/game/scenes/king-in-the-north.scene";
 
 @Component({
   selector: "app-levels-page",
@@ -20,6 +21,7 @@ export class LevelsPageComponent implements OnInit {
   ngOnInit() {
     this.levels = [
       GrasslandScene,
+      KingInTheNorthScene,
     ];
 
     this.getPlayerProgress();

@@ -3,15 +3,17 @@
   <h1>Choose a level</h1>
 
   <div class="levels">
-    <div class="level" *ngFor="let level of levels">
+    <div class="level" *ngFor="let level of levels" [class.active]="level.LEVEL <= playerProgress">
       <h3>{{ level.NAME }}</h3>
       <div class="level-image" [style.background-image]="'url(' + level.THUMBNAIL + ')'"></div>
 
       <button mat-raised-button color="primary"
-        [disabled]="level.LEVEL > playerProgress"
+        *ngIf="level.LEVEL <= playerProgress"
         (click)="onLevelSelected(level.KEY)">
         Play
       </button>
+
+      <p *ngIf="level.LEVEL > playerProgress">Unlocks at level {{ level.LEVEL }}</p>
     </div>
   </div>
 

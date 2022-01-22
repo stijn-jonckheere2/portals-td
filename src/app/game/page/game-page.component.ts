@@ -9,6 +9,7 @@ import { PortalPrice } from "../portals/portal-price.enum";
 import { GrasslandScene } from "../scenes/grassland.scene";
 import { PreloadScene } from "../scenes/preload.scene";
 import AnimatedTiles from '../../../assets/plugins/AnimatedTiles.js';
+import { KingInTheNorthScene } from "../scenes/king-in-the-north.scene";
 
 @Component({
   selector: "app-game-page",
@@ -41,7 +42,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.config = {
       type: Phaser.CANVAS,
-      scene: [PreloadScene, GrasslandScene],
+      scene: [PreloadScene, GrasslandScene, KingInTheNorthScene],
       physics: {
         default: 'arcade',
         arcade: {
