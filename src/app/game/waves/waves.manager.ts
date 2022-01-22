@@ -18,9 +18,10 @@ import { SpiritEnemy } from '../enemies/spirit/spirit.enemy';
 
 export class WavesManager {
   private enemyVarietyFactor = 0.30; // lower means more variety
-  private lateGameMultiplier = 1.025; // lower means more variety
+  private lateGameMultiplier = 1.021;
   private lateGameStart = 70;
   private startingWave: number;
+  private rampingWaveHealthPool: number = null;
 
   currentWave: number = 1;
   maxWaves: number;
@@ -79,9 +80,10 @@ export class WavesManager {
 
     let waveHealthPool = this.waveHealthPool;
 
-    // Ramp exponentially starting from a late wave
+    // Starting in late game, wave health starts ramping up based on the previous rounds' health pool
     if (this.currentWave > this.lateGameStart) {
-      waveHealthPool *= this.lateGameMultiplier;
+      this.calculateRampingHealthPoolForWave(this.currentWave);
+      waveHealthPool = this.rampingWaveHealthPool;
     }
 
     let remainingHealthPool: number = waveHealthPool;
@@ -128,7 +130,7 @@ export class WavesManager {
     });
 
     console.log(`%cWave       -- ${this.currentWave}`, "color: cyan; padding: 4px 12px;");
-    console.log(`%cWave HP    -- ${this.waveHealthPool}`, "color: orange; padding: 4px 12px;");
+    console.log(`%cWave HP    -- ${waveHealthPool}`, "color: orange; padding: 4px 12px;");
     console.log(`%cLeftover   -- ${leftOverHealthPool}`, "color: lightgreen; padding: 4px 12px;");
     console.log(`%cGold       -- ${this.goldReward}`, "color: yellow; padding: 4px 12px;");
     console.log(`%cSpawn      -- ${this.spawnRate}`, "color: pink; padding: 4px 12px;");
@@ -140,14 +142,26 @@ export class WavesManager {
 
   startNextWave(requestedWave?: number): void {
     if (requestedWave) {
+      this.startingWave = requestedWave;
       this.currentWave = requestedWave;
       this.currentWaveSubject$.next(this.currentWave);
+      this.calculateRampingHealthPoolForWave(requestedWave);
       return;
     }
 
     if (this.currentWave < this.maxWaves) {
       this.currentWave++;
       this.currentWaveSubject$.next(this.currentWave);
+    }
+  }
+
+  calculateRampingHealthPoolForWave(requestedWave: number): void {
+    let startingWave: number = this.lateGameStart;
+    this.rampingWaveHealthPool = this.calculateHealthPoolForWave(this.lateGameStart);
+
+    while (startingWave < requestedWave) {
+      this.rampingWaveHealthPool *= this.lateGameMultiplier;
+      startingWave++;
     }
   }
 
@@ -165,7 +179,7 @@ export class WavesManager {
     let healthPoolForCurrentWave: number;
 
     const x = wave;
-    const x0 = 60; // lowest HP pool per round
+    const x0 = 50; // lowest HP pool per round
     const L = 30000; // highest HP pool per round
     const k = 0.08;
 

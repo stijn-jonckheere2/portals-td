@@ -40,10 +40,45 @@ export class LarvaEnemy extends BaseEnemy {
     super.update(time, delta);
   }
 
-  override destroyEnemy(receiveGold?: boolean): void {
-    const gameScene = this.baseScene as BaseGameScene;
-    const currentDestinationIndex: number = this.nextDestinationIndex - 1;
+  override checkCurrentMovement(): void {
+    if ((this.body.velocity.x === 0 && this.body.velocity.y === 0) || !this.currentDestination) {
+      return;
+    }
 
+    const distanceToDestination = Phaser.Math.Distance.Between(
+      this.body.center.x,
+      this.body.center.y,
+      this.currentDestination.x,
+      this.currentDestination.y,
+    );
+
+    if (distanceToDestination <= 10) {
+      this.body.reset(this.currentDestination.x, this.currentDestination.y);
+
+      if (this.nextDestinationIndex) {
+        this.setNextDestination();
+      } else {
+        this.baseScene.takeDamage(this.damage);
+        this.destroyEnemy(false, false);
+      }
+    }
+  }
+
+  override destroyEnemy(receiveGold?: boolean, spawnButterFlies = true): void {
+    const gameScene = this.baseScene as BaseGameScene;
+
+    if (!spawnButterFlies) {
+      // If the larva reaches the end of the level
+      // Don't spawn butterflies, just deal their damage
+      for (let i = 0; i < 9; i++) {
+        this.baseScene.takeDamage(this.damage);
+      }
+
+      super.destroyEnemy(receiveGold);
+      return;
+    }
+
+    const currentDestinationIndex: number = this.nextDestinationIndex - 1;
     const { x, y } = this;
 
     gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)

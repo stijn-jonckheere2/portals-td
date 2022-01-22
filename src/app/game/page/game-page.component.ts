@@ -117,7 +117,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   startGame(): void {
-    this.startGameSubject$.next(1);
+    this.startGameSubject$.next(100);
+    this.levelHealthSubject$.next(100000);
   }
 
   togglePause(flag: boolean): void {
