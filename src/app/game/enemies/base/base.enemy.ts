@@ -242,12 +242,15 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   destroyEnemy(receiveGold = true): void {
     this.clearAilments();
     this.stopEvents();
-    this.baseScene.enemies = this.baseScene.enemies.filter(e => e.id !== this.id);
+
+    if (this.baseScene && this.baseScene.enemies) {
+      this.baseScene.enemies = this.baseScene.enemies.filter(e => e.id !== this.id);
+    }
 
     if (receiveGold) {
       this.baseScene?.earnGold(this.gold);
     }
 
-    this.destroy();
+    super.destroy();
   }
 }
