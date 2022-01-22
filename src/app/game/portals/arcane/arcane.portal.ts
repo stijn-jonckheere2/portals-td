@@ -61,7 +61,6 @@ export class ArcanePortal extends BasePortal {
   }
 
   shootNearestTarget(): void {
-    console.log('arcane firing speed', this.firingSpeed);
     const closest = this.getClosestEnemy();
 
     if (!closest || !(closest as BaseEnemy).body) {

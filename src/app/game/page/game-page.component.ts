@@ -49,8 +49,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('game page init')
-
     this.setupSubjects();
 
     const config: SceneConfig = {
