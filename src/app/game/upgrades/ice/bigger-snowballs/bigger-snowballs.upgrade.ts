@@ -4,7 +4,7 @@ import { BaseUpgrade } from "../../base/base.upgrade";
 export class BiggerSnowballsUpgrade extends BaseUpgrade {
   static UPGRADE_NAME: string = 'Bigger snowballs';
   static UPGRADE_DESCRIPTION: string = 'Snow orbs now explode on impact dealing damage and slowing to nearby enemies';
-  static UPGRADE_COST: number = 1800;
+  static UPGRADE_COST: number = 1750;
   static override UPGRADE_LEVEL: number = 1;
 
   override parent: IcePortal;

@@ -5,7 +5,6 @@ import { BaseProjectile } from '../base/base.projectile';
 import { ExplosionSnowEffect } from '../../effects/explosion/explosion-snow.effect';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { AilmentType } from '../../ailments/ailment-type.enum';
-import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 
 export class SnowballProjectile extends BaseProjectile {
   static SPRITE_KEY = 'orbs';
@@ -67,13 +66,13 @@ export class SnowballProjectile extends BaseProjectile {
     });
 
     closeEnemies.some((enemy, i) => {
-      if (this.biggerBalls && i < 4) {
+      if (this.biggerBalls && i < 5) {
         // Don't damage the AoE snowballs + slow 4 targets
         this.damageAndSlowEnemy(enemy, 0);
         return false;
       }
 
-      if (this.massiveBalls && i < 8) {
+      if (this.massiveBalls && i < 10) {
         // Don't damage the AoE snowballs + slow 8 targets
         this.damageAndSlowEnemy(enemy, 0);
         return false;
