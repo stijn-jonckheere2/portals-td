@@ -1,0 +1,19 @@
+
+<div class="level-wrapper">
+  <h1>Choose a level</h1>
+
+  <div class="levels">
+    <div class="level" *ngFor="let level of levels">
+      <h3>{{ level.NAME }}</h3>
+      <div class="level-image" [style.background-image]="'url(' + level.THUMBNAIL + ')'"></div>
+
+      <button mat-raised-button color="primary"
+        [disabled]="level.LEVEL > playerProgress"
+        (click)="onLevelSelected(level.KEY)">
+        Play
+      </button>
+    </div>
+  </div>
+
+</div>
+

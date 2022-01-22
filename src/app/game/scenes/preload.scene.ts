@@ -169,10 +169,4 @@ export class PreloadScene extends BaseScene {
       frameHeight: 50
     });
   }
-
-  override create(): void {
-    super.create();
-
-    this.scene.start(GrasslandScene.KEY);
-  }
 }

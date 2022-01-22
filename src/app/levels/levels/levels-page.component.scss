@@ -1,0 +1,62 @@
+@use 'mixins';
+
+:host {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 32px;
+}
+
+h3 {
+  margin: 0;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.mat-raised-button {
+  color: white;
+}
+
+.level-wrapper {
+  padding: 0 32px;
+}
+
+.levels {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.level {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid mixins.primaryColor(600);
+  border-radius: 26px;
+  padding: 0 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 12px 0;
+  }
+
+  &-image {
+    height: 200px;
+    width: 400px;
+    border-radius: 6px;
+  }
+
+  button {
+    display: block;
+    margin: 16px auto;
+  }
+}

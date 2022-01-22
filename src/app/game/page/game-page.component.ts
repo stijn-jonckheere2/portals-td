@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import * as Phaser from 'phaser';
 import { BehaviorSubject, Observable, Subject, tap } from "rxjs";
 import { SceneConfig } from "../interfaces/scene-config.interface";
@@ -34,7 +35,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   lastWaveSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
   levelFastForwardSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -67,6 +68,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.currentPortal$ = this.portalSelectedSubject$.asObservable();
 
     this.setupWindowSubjects();
+    this.startLevelScene();
+  }
+
+  startLevelScene(): void {
+    const levelKey: string = this.route.snapshot.queryParams.levelKey;
+    this.portalsTDGame.scene.start(levelKey);
   }
 
   onActivatePortal(element: PortalElement, price: PortalPrice): void {

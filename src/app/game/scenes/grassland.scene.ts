@@ -5,6 +5,9 @@ import { BaseGameScene } from './base-game.scene';
 
 export class GrasslandScene extends BaseGameScene {
   static KEY: string = 'grassland-scene';
+  static NAME: string = 'Grasslands';
+  static THUMBNAIL: string = 'assets/images/thumbnails/grasslands.png';
+  static LEVEL: number = 1;
 
   constructor(config: SceneConfig) {
     super({
