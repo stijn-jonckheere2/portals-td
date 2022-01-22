@@ -18,7 +18,7 @@ import { SpiritEnemy } from '../enemies/spirit/spirit.enemy';
 
 export class WavesManager {
   private enemyVarietyFactor = 0.30; // lower means more variety
-  private lateGameMultiplier = 1.021;
+  private lateGameMultiplier = 1.029;
   private lateGameStart = 70;
   private startingWave: number;
   private rampingWaveHealthPool: number = null;
