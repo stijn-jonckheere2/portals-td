@@ -18,7 +18,7 @@ import { SpiritEnemy } from '../enemies/spirit/spirit.enemy';
 
 export class WavesManager {
   private enemyVarietyFactor = 0.30; // lower means more variety
-  private lateGameMultiplier = 1.032; // lower means more variety
+  private lateGameMultiplier = 1.025; // lower means more variety
   private lateGameStart = 70;
   private startingWave: number;
 
@@ -78,14 +78,15 @@ export class WavesManager {
     const waveEnemyPool: (typeof BaseEnemy)[] = orderBy(this.getCurrentEnemyPool(), ['MIN_WAVE'], ['desc']);
 
     let waveHealthPool = this.waveHealthPool;
+
+    // Ramp exponentially starting from a late wave
+    if (this.currentWave > this.lateGameStart) {
+      waveHealthPool *= this.lateGameMultiplier;
+    }
+
     let remainingHealthPool: number = waveHealthPool;
     let leftOverHealthPool: number = 0;
     let waveEnemies: any = {};
-
-    // Ramp exponentially starting from wave 70
-    if(this.currentWave > this.lateGameStart) {
-      waveHealthPool *= this.lateGameMultiplier;
-    }
 
     waveEnemyPool.some((enemy: (typeof BaseEnemy), index: number) => {
       let enemiesThatFit: number = Math.floor(remainingHealthPool / enemy.HEALTH);
@@ -164,8 +165,8 @@ export class WavesManager {
     let healthPoolForCurrentWave: number;
 
     const x = wave;
-    const x0 = 50; // lowest HP pool per round
-    const L = 25000; // highest HP pool per round
+    const x0 = 60; // lowest HP pool per round
+    const L = 30000; // highest HP pool per round
     const k = 0.08;
 
     const pow = (-k * x) - (-k * x0); // -k(x - x0)
