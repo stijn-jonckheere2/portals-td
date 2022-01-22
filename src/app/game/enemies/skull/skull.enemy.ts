@@ -10,7 +10,7 @@ export class SkullEnemy extends BaseEnemy {
   static override MAX_WAVE: number = EnemyDifficultySettings[SkullEnemy.name].maxWave;
   static override HEALTH: number = BaseEnemy.BASE_HEALTH * EnemyDifficultySettings[SkullEnemy.name].healthEquivalent;
   static override DISTANCE_TO_SIBLING: number = EnemyDifficultySettings[SkullEnemy.name].distanceToSibling;
-  static override SCALE: number = 3;
+  static override SCALE: number = 2;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, SkullEnemy.SPRITE_KEY);

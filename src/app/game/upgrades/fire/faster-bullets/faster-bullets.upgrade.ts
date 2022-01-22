@@ -3,7 +3,7 @@ import { BaseUpgrade } from "../../base/base.upgrade";
 
 export class FasterBulletsUpgrade extends BaseUpgrade {
   static UPGRADE_NAME: string = 'Faster bullets';
-  static UPGRADE_DESCRIPTION: string = 'More fire orbs are always better';
+  static UPGRADE_DESCRIPTION: string = 'Shoot faster and increase damage per orb';
   static UPGRADE_COST: number = 1600;
 
   override parent: FirePortal;

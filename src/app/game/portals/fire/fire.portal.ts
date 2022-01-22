@@ -6,6 +6,7 @@ import { PortalPrice } from '../portal-price.enum';
 import { FirePortalUpgrades } from '../../upgrades/fire/fire-portal-upgrades.type';
 import { BasePortal } from '../base/base.portal';
 import { ExplosiveBulletsUpgrade } from '../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade';
+import { FasterBulletsUpgrade } from '../../upgrades/fire/faster-bullets/faster-bullets.upgrade';
 
 export class FirePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.FIRE;
@@ -83,7 +84,12 @@ export class FirePortal extends BasePortal {
   addUpgrade(upgrade: FirePortalUpgrades): void {
     this.upgrade();
 
+    if (upgrade instanceof FasterBulletsUpgrade) {
+      this.fireballs.upgradedDamage = 50;
+    }
+
     if (upgrade instanceof ExplosiveBulletsUpgrade) {
+      this.fireballs.upgradedDamage = 70;
       this.fireballs.enableExplosiveProjectiles();
     }
   }

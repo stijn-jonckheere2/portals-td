@@ -53,11 +53,6 @@ export class SnowballProjectile extends BaseProjectile {
   onHitTarget(target: BaseEnemy): void {
     this.damageAndSlowEnemy(target, this.damage);
 
-    if (!this.biggerBalls && !this.massiveBalls) {
-      this.destroyEnemy();
-      return;
-    }
-
     const aliveEnemies = this.baseScene.enemies.filter(enemy => !enemy.isDead);
 
     const closeEnemies = aliveEnemies.filter(enemy => {
@@ -73,15 +68,20 @@ export class SnowballProjectile extends BaseProjectile {
 
     closeEnemies.some((enemy, i) => {
       if (this.biggerBalls && i < 4) {
-        // Don't damage the AoE snowballs
+        // Don't damage the AoE snowballs + slow 4 targets
         this.damageAndSlowEnemy(enemy, 0);
         return false;
       }
 
       if (this.massiveBalls && i < 8) {
-        // Don't damage the AoE snowballs
+        // Don't damage the AoE snowballs + slow 8 targets
         this.damageAndSlowEnemy(enemy, 0);
         return false;
+      }
+
+      if (i < 2) {
+        // Don't damage the AoE snowballs + slow 2 targets
+        this.damageAndSlowEnemy(enemy, 0);
       }
 
       return true;

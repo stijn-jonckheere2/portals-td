@@ -4,7 +4,7 @@ import { BaseUpgrade } from "../../base/base.upgrade";
 export class ArcaneBarrageUpgrade extends BaseUpgrade {
   static UPGRADE_NAME: string = 'Arcane barrage';
   static UPGRADE_DESCRIPTION: string = 'Portal barrages the enemy with even faster missiles';
-  static UPGRADE_COST: number = 1350;
+  static UPGRADE_COST: number = 1500;
   static override UPGRADE_LEVEL: number = 1;
 
   override parent: ArcanePortal;

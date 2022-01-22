@@ -51,7 +51,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   ButterflyEnemy: {
     minWave: 0,
     maxWave: 0,
-    healthEquivalent: 0.5,
+    healthEquivalent: 1.5,
     distanceToSibling: 200,
     speed: 200,
   },
@@ -132,7 +132,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   DragonEnemy: {
     minWave: 87,
     maxWave: 1000,
-    healthEquivalent: 35,
+    healthEquivalent: 39,
     distanceToSibling: 500,
     speed: 145,
   },
@@ -141,7 +141,7 @@ export const EnemyDifficultySettings: { [key: string]: EnemyDifficultySetting } 
   FlameEnemy: {
     minWave: 90,
     maxWave: 1000,
-    healthEquivalent: 14,
+    healthEquivalent: 23,
     distanceToSibling: 400,
     speed: 275,
   },

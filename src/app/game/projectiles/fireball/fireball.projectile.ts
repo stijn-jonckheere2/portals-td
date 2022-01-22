@@ -23,7 +23,7 @@ export class FireballProjectile extends BaseProjectile {
 
     this.speed = 400;
     this.maxDistance = 400;
-    this.damage = 50;
+    this.damage = 35;
 
     this.setFrame(OrbElement.FIRE);
     this.setBodySize(16, 16);

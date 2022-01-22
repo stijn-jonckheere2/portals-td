@@ -5,6 +5,7 @@ import { FireballProjectile } from './fireball.projectile';
 
 export class FireballGroup extends Phaser.Physics.Arcade.Group {
 
+  upgradedDamage: number = null;
   explosive: boolean = false;
 
   constructor(scene: BaseScene) {
@@ -31,6 +32,8 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
       return;
     }
 
+    const upgraded: boolean = this.upgradedDamage !== null;
+    projectile.damage = upgraded ? this.upgradedDamage : projectile.damage;
     projectile.explosive = this.explosive;
 
     if (projectile) {

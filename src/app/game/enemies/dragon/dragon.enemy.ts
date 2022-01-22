@@ -9,6 +9,7 @@ export class DragonEnemy extends BaseEnemy {
   static override MIN_WAVE: number = EnemyDifficultySettings[DragonEnemy.name].minWave;
   static override MAX_WAVE: number = EnemyDifficultySettings[DragonEnemy.name].maxWave;
   static override HEALTH: number = BaseEnemy.BASE_HEALTH * EnemyDifficultySettings[DragonEnemy.name].healthEquivalent;
+  static override SCALE: number = 4.5;
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, DragonEnemy.SPRITE_KEY);
@@ -25,7 +26,6 @@ export class DragonEnemy extends BaseEnemy {
     this.currentHealth = DragonEnemy.HEALTH;
     this.gold = 16;
     this.baseSpeed = EnemyDifficultySettings[DragonEnemy.name].speed;
-    this.setScale(3.5);
   }
 
   override preUpdate(time, delta): void {
