@@ -1,3 +1,4 @@
+import { assetsConfig } from "src/config/assets.config";
 import { FrozenAilment } from "../ailments/frozen/frozen.ailment";
 import { ArcaneExplosionEffect } from "../effects/explosion/explosion-arcane.effect";
 import { ExplosionSnowEffect } from "../effects/explosion/explosion-snow.effect";
@@ -20,12 +21,10 @@ import { SlimeEnemy } from "../enemies/slime/slime.enemy";
 import { SpiritEnemy } from "../enemies/spirit/spirit.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArrowDown } from "../other/arrow.sprite";
-import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { BasePortal } from "../portals/base/base.portal";
 import { FireballProjectile } from "../projectiles/fireball/fireball.projectile";
 import { SnowballProjectile } from "../projectiles/snowball/snowball.projectile";
 import { BaseScene } from "./base.scene";
-import { GrasslandScene } from "./grassland.scene";
 
 export class PreloadScene extends BaseScene {
 
@@ -39,6 +38,20 @@ export class PreloadScene extends BaseScene {
   override preload(): void {
     super.preload();
 
+    this.preloadEffects();
+    this.preloadProjectiles();
+    this.preloadPortals();
+    this.preloadEnemies();
+
+    assetsConfig.forEach(config => {
+      this.load.spritesheet(config.key, config.url, {
+        frameWidth: config.frameWidth,
+        frameHeight: config.frameHeight,
+      });
+    });
+  }
+
+  private preloadEffects(): void {
     this.load.spritesheet(ExplosionEffect.SPRITE_KEY, ExplosionEffect.SPRITE_URL, {
       frameWidth: 32,
       frameHeight: 32
@@ -54,6 +67,47 @@ export class PreloadScene extends BaseScene {
       frameHeight: 32
     });
 
+    this.load.spritesheet(FrozenAilment.SPRITE_KEY, FrozenAilment.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(ArrowDown.SPRITE_KEY, ArrowDown.SPRITE_URL, {
+      frameWidth: 50,
+      frameHeight: 50
+    });
+  }
+
+  private preloadProjectiles(): void {
+    this.load.spritesheet(FireballProjectile.SPRITE_KEY, FireballProjectile.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(SnowballProjectile.SPRITE_KEY, SnowballProjectile.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+  }
+
+  private preloadPortals(): void {
+    this.load.spritesheet(BasePortal.SPRITE_KEY, BasePortal.SPRITE_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(BasePortal.SPRITE_1_KEY, BasePortal.SPRITE_1_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+
+    this.load.spritesheet(BasePortal.SPRITE_2_KEY, BasePortal.SPRITE_2_URL, {
+      frameWidth: 32,
+      frameHeight: 32
+    });
+  }
+
+  private preloadEnemies(): void {
     this.load.spritesheet(AxolotlEnemy.SPRITE_KEY, AxolotlEnemy.SPRITE_URL, {
       frameWidth: 16,
       frameHeight: 16
@@ -132,41 +186,6 @@ export class PreloadScene extends BaseScene {
     this.load.spritesheet(SpiritEnemy.SPRITE_KEY, SpiritEnemy.SPRITE_URL, {
       frameWidth: 16,
       frameHeight: 16
-    });
-
-    this.load.spritesheet(BasePortal.SPRITE_KEY, BasePortal.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(BasePortal.SPRITE_1_KEY, BasePortal.SPRITE_1_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(BasePortal.SPRITE_2_KEY, BasePortal.SPRITE_2_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(FireballProjectile.SPRITE_KEY, FireballProjectile.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(SnowballProjectile.SPRITE_KEY, SnowballProjectile.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(FrozenAilment.SPRITE_KEY, FrozenAilment.SPRITE_URL, {
-      frameWidth: 32,
-      frameHeight: 32
-    });
-
-    this.load.spritesheet(ArrowDown.SPRITE_KEY, ArrowDown.SPRITE_URL, {
-      frameWidth: 50,
-      frameHeight: 50
     });
   }
 }

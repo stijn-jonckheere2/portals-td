@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import * as Phaser from 'phaser';
 import { BehaviorSubject, Observable, Subject, tap } from "rxjs";
@@ -8,13 +8,13 @@ import { PortalElement } from "../portals/portal-element.enum";
 import { PortalPrice } from "../portals/portal-price.enum";
 import { GrasslandScene } from "../scenes/grassland.scene";
 import { PreloadScene } from "../scenes/preload.scene";
+import AnimatedTiles from '../../../assets/plugins/AnimatedTiles.js';
 
 @Component({
   selector: "app-game-page",
   templateUrl: "./game-page.component.html",
   styleUrls: ["./game-page.component.scss"]
 })
-
 export class GamePageComponent implements OnInit, OnDestroy {
 
   portalsTDGame: Phaser.Game;
@@ -59,6 +59,15 @@ export class GamePageComponent implements OnInit, OnDestroy {
         min: 30,
         forceSetTimeOut: true
       },
+      plugins: {
+        scene: [
+          {
+            key: 'AnimatedTiles',
+            plugin: AnimatedTiles,
+            mapping: 'animatedTiles'
+          }
+        ]
+      }
     };
 
     this.portalsTDGame = new Phaser.Game(this.config);

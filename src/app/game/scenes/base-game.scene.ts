@@ -1,7 +1,5 @@
-import { BehaviorSubject, filter, Observable, Observer, Subject, Subscription, tap } from "rxjs";
+import { BehaviorSubject, Observable, Subject, Subscription, tap } from "rxjs";
 import { BaseEnemy } from "../enemies/base/base.enemy";
-import { BaseUnit } from "../portals/base/base.unit";
-import { ReptileEnemy } from "../enemies/reptile/reptile.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { FirePortal } from "../portals/fire/fire.portal";
@@ -14,6 +12,7 @@ import { BaseScene } from "./base.scene";
 import * as _ from 'lodash';
 import { BasePortal } from "../portals/base/base.portal";
 import { PoisonPortal } from "../portals/poison/poison.portal";
+import { assetsConfig } from "src/config/assets.config";
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
@@ -65,16 +64,25 @@ export abstract class BaseGameScene extends BaseScene {
     const { id, key } = this.tilesetConfig;
     const natureTiles = this.map.addTilesetImage(id, key);
 
+    const assetsTiles = assetsConfig.map(config => {
+      return this.map.addTilesetImage(config.key, config.key, config.frameWidth, config.frameHeight);
+    });
+
     const backgroundLayer = this.map.createLayer('background', natureTiles);
     const pathLayer = this.map.createLayer('path', natureTiles);
+    const sceneryLayer = this.map.createLayer('scenery', assetsTiles);
     const zoneLayer = this.map.getObjectLayer('zones');
 
     this.layers = {
       background: backgroundLayer,
       zones: zoneLayer,
+      scenery: sceneryLayer,
     };
 
     this.pathLayer = pathLayer;
+
+    const animatedTilesPlugin = (this.scene.systems as any).animatedTiles;
+    animatedTilesPlugin.init(this.map);
   }
 
   createPoints(): void {
