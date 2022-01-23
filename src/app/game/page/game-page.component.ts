@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as Phaser from 'phaser';
-import { BehaviorSubject, filter, Observable, Subject, Subscription, tap } from "rxjs";
+import { BehaviorSubject, filter, Observable, shareReplay, Subject, Subscription, tap } from "rxjs";
 import { SceneConfig } from "../interfaces/scene-config.interface";
-import { GamePortal } from "../portals/game-portal.type";
 import { PortalElement } from "../portals/portal-element.enum";
 import { PortalPrice } from "../portals/portal-price.enum";
 import { GrasslandScene } from "../scenes/grassland.scene";
@@ -12,6 +11,12 @@ import { KingInTheNorthScene } from "../scenes/king-in-the-north.scene";
 import { MatDialog } from "@angular/material/dialog";
 import { GameOverDialogComponent } from "./dialogs/game-over/game-over-dialog.component";
 import { GameFinishedDialogComponent } from "./dialogs/game-finished/game-finished-dialog.component";
+import { BasePortal } from "../portals/base/base.portal";
+import { FirePortal } from "../portals/fire/fire.portal";
+import { IcePortal } from "../portals/ice/ice.portal";
+import { PoisonPortal } from "../portals/poison/poison.portal";
+import { HolyPortal } from "../portals/holy/holy.portal";
+import { ArcanePortal } from "../portals/arcane/arcane.portal";
 
 @Component({
   selector: "app-game-page",
@@ -27,11 +32,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
   activePortalElement$: Observable<PortalElement>;
   fastForwardState$: Observable<boolean>;
   pausedState$: Observable<boolean>;
-  currentPortal$: Observable<GamePortal>;
+  currentPortal$: Observable<BasePortal>;
+  currentPortalClass$: Observable<(typeof BasePortal)>;
   gameStarted$: Observable<number>;
 
   portalElementSelectedSubject$ = new Subject<PortalElement>();
-  portalSelectedSubject$ = new Subject<GamePortal>();
+  portalSelectedSubject$ = new Subject<BasePortal>();
 
   levelGoldSubject$: BehaviorSubject<number>;
   levelHealthSubject$: BehaviorSubject<number>;
@@ -42,10 +48,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
   gamePausedSubject$: BehaviorSubject<boolean>;
   startGameSubject$: BehaviorSubject<number>;
   restartGameSubject$: BehaviorSubject<any>;
+  currentPortalClassSubject$: BehaviorSubject<(typeof BasePortal)>;
 
   sub$ = new Subscription();
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -73,10 +83,29 @@ export class GamePageComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable();
+    this.activePortalElement$ = this.portalElementSelectedSubject$.asObservable().pipe(
+      tap(element => {
+        if (!element) {
+          this.onDeactivatePortal();
+        }
+      })
+    )
     this.fastForwardState$ = this.levelFastForwardSubject$.asObservable();
     this.pausedState$ = this.gamePausedSubject$.asObservable();
-    this.currentPortal$ = this.portalSelectedSubject$.asObservable();
+
+    this.currentPortal$ = this.portalSelectedSubject$.asObservable().pipe(
+      tap((portal: BasePortal) => {
+        if (portal) {
+          const className = this.getClassForPortalElement(portal.element);
+          this.currentPortalClassSubject$.next(className);
+          return;
+        }
+
+        this.currentPortalClassSubject$.next(null);
+      })
+    );
+
+    this.currentPortalClass$ = this.currentPortalClassSubject$.asObservable().pipe(shareReplay());
     this.gameStarted$ = this.startGameSubject$.asObservable();
 
     this.portalsTDGame = new Phaser.Game(config);
@@ -112,12 +141,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.gamePausedSubject$ = new BehaviorSubject(null);
     this.startGameSubject$ = new BehaviorSubject(null);
     this.restartGameSubject$ = new BehaviorSubject(null);
+    this.currentPortalClassSubject$ = new BehaviorSubject(null);
 
     this.setupWindowSubjects();
   }
 
   startGame(): void {
     this.startGameSubject$.next(1);
+    this.levelGoldSubject$.next(50000);
     // this.levelHealthSubject$.next(100000);
   }
 
@@ -168,10 +199,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
     this.portalElementSelectedSubject$.next(null);
     this.portalElementSelectedSubject$.next(element);
+    const className = this.getClassForPortalElement(element);
+    this.currentPortalClassSubject$.next(className);
   }
 
   onDeactivatePortal(): void {
-    this.portalElementSelectedSubject$.next(null);
+    this.currentPortalClassSubject$.next(null);
   }
 
   portalPurchasable(price: PortalPrice): boolean {
@@ -184,6 +217,23 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   onPortalSold(): void {
     this.portalSelectedSubject$.next(null);
+  }
+
+  private getClassForPortalElement(element: PortalElement): typeof BasePortal {
+    switch (element) {
+      case PortalElement.FIRE:
+        return FirePortal;
+      case PortalElement.ICE:
+        return IcePortal;
+      case PortalElement.POISON:
+        return PoisonPortal;
+      case PortalElement.HOLY:
+        return HolyPortal;
+      case PortalElement.ARCANE:
+        return ArcanePortal;
+    }
+
+    return null;
   }
 
   private getPlayerProgress(): number {

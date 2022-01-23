@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { ArcanePortal } from "../../portals/arcane/arcane.portal";
 import { BasePortal } from "../../portals/base/base.portal";
 import { FirePortal } from "../../portals/fire/fire.portal";
-import { GamePortal } from "../../portals/game-portal.type";
 import { HolyPortal } from "../../portals/holy/holy.portal";
 import { IcePortal } from "../../portals/ice/ice.portal";
 import { PoisonPortal } from "../../portals/poison/poison.portal";
@@ -24,7 +23,8 @@ import { PoisonCloudIIUpgrade } from "../../upgrades/poison/poison-cloud-ii/pois
   styleUrls: ["./portal-upgrade.component.scss"]
 })
 export class PortalUpgradeComponent implements OnChanges {
-  @Input() portal: GamePortal;
+  @Input() portal: BasePortal;
+  @Input() portalClass: any;
   @Input() currentGold: number;
 
   @Output() portalSold: EventEmitter<any> = new EventEmitter();
@@ -43,14 +43,19 @@ export class PortalUpgradeComponent implements OnChanges {
       previousPortal?.toggleArrowIcon(false);
 
       if (changes.portal.currentValue) {
-        this.calculatePossibleUpgrades();
         this.portal.toggleArrowIcon(true);
+      }
+    }
+
+    if (changes?.portalClass) {
+      if (changes?.portalClass.currentValue) {
+        this.calculatePossibleUpgrades();
       }
     }
   }
 
   calculatePossibleUpgrades(): void {
-    if (this.portal instanceof FirePortal) {
+    if (this.portalClass === FirePortal) {
       this.possibleUpgrades = [
         FasterBulletsUpgrade,
         ExplosiveBulletsUpgrade,
@@ -58,7 +63,7 @@ export class PortalUpgradeComponent implements OnChanges {
       return;
     }
 
-    if(this.portal instanceof IcePortal) {
+    if (this.portalClass === IcePortal) {
       this.possibleUpgrades = [
         BiggerSnowballsUpgrade,
         MassiveSnowballsUpgrade,
@@ -66,7 +71,7 @@ export class PortalUpgradeComponent implements OnChanges {
       return;
     }
 
-    if(this.portal instanceof PoisonPortal) {
+    if (this.portalClass === PoisonPortal) {
       this.possibleUpgrades = [
         PoisonCloudIUpgrade,
         PoisonCloudIIUpgrade,
@@ -74,7 +79,7 @@ export class PortalUpgradeComponent implements OnChanges {
       return;
     }
 
-    if(this.portal instanceof ArcanePortal) {
+    if (this.portalClass === ArcanePortal) {
       this.possibleUpgrades = [
         ArcaneBarrageUpgrade,
         ArcaneTurretUpgrade,
@@ -82,7 +87,7 @@ export class PortalUpgradeComponent implements OnChanges {
       return;
     }
 
-    if(this.portal instanceof HolyPortal) {
+    if (this.portalClass === HolyPortal) {
       this.possibleUpgrades = [
         WallSweepUpgrade,
         TwinBladesUpgrade,
@@ -94,24 +99,40 @@ export class PortalUpgradeComponent implements OnChanges {
   }
 
   onPurchaseUpgrade(upgradeType: any): void {
+    if (!this.portal) {
+      return;
+    }
+
     const upgrade = new upgradeType(this.portal);
     const typedUpgrade = upgrade as BaseUpgrade;
     typedUpgrade.onPurchase();
   }
 
   upgradeBought(upgradeType: any): boolean {
+    if (!this.portal) {
+      return false;
+    }
+
     return upgradeType.UPGRADE_LEVEL <= this.portal.upgradeLevel;
   }
 
   upgradeDisabled(upgradeType: any): boolean {
+    if (!this.portal) {
+      return true;
+    }
+
     const levelAvailable = this.portal.upgradeLevel === upgradeType.UPGRADE_LEVEL - 1;
     const moneyAvailable = this.currentGold >= upgradeType.UPGRADE_COST;
     return !levelAvailable || !moneyAvailable;
   }
 
   onSellPortal(): void {
-    this.portal.baseScene.earnGold(this.portalSellingPrice);
-    this.portal.destroyEnemy();
+    if (!this.portal) {
+      return;
+    }
+
+    this.portal?.baseScene.earnGold(this.portalSellingPrice);
+    this.portal?.destroyEnemy();
     this.portalSold.emit();
   }
 }

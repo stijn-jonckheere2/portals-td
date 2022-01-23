@@ -5,14 +5,33 @@
   width: 300px;
 }
 
+h1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+p {
+  color: white;
+  text-shadow: 2px 2px black;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+
 .portal-upgrade {
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+
   h2 {
     padding-top: 16px;
     margin: 0;
     margin-bottom: 8px;
     text-shadow: 2px 2px black;
-    font-size: 20px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 18px;
     text-transform: uppercase;
 
     display: flex;
@@ -27,12 +46,6 @@
     }
   }
 
-  p {
-    color: white;
-    text-shadow: 2px 2px black;
-    font-size: 16px;
-    line-height: 18px;
-  }
 
   button {
     color: white;
@@ -42,20 +55,11 @@
       height: 20px;
     }
   }
-
-  &+.portal-upgrade {
-    margin-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-  }
-
 }
 
 .mat-stroked-button {
   color: white;
   text-shadow: 2px 2px black;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 16px;
 
   img {
     height: 20px;

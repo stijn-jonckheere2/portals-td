@@ -8,6 +8,9 @@ import { ArcanePortalUpgrades } from '../../upgrades/arcane/arcane-portal-upgrad
 import { ArcaneTurretUpgrade } from '../../upgrades/arcane/arcane-turret/arcane-turret.upgrade';
 
 export class ArcanePortal extends BasePortal {
+  static PORTAL_NAME: string = 'Arcane Portal';
+  static PORTAL_DESCRIPTION: string = "A long range portal that fires missiles over the entire map";
+
   static PORTAL_ELEMENT = PortalElement.ARCANE;
   static PORTAL_RANGE: number = 10000;
 

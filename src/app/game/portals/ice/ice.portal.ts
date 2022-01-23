@@ -9,6 +9,9 @@ import { BiggerSnowballsUpgrade } from '../../upgrades/ice/bigger-snowballs/bigg
 import { MassiveSnowballsUpgrade } from '../../upgrades/ice/massive-snowballs/massive-snowballs.upgrade';
 
 export class IcePortal extends BasePortal {
+  static PORTAL_NAME: string = 'Ice Portal';
+  static PORTAL_DESCRIPTION: string = "Shoots snowballs at enemies to damage and slow them";
+
   static PORTAL_ELEMENT = PortalElement.ICE;
   static PORTAL_RANGE: number = 200;
 

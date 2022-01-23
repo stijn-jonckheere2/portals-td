@@ -7,6 +7,8 @@ import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
 import { AilmentType } from '../../ailments/ailment-type.enum';
 
 export class PoisonPortal extends BasePortal {
+  static PORTAL_NAME: string = 'Poison Portal';
+  static PORTAL_DESCRIPTION: string = "Applies poison to nearby enemies dealing damage over time";
   static PORTAL_ELEMENT = PortalElement.POISON;
   static PORTAL_RANGE: number = 350;
 

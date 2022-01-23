@@ -1,11 +1,17 @@
 
-<div class="portal-upgrades" *ngIf="portal && possibleUpgrades?.length">
-  <button mat-stroked-button (click)="onSellPortal()">
-    Sell for
-    <img src="../../../../assets/images/gold-icon.png">
-    {{ portalSellingPrice }}
-  </button>
-  
+<div class="portal-upgrades" *ngIf="portalClass">
+
+  <h1>
+    {{ portalClass.PORTAL_NAME }}
+
+    <button mat-stroked-button (click)="onSellPortal()" *ngIf="portal">
+      Sell
+      <img src="../../../../assets/images/gold-icon.png">
+      {{ portalSellingPrice }}
+    </button>
+  </h1>
+  <p>{{ portalClass.PORTAL_DESCRIPTION }}</p>
+
   <div class="portal-upgrade" *ngFor="let upgrade of possibleUpgrades">
     <h2>
       {{ upgrade.UPGRADE_NAME }}

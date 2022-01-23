@@ -8,6 +8,9 @@ import { WallSweepUpgrade } from '../../upgrades/holy/wall-sweep/wall-sweep.upgr
 import { TwinBladesUpgrade } from '../../upgrades/holy/twin-blades/twin-blades.upgrade';
 
 export class HolyPortal extends BasePortal {
+  static PORTAL_NAME: string = 'Holy Portal';
+  static PORTAL_DESCRIPTION: string = "Uses holy orbs that orbit around itself";
+
   static PORTAL_ELEMENT = PortalElement.HOLY;
   static PORTAL_RANGE: number = 200;
 
@@ -30,7 +33,7 @@ export class HolyPortal extends BasePortal {
 
     this.price = PortalPrice.HOLY;
     this.body.setSize(40, 40);
-    this.maxRange = 120;
+    this.maxRange = HolyPortal.PORTAL_RANGE;
 
     this.startShooting();
   }
@@ -68,9 +71,11 @@ export class HolyPortal extends BasePortal {
       this.holyOrbs.resetProjectiles();
       this.holyOrbs.setUpgradedDamage(10);
 
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 120);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 180);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 240);
+      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 90);
+      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 150);
+
+      this.maxRange = 250;
+      this.toggleRadiusVisible(true);
       return;
     }
 
@@ -85,6 +90,9 @@ export class HolyPortal extends BasePortal {
       this.holyOrbs.fireProjectile(0, 0, null, 0.06, 90, true);
       this.holyOrbs.fireProjectile(0, 0, null, 0.06, 150, true);
       this.holyOrbs.fireProjectile(0, 0, null, 0.06, 210, true);
+
+      this.maxRange = 330;
+      this.toggleRadiusVisible(true);
       return;
     }
   }

@@ -36,13 +36,10 @@ export abstract class BasePortal extends BaseUnit {
   }
 
   toggleRadiusVisible(flag: boolean): void {
-    if (!flag) {
-      this.radiusCircle?.destroy();
-      this.radiusCircle = null;
-      return;
-    }
+    this.radiusCircle?.destroy();
+    this.radiusCircle = null;
 
-    if (this.radiusCircle) {
+    if(!flag) {
       return;
     }
 

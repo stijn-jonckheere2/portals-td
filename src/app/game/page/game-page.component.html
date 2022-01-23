@@ -13,6 +13,7 @@
       <span>{{ currentWaveSubject$?.value }} / {{ lastWaveSubject$?.value }}</span>
     </div>
   </div>
+
   <div class="game-portals">
 
     <div class="game-portal"
@@ -56,6 +57,7 @@
     </div>
 
   </div>
+
   <div class="game-actions">
     <button mat-fab color="primary" *ngIf="!(gameStarted$ | async)" (click)="startGame()">
       <mat-icon>play_arrow</mat-icon>
@@ -90,15 +92,15 @@
   </div>
 </div>
 
-<div class="game-wrapper">
-  <div id="portals-td-container"></div>
-</div>
-
 <div class="portal-upgrade-container">
   <app-portal-upgrade
     [portal]="currentPortal$ | async"
+    [portalClass]="currentPortalClass$ | async"
     [currentGold]="levelGoldSubject$?.value"
     (portalSold)="onPortalSold()">
   </app-portal-upgrade>
 </div>
 
+<div class="game-wrapper">
+  <div id="portals-td-container"></div>
+</div>

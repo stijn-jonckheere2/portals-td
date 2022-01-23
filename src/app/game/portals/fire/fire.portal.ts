@@ -9,6 +9,8 @@ import { ExplosiveBulletsUpgrade } from '../../upgrades/fire/explosive-bullets/e
 import { FasterBulletsUpgrade } from '../../upgrades/fire/faster-bullets/faster-bullets.upgrade';
 
 export class FirePortal extends BasePortal {
+  static PORTAL_NAME: string = 'Fire Portal';
+  static PORTAL_DESCRIPTION: string = "Shoots at nearby enemies, dealing damage with fire orbs";
   static PORTAL_ELEMENT = PortalElement.FIRE;
   static PORTAL_RANGE: number = 250;
 

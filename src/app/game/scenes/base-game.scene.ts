@@ -3,7 +3,6 @@ import { BaseEnemy } from "../enemies/base/base.enemy";
 import { SceneConfig } from "../interfaces/scene-config.interface";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { FirePortal } from "../portals/fire/fire.portal";
-import { GamePortal } from "../portals/game-portal.type";
 import { IcePortal } from "../portals/ice/ice.portal";
 import { PortalPlaceholder } from "../portals/placeholder/placeholder.portal";
 import { PortalElement } from "../portals/portal-element.enum";
@@ -17,7 +16,7 @@ import { HolyPortal } from "../portals/holy/holy.portal";
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
-  activePortals: GamePortal[] = [];
+  activePortals: BasePortal[] = [];
   portalPlaceholder: PortalPlaceholder;
 
   portalElementSelectedSubject$: BehaviorSubject<PortalElement>;
@@ -97,7 +96,7 @@ export abstract class BaseGameScene extends BaseScene {
     x = Phaser.Math.Snap.To(x, 40);
     y = Phaser.Math.Snap.To(y, 40);
 
-    let portal: GamePortal;
+    let portal: any;
 
     switch (element) {
       case PortalElement.ARCANE:
@@ -174,7 +173,7 @@ export abstract class BaseGameScene extends BaseScene {
     this.portalElementSelectedSubject$.next(null);
   }
 
-  addPortal(portal: GamePortal): void {
+  addPortal(portal: BasePortal): void {
     this.activePortals.push(portal);
     this.spendGold(portal.price);
     this.updateEnemyColliders();
