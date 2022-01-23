@@ -148,7 +148,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   startGame(): void {
     this.startGameSubject$.next(1);
-    this.levelGoldSubject$.next(50000);
+    // this.levelGoldSubject$.next(50000);
     // this.levelHealthSubject$.next(100000);
   }
 
