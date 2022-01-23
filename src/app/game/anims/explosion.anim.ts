@@ -3,14 +3,13 @@ import { ExplosionSnowEffect } from "../effects/explosion/explosion-snow.effect"
 import { ExplosionEffect } from "../effects/explosion/explosion.effect";
 
 export function initExplosionAnim(anims): void {
-  const frameRate = 8;
+  const frameRate = 12;
 
   anims.create({
     key: ExplosionEffect.EFFECT_KEY,
     frames: anims.generateFrameNumbers(ExplosionEffect.SPRITE_KEY, {
       start: 0,
       end: 7,
-      prefix: 'explo_',
     }),
     frameRate,
     repeat: 0
@@ -21,7 +20,6 @@ export function initExplosionAnim(anims): void {
     frames: anims.generateFrameNumbers(ExplosionSnowEffect.SPRITE_KEY, {
       start: 0,
       end: 7,
-      prefix: 'snow_explo_',
     }),
     frameRate,
     repeat: 0
@@ -32,7 +30,6 @@ export function initExplosionAnim(anims): void {
     frames: anims.generateFrameNumbers(ArcaneExplosionEffect.SPRITE_KEY, {
       start: 0,
       end: 7,
-      prefix: 'arcane_explo_',
     }),
     frameRate,
     repeat: 0

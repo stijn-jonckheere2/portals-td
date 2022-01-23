@@ -12,10 +12,6 @@ export class EffectManager {
   playEffectOn(spriteKey: string, effectKey: string, target: BaseEnemy): void {
     const effect = new BaseEffect(this.scene, target.x, target.y, spriteKey, effectKey);
 
-    if (target.isDead) {
-      return;
-    }
-
     effect.playOn(target);
 
     target.on('destroy', () => {
