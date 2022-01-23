@@ -13,7 +13,6 @@
       <span>{{ currentWaveSubject$?.value }} / {{ lastWaveSubject$?.value }}</span>
     </div>
   </div>
-
   <div class="game-portals">
 
     <div class="game-portal"
@@ -41,6 +40,14 @@
     </div>
 
     <div class="game-portal"
+        [class.enabled]="portalPurchasable(PortalPrice.ARCANE)"
+        [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE"
+        (click)="onActivatePortal(PortalElement.ARCANE, PortalPrice.ARCANE)">
+      <div class="game-portal-option game-portal-arcane"></div>
+      <p>{{ PortalPrice.ARCANE }}</p>
+    </div>
+
+    <div class="game-portal"
         [class.enabled]="portalPurchasable(PortalPrice.HOLY)"
         [class.active]="(activePortalElement$ | async ) == PortalElement.HOLY"
         (click)="onActivatePortal(PortalElement.HOLY, PortalPrice.HOLY)">
@@ -49,15 +56,14 @@
     </div>
 
     <div class="game-portal"
-        [class.enabled]="portalPurchasable(PortalPrice.ARCANE)"
-        [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE"
-        (click)="onActivatePortal(PortalElement.ARCANE, PortalPrice.ARCANE)">
-      <div class="game-portal-option game-portal-arcane"></div>
-      <p>{{ PortalPrice.ARCANE }}</p>
+        [class.enabled]="portalPurchasable(PortalPrice.MIND)"
+        [class.active]="(activePortalElement$ | async ) == PortalElement.MIND"
+        (click)="onActivatePortal(PortalElement.MIND, PortalPrice.MIND)">
+      <div class="game-portal-option game-portal-mind"></div>
+      <p>{{ PortalPrice.MIND }}</p>
     </div>
 
   </div>
-
   <div class="game-actions">
     <button mat-fab color="primary" *ngIf="!(gameStarted$ | async)" (click)="startGame()">
       <mat-icon>play_arrow</mat-icon>
@@ -92,6 +98,10 @@
   </div>
 </div>
 
+<div class="game-wrapper">
+  <div id="portals-td-container"></div>
+</div>
+
 <div class="portal-upgrade-container">
   <app-portal-upgrade
     [portal]="currentPortal$ | async"
@@ -101,6 +111,3 @@
   </app-portal-upgrade>
 </div>
 
-<div class="game-wrapper">
-  <div id="portals-td-container"></div>
-</div>

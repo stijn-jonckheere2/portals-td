@@ -81,7 +81,6 @@ export class HolyPortal extends BasePortal {
 
     if (upgrade instanceof TwinBladesUpgrade) {
       this.holyOrbs.resetProjectiles();
-      this.holyOrbs.setUpgradedDamage(20);
 
       this.holyOrbs.fireProjectile(0, 0, null, 0.06, 90);
       this.holyOrbs.fireProjectile(0, 0, null, 0.06, 150);

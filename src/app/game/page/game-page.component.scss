@@ -115,6 +115,11 @@
       background-position-y: 0;
     }
 
+    &-mind {
+      background-position-x: -192px;
+      background-position-y: 0;
+    }
+
     &.active {
       background-color: mixins.accentColor(200);
     }

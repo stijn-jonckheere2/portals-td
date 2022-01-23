@@ -16,6 +16,9 @@ import { BiggerSnowballsUpgrade } from "../../upgrades/ice/bigger-snowballs/bigg
 import { MassiveSnowballsUpgrade } from "../../upgrades/ice/massive-snowballs/massive-snowballs.upgrade";
 import { PoisonCloudIUpgrade } from "../../upgrades/poison/poison-cloud-i/poison-cloud-i.upgrade";
 import { PoisonCloudIIUpgrade } from "../../upgrades/poison/poison-cloud-ii/poison-cloud-ii.upgrade";
+import { MindPortal } from "../../portals/mind/mind.portal";
+import { MastermindUpgrade } from "../../upgrades/mind/mastermind/mastermind.upgrade";
+import { TrinityUpgrade } from "../../upgrades/mind/trinity/trinity.upgrade";
 
 @Component({
   selector: "app-portal-upgrade",
@@ -91,6 +94,14 @@ export class PortalUpgradeComponent implements OnChanges {
       this.possibleUpgrades = [
         WallSweepUpgrade,
         TwinBladesUpgrade,
+      ];
+      return;
+    }
+
+    if (this.portalClass === MindPortal) {
+      this.possibleUpgrades = [
+        MastermindUpgrade,
+        TrinityUpgrade,
       ];
       return;
     }

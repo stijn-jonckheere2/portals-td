@@ -45,7 +45,7 @@ export class PortalPlaceholder extends BaseUnit {
   override update(time, delta): void {
     super.update(time, delta);
 
-    if (this.PORTAL_ELEMENT === PortalElement.ARCANE) {
+    if (this.PORTAL_ELEMENT === PortalElement.ARCANE || this.PORTAL_ELEMENT === PortalElement.MIND) {
       return;
     }
 

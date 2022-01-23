@@ -3,14 +3,14 @@ import { OrbElement } from '../orb-element.enum';
 import { BaseScene } from '../../scenes/base.scene';
 import { BaseProjectile } from '../base/base.projectile';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
-import { ArcaneExplosionEffect } from '../../effects/explosion/explosion-arcane.effect';
+import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 
-export class ArcaneMissileProjectile extends BaseProjectile {
+export class MindOrbProjectile extends BaseProjectile {
   static SPRITE_KEY = 'orbs';
   static SPRITE_URL = 'assets/sprites/orbs.png';
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, ArcaneMissileProjectile.SPRITE_KEY);
+    super(scene, x, y, MindOrbProjectile.SPRITE_KEY);
 
     this.init();
     this.initEvents();
@@ -19,11 +19,11 @@ export class ArcaneMissileProjectile extends BaseProjectile {
   override init(): void {
     super.init();
 
-    this.speed = 2500;
-    this.maxDistance = 2000;
-    this.damage = 50;
+    this.speed = 1500;
+    this.maxDistance = 1000;
+    this.damage = 80;
 
-    this.setFrame(OrbElement.ARCANE);
+    this.setFrame(OrbElement.MIND);
     this.setBodySize(64, 64);
   }
 
@@ -58,6 +58,6 @@ export class ArcaneMissileProjectile extends BaseProjectile {
 
   private damageEnemy(enemy: BaseEnemy, damage: number): void {
     enemy.takeDamage(damage);
-    this.effectManager.playEffectOn(ArcaneExplosionEffect.SPRITE_KEY, ArcaneExplosionEffect.EFFECT_KEY, enemy);
+    this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, enemy);
   }
 }

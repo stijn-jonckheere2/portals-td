@@ -17,6 +17,7 @@ import { IcePortal } from "../portals/ice/ice.portal";
 import { PoisonPortal } from "../portals/poison/poison.portal";
 import { HolyPortal } from "../portals/holy/holy.portal";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
+import { MindPortal } from "../portals/mind/mind.portal";
 
 @Component({
   selector: "app-game-page",
@@ -147,9 +148,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   startGame(): void {
-    this.startGameSubject$.next(1);
-    // this.levelGoldSubject$.next(50000);
-    // this.levelHealthSubject$.next(100000);
+    this.startGameSubject$.next(40);
+    this.levelGoldSubject$.next(50000);
+    this.levelHealthSubject$.next(1000000);
   }
 
   togglePause(flag: boolean): void {
@@ -231,6 +232,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
         return HolyPortal;
       case PortalElement.ARCANE:
         return ArcanePortal;
+      case PortalElement.MIND:
+        return MindPortal;
     }
 
     return null;

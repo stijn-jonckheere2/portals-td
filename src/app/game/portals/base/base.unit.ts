@@ -3,6 +3,7 @@ import { BaseScene } from '../../scenes/base.scene';
 import * as Guid from 'guid';
 import { EventEmitter } from '@angular/core';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { BaseGameScene } from '../../scenes/base-game.scene';
 
 export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
   speed: number = 100;
@@ -17,6 +18,10 @@ export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
 
   get baseScene(): BaseScene {
     return this.scene as BaseScene;
+  }
+
+  get baseGameScene(): BaseGameScene {
+    return this.scene as BaseGameScene;
   }
 
   get bodyDynamic(): Phaser.Physics.Arcade.Body {

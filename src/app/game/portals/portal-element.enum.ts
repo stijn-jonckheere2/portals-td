@@ -6,4 +6,5 @@ export enum PortalElement {
   HOLY = 3,
   POISON = 4,
   ICE = 5,
+  MIND = 6,
 }

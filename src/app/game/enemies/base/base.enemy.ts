@@ -26,6 +26,9 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   frozenAilment: { ailment: FrozenAilment, timer: Phaser.Time.TimerEvent };
   poisonedAilment: { ailment: PoisonedAilment, timer: Phaser.Time.TimerEvent };
 
+  traveledDistanceX: number = 0;
+  traveledDistanceY: number = 0;
+
   get actualSpeed(): number {
     if (this.isSlowed) {
       return this.baseSpeed / 2;
@@ -47,6 +50,10 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     return this.body as Phaser.Physics.Arcade.Body;
   }
 
+  get travelDistance(): number {
+    return this.traveledDistanceX + this.traveledDistanceY;
+  }
+
   constructor(scene: BaseScene, x: number, y: number, spriteKey: string) {
     super(scene, x, y, spriteKey);
     scene.add.existing(this);
@@ -59,6 +66,15 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.setPushable(false);
     this.setBodySize(10, 10);
     this.initEvents();
+  }
+
+  override preUpdate(time: number, delta: number): void {
+    super.preUpdate(time, delta);
+
+    if (this.body && this.active) {
+      this.traveledDistanceX += this.body.deltaAbsX();
+      this.traveledDistanceY += this.body.deltaAbsY();
+    }
   }
 
   override update(time, delta) {
@@ -219,6 +235,10 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   addCollider(collisionTarget, callback?): void {
+    this.scene.physics.add.collider(this, collisionTarget, callback, null, this);
+  }
+
+  addOverlapCollider(collisionTarget, callback?): void {
     this.scene.physics.add.overlap(this, collisionTarget, callback, null, this);
   }
 

@@ -13,6 +13,7 @@ import { BasePortal } from "../portals/base/base.portal";
 import { PoisonPortal } from "../portals/poison/poison.portal";
 import { assetsConfig } from "src/config/assets.config";
 import { HolyPortal } from "../portals/holy/holy.portal";
+import { MindPortal } from "../portals/mind/mind.portal";
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
@@ -114,6 +115,9 @@ export abstract class BaseGameScene extends BaseScene {
       case PortalElement.HOLY:
         portal = new HolyPortal(this, x, y);
         break;
+      case PortalElement.MIND:
+        portal = new MindPortal(this, x, y);
+        break;
     }
 
     portal
@@ -161,6 +165,10 @@ export abstract class BaseGameScene extends BaseScene {
         parentClass = HolyPortal;
         parentRange = HolyPortal.PORTAL_RANGE;
         break;
+      case PortalElement.MIND:
+        parentClass = MindPortal;
+        parentRange = MindPortal.PORTAL_RANGE;
+        break;
     }
 
     this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass, parentRange)
@@ -197,6 +205,11 @@ export abstract class BaseGameScene extends BaseScene {
 
       if (portal instanceof HolyPortal) {
         projectiles.push((portal as HolyPortal).holyOrbs);
+      }
+
+      if (portal instanceof MindPortal) {
+        const mindPortalOrbs = (portal as MindPortal).activeRemoteOrbs;
+        projectiles.push(...mindPortalOrbs.map(orb => orb.mindOrbs));
       }
     });
 
@@ -282,11 +295,13 @@ export abstract class BaseGameScene extends BaseScene {
     });
   }
 
-  spawnEnemy(EnemyClass, spawnX?: number, spawnY?: number, scale?: number, nextDestinationIndex?: number): void {
+  spawnEnemy(EnemyClass, spawnX?: number, spawnY?: number, scale?: number, nextDestinationIndex?: number, initialTravelDistance?: any): void {
     const x = spawnX || this.spawnPoint.x;
     const y = spawnY || this.spawnPoint.y;
 
     const enemy = new EnemyClass(this, x, y) as BaseEnemy;
+    enemy.traveledDistanceX = initialTravelDistance ? initialTravelDistance.x : enemy.traveledDistanceX;
+    enemy.traveledDistanceY = initialTravelDistance ? initialTravelDistance.y : enemy.traveledDistanceY;
 
     enemy
       .setScale(scale || EnemyClass.SCALE)

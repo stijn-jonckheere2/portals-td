@@ -79,14 +79,20 @@ export class LarvaEnemy extends BaseEnemy {
     }
 
     const currentDestinationIndex: number = this.nextDestinationIndex - 1;
-    const { x, y } = this;
+    const { x, y, traveledDistanceX, traveledDistanceY } = this;
 
-    gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
+    gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex, {
+      x: traveledDistanceX,
+      y: traveledDistanceY
+    });
 
     gameScene.time.addEvent({
       repeat: 9,
       delay: ButterflyEnemy.DISTANCE_TO_SIBLING,
-      callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex)
+      callback: () => gameScene.spawnEnemy(ButterflyEnemy, x, y, 2, currentDestinationIndex, {
+        x: traveledDistanceX,
+        y: traveledDistanceY
+      })
     });
 
     super.destroyEnemy(receiveGold);

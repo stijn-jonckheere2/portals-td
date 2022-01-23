@@ -6,4 +6,5 @@ export enum PortalPrice {
   HOLY = 325,
   POISON = 450,
   ICE = 800,
+  MIND = 1750,
 }

@@ -6,4 +6,5 @@ export enum PortalRange {
   HOLY = 325,
   POISON = 450,
   ICE = 800,
+  MIND = 1250,
 }
