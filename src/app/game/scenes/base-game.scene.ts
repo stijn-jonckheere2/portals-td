@@ -71,7 +71,9 @@ export abstract class BaseGameScene extends BaseScene {
     });
 
     const backgroundLayer = this.map.createLayer('background', natureTiles);
+    const propsLayer = this.map.createLayer('props', natureTiles);
     const pathLayer = this.map.createLayer('path', natureTiles);
+
     const sceneryLayer = this.map.createLayer('scenery', assetsTiles);
     const zoneLayer = this.map.getObjectLayer('zones');
 
@@ -79,6 +81,7 @@ export abstract class BaseGameScene extends BaseScene {
       background: backgroundLayer,
       zones: zoneLayer,
       scenery: sceneryLayer,
+      props: propsLayer,
     };
 
     this.pathLayer = pathLayer;
