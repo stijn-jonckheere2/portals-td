@@ -8,7 +8,7 @@ export class SewersScene extends BaseGameScene {
   static PLUGIN_KEY: string = 'animated-tiles-plugin';
   static NAME: string = 'Sewers';
   static THUMBNAIL: string = 'assets/images/thumbnails/sewers.png';
-  static LEVEL: number = 1;
+  static LEVEL: number = 3;
 
   constructor(config: SceneConfig) {
     super({
