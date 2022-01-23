@@ -15,4 +15,11 @@ export const tilesetsConfig: { [key: string]: TilesetConfig } = {
     mapKey: 'king-in-the-north-map',
     mapUrl: 'assets/maps/king-in-the-north.json',
   },
+  sewers: {
+    key: 'tiles-sewers', // choose yourself, used by phaser
+    id: 'sewer_tileset', // must match the name of the tileset in Tiled
+    url: 'assets/tilesets/sewer_tileset.png', // url to the tileset asset
+    mapKey: 'sewers-map',
+    mapUrl: 'assets/maps/sewers.json',
+  },
 }

@@ -16,7 +16,7 @@ export class BaseEffect extends Phaser.Physics.Arcade.Sprite {
   }
 
   constructor(scene: BaseScene, x: number, y: number, spriteKey: string, effectKey: string) {
-    super(scene, x, y, spriteKey, effectKey);
+    super(scene, x, y, spriteKey);
 
     this.effectKey = effectKey;
 

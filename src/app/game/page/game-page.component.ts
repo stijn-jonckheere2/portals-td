@@ -18,6 +18,7 @@ import { PoisonPortal } from "../portals/poison/poison.portal";
 import { HolyPortal } from "../portals/holy/holy.portal";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { MindPortal } from "../portals/mind/mind.portal";
+import { SewersScene } from "../scenes/sewers.scene";
 
 @Component({
   selector: "app-game-page",
@@ -64,7 +65,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
     const config: SceneConfig = {
       type: Phaser.CANVAS,
-      scene: [PreloadScene, GrasslandScene, KingInTheNorthScene],
+      scene: [
+        PreloadScene,
+        GrasslandScene,
+        KingInTheNorthScene,
+        SewersScene,
+      ],
       physics: {
         default: 'arcade',
         arcade: {
@@ -159,7 +165,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   handleGameOver(): void {
     const dialog = this.dialog.open(GameOverDialogComponent, {
-      width: '250px'
+      width: '300px'
     });
 
     dialog.afterClosed().subscribe((result) => {
@@ -173,13 +179,19 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   handleGameFinished(): void {
+    const playerProgress = this.getPlayerProgress();
+    this.savePlayerProgress(playerProgress + 1);
+
     const dialog = this.dialog.open(GameFinishedDialogComponent, {
-      width: '250px'
+      width: '300px'
     });
 
     dialog.afterClosed().subscribe((result) => {
-      const playerProgress = this.getPlayerProgress();
-      this.savePlayerProgress(playerProgress + 1);
+      if (result.accepted) {
+        // Start infinite mode
+        this.startGameSubject$.next(101);
+        return;
+      }
 
       this.router.navigate(['/levels']);
     });

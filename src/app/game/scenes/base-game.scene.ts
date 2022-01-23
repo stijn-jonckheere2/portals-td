@@ -381,8 +381,13 @@ export abstract class BaseGameScene extends BaseScene {
       filter(value => value !== null),
       tap(value => {
         if (value) {
+          if (value > 100) {
+            this.wavesManager.setMaxWaves(1000);
+          }
+
           this.startNextWave(value);
           this.startWaveInterval();
+          this.scene.resume();
         }
       })
     );
