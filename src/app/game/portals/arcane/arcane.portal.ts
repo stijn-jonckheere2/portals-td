@@ -2,16 +2,14 @@ import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseScene } from '../../scenes/base.scene';
 import { PortalElement } from '../portal-element.enum';
 import { PortalPrice } from '../portal-price.enum';
-import { FirePortalUpgrades } from '../../upgrades/fire/fire-portal-upgrades.type';
 import { BasePortal } from '../base/base.portal';
-import { ExplosiveBulletsUpgrade } from '../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade';
 import { ArcaneMissileGroup } from '../../projectiles/arcane-missile/arcane-missile.group';
 import { ArcanePortalUpgrades } from '../../upgrades/arcane/arcane-portal-upgrades.type';
-import { ArcaneBarrageUpgrade } from '../../upgrades/arcane/arcane-barrage/arcane-barrage.upgrade';
 import { ArcaneTurretUpgrade } from '../../upgrades/arcane/arcane-turret/arcane-turret.upgrade';
 
 export class ArcanePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ARCANE;
+  static PORTAL_RANGE: number = 10000;
 
   triggerTimer: Phaser.Time.TimerEvent;
   arcaneMissiles: ArcaneMissileGroup;
@@ -30,7 +28,7 @@ export class ArcanePortal extends BasePortal {
     super.init();
 
     this.firingSpeed = 450;
-    this.maxRange = 2000;
+    this.maxRange = ArcanePortal.PORTAL_RANGE;
 
     this.price = PortalPrice.ARCANE;
     this.arcaneMissiles = new ArcaneMissileGroup(this.baseScene);
@@ -45,6 +43,10 @@ export class ArcanePortal extends BasePortal {
   override update(time, delta): void {
     super.update(time, delta);
 
+  }
+
+  override toggleRadiusVisible(flag: boolean): void {
+      return;
   }
 
   startShooting(): void {
@@ -101,7 +103,8 @@ export class ArcanePortal extends BasePortal {
     this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
-  destroyEnemy(): void {
+  override destroyEnemy(): void {
+    super.destroyEnemy();
     this.stopEvents();
     this.triggerTimer?.destroy();
     this.destroy(true);

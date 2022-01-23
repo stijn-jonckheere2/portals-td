@@ -19,6 +19,7 @@ export abstract class BasePortal extends BaseUnit {
   upgradeLevel: number = 0;
 
   arrowIcon: ArrowDown;
+  radiusCircle: Phaser.GameObjects.Arc;
 
   constructor(scene: BaseScene, x: number, y: number, spriteKey: string, element: PortalElement) {
     super(scene, x, y, spriteKey);
@@ -32,7 +33,25 @@ export abstract class BasePortal extends BaseUnit {
 
   override update(time, delta) {
     super.update(time, delta);
+  }
 
+  toggleRadiusVisible(flag: boolean): void {
+    if (!flag) {
+      this.radiusCircle?.destroy();
+      this.radiusCircle = null;
+      return;
+    }
+
+    if (this.radiusCircle) {
+      return;
+    }
+
+    const myCenter = this.getCenter();
+    this.radiusCircle = this.baseScene.add.circle(myCenter.x, myCenter.y, this.maxRange / 2, null, 0);
+    this.radiusCircle.setOrigin(0.5, 0.5);
+    this.radiusCircle.setScale(1);
+    this.radiusCircle.setStrokeStyle(2, 0xFFE000, 1);
+    this.radiusCircle.setFillStyle(0xFFE000, 0.1);
   }
 
   upgrade(): void {
@@ -57,6 +76,10 @@ export abstract class BasePortal extends BaseUnit {
 
     this.arrowIcon.destroyEnemy();
     this.arrowIcon = null;
+  }
+
+  destroyEnemy(): void {
+    this.radiusCircle?.destroy();
   }
 
   abstract addUpgrade(upgrade: BaseUpgrade): void;

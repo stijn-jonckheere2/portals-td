@@ -110,6 +110,11 @@
       background-position-y: 0;
     }
 
+    &-holy {
+      background-position-x: -95px;
+      background-position-y: 0;
+    }
+
     &.active {
       background-color: mixins.accentColor(200);
     }

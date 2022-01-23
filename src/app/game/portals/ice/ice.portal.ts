@@ -10,6 +10,7 @@ import { MassiveSnowballsUpgrade } from '../../upgrades/ice/massive-snowballs/ma
 
 export class IcePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.ICE;
+  static PORTAL_RANGE: number = 200;
 
   triggerTimer: Phaser.Time.TimerEvent;
   snowballs: SnowballGroup;
@@ -28,7 +29,7 @@ export class IcePortal extends BasePortal {
     super.init();
 
     this.firingSpeed = 700;
-    this.maxRange = 200;
+    this.maxRange = IcePortal.PORTAL_RANGE;
 
     this.snowballs = new SnowballGroup(this.baseScene);
     this.body.setSize(40, 40);
@@ -99,7 +100,8 @@ export class IcePortal extends BasePortal {
     this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
-  destroyEnemy(): void {
+  override destroyEnemy(): void {
+    super.destroyEnemy();
     this.stopEvents();
     this.triggerTimer?.destroy();
     this.destroy(true);

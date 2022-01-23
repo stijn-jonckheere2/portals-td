@@ -1,5 +1,5 @@
 
-export enum PortalPrice {
+export enum PortalRange {
   ARCANE = 1250,
   WATER = 10,
   FIRE = 250,

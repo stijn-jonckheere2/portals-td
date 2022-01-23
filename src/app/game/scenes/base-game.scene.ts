@@ -13,13 +13,14 @@ import * as _ from 'lodash';
 import { BasePortal } from "../portals/base/base.portal";
 import { PoisonPortal } from "../portals/poison/poison.portal";
 import { assetsConfig } from "src/config/assets.config";
+import { HolyPortal } from "../portals/holy/holy.portal";
 
 export abstract class BaseGameScene extends BaseScene {
   mapKey: string;
   activePortals: GamePortal[] = [];
   portalPlaceholder: PortalPlaceholder;
 
-  portalElementSelectedSubject$: Subject<PortalElement>;
+  portalElementSelectedSubject$: BehaviorSubject<PortalElement>;
   portalSelectedSubject$: BehaviorSubject<BasePortal>;
   gameOverSubject$: BehaviorSubject<boolean>;
   gamePausedSubject$: BehaviorSubject<boolean>;
@@ -111,6 +112,9 @@ export abstract class BaseGameScene extends BaseScene {
       case PortalElement.POISON:
         portal = new PoisonPortal(this, x, y);
         break;
+      case PortalElement.HOLY:
+        portal = new HolyPortal(this, x, y);
+        break;
     }
 
     portal
@@ -135,23 +139,32 @@ export abstract class BaseGameScene extends BaseScene {
 
   showPortalPlaceholder(element: PortalElement): void {
     let parentClass;
+    let parentRange: number;
 
     switch (element) {
       case PortalElement.ARCANE:
         parentClass = ArcanePortal;
+        parentRange = ArcanePortal.PORTAL_RANGE;
         break;
       case PortalElement.FIRE:
         parentClass = FirePortal;
+        parentRange = FirePortal.PORTAL_RANGE;
         break;
       case PortalElement.ICE:
         parentClass = IcePortal;
+        parentRange = IcePortal.PORTAL_RANGE;
         break;
       case PortalElement.POISON:
         parentClass = PoisonPortal;
+        parentRange = PoisonPortal.PORTAL_RANGE;
+        break;
+      case PortalElement.HOLY:
+        parentClass = HolyPortal;
+        parentRange = HolyPortal.PORTAL_RANGE;
         break;
     }
 
-    this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass)
+    this.portalPlaceholder = new PortalPlaceholder(this, -1000, -1000, parentClass, parentRange)
       .setScale(2);
   }
 
@@ -181,6 +194,10 @@ export abstract class BaseGameScene extends BaseScene {
 
       if (portal instanceof ArcanePortal) {
         projectiles.push((portal as ArcanePortal).arcaneMissiles);
+      }
+
+      if (portal instanceof HolyPortal) {
+        projectiles.push((portal as HolyPortal).holyOrbs);
       }
     });
 
@@ -311,6 +328,8 @@ export abstract class BaseGameScene extends BaseScene {
 
     this.input.on('gameobjectdown', (pointer, gameObject) => {
       if (gameObject instanceof BasePortal) {
+        this.hideAllRadiusCircles();
+        gameObject.toggleRadiusVisible(true);
         this.portalSelectedSubject$.next(gameObject);
       }
     });
@@ -322,6 +341,7 @@ export abstract class BaseGameScene extends BaseScene {
       }
 
       if (objectsUnderMouse.length === 0) {
+        this.hideAllRadiusCircles();
         this.portalSelectedSubject$.next(null);
       }
     }, this);
@@ -413,6 +433,10 @@ export abstract class BaseGameScene extends BaseScene {
         (child as any).timeScale = 0.5;
       }
     });
+  }
+
+  hideAllRadiusCircles(): void {
+    this.activePortals?.forEach(portal => portal.toggleRadiusVisible(false));
   }
 
   onDestroy(): void {

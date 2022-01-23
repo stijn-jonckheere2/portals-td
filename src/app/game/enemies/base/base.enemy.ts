@@ -56,6 +56,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   init(): void {
     this.setImmovable(true);
+    this.setPushable(false);
     this.setBodySize(10, 10);
     this.initEvents();
   }
@@ -218,7 +219,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   addCollider(collisionTarget, callback?): void {
-    this.scene.physics.add.collider(this, collisionTarget, callback, null, this);
+    this.scene.physics.add.overlap(this, collisionTarget, callback, null, this);
   }
 
   initEvents(): void {

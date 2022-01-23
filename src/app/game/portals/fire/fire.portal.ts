@@ -10,6 +10,7 @@ import { FasterBulletsUpgrade } from '../../upgrades/fire/faster-bullets/faster-
 
 export class FirePortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.FIRE;
+  static PORTAL_RANGE: number = 250;
 
   triggerTimer: Phaser.Time.TimerEvent;
   fireballs: FireballGroup;
@@ -28,7 +29,7 @@ export class FirePortal extends BasePortal {
     super.init();
 
     this.firingSpeed = 450;
-    this.maxRange = 250;
+    this.maxRange = FirePortal.PORTAL_RANGE;
 
     this.price = PortalPrice.FIRE;
     this.fireballs = new FireballGroup(this.baseScene);
@@ -104,7 +105,8 @@ export class FirePortal extends BasePortal {
     this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
-  destroyEnemy(): void {
+  override destroyEnemy(): void {
+    super.destroyEnemy();
     this.stopEvents();
     this.triggerTimer?.destroy();
     this.destroy(true);

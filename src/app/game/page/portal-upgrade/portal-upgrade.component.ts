@@ -3,6 +3,7 @@ import { ArcanePortal } from "../../portals/arcane/arcane.portal";
 import { BasePortal } from "../../portals/base/base.portal";
 import { FirePortal } from "../../portals/fire/fire.portal";
 import { GamePortal } from "../../portals/game-portal.type";
+import { HolyPortal } from "../../portals/holy/holy.portal";
 import { IcePortal } from "../../portals/ice/ice.portal";
 import { PoisonPortal } from "../../portals/poison/poison.portal";
 import { ArcaneBarrageUpgrade } from "../../upgrades/arcane/arcane-barrage/arcane-barrage.upgrade";
@@ -10,6 +11,8 @@ import { ArcaneTurretUpgrade } from "../../upgrades/arcane/arcane-turret/arcane-
 import { BaseUpgrade } from "../../upgrades/base/base.upgrade";
 import { ExplosiveBulletsUpgrade } from "../../upgrades/fire/explosive-bullets/explosive-bullets.upgrade";
 import { FasterBulletsUpgrade } from "../../upgrades/fire/faster-bullets/faster-bullets.upgrade";
+import { WallSweepUpgrade } from "../../upgrades/holy/wall-sweep/wall-sweep.upgrade";
+import { TwinBladesUpgrade } from "../../upgrades/holy/twin-blades/twin-blades.upgrade";
 import { BiggerSnowballsUpgrade } from "../../upgrades/ice/bigger-snowballs/bigger-snowballs.upgrade";
 import { MassiveSnowballsUpgrade } from "../../upgrades/ice/massive-snowballs/massive-snowballs.upgrade";
 import { PoisonCloudIUpgrade } from "../../upgrades/poison/poison-cloud-i/poison-cloud-i.upgrade";
@@ -75,6 +78,14 @@ export class PortalUpgradeComponent implements OnChanges {
       this.possibleUpgrades = [
         ArcaneBarrageUpgrade,
         ArcaneTurretUpgrade,
+      ];
+      return;
+    }
+
+    if(this.portal instanceof HolyPortal) {
+      this.possibleUpgrades = [
+        WallSweepUpgrade,
+        TwinBladesUpgrade,
       ];
       return;
     }

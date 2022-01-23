@@ -8,6 +8,7 @@ import { AilmentType } from '../../ailments/ailment-type.enum';
 
 export class PoisonPortal extends BasePortal {
   static PORTAL_ELEMENT = PortalElement.POISON;
+  static PORTAL_RANGE: number = 350;
 
   triggerTimer: Phaser.Time.TimerEvent;
 
@@ -27,7 +28,7 @@ export class PoisonPortal extends BasePortal {
     super.init();
 
     this.firingSpeed = 2500;
-    this.maxRange = 350;
+    this.maxRange = PoisonPortal.PORTAL_RANGE;
     this.price = PortalPrice.POISON;
 
     this.body.setSize(40, 40);
@@ -124,7 +125,8 @@ export class PoisonPortal extends BasePortal {
     this.scene?.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
-  destroyEnemy(): void {
+  override destroyEnemy(): void {
+    super.destroyEnemy();
     this.stopEvents();
     this.triggerTimer?.destroy();
     this.destroy(true);

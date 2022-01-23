@@ -40,6 +40,14 @@
     </div>
 
     <div class="game-portal"
+        [class.enabled]="portalPurchasable(PortalPrice.HOLY)"
+        [class.active]="(activePortalElement$ | async ) == PortalElement.HOLY"
+        (click)="onActivatePortal(PortalElement.HOLY, PortalPrice.HOLY)">
+      <div class="game-portal-option game-portal-holy"></div>
+      <p>{{ PortalPrice.HOLY }}</p>
+    </div>
+
+    <div class="game-portal"
         [class.enabled]="portalPurchasable(PortalPrice.ARCANE)"
         [class.active]="(activePortalElement$ | async ) == PortalElement.ARCANE"
         (click)="onActivatePortal(PortalElement.ARCANE, PortalPrice.ARCANE)">
