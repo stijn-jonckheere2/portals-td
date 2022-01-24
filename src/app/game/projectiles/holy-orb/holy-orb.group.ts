@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
-import { BaseProjectileGroup } from '../base-projectile.group';
+import { BaseProjectileGroup } from '../base/base-projectile.group';
 import { BaseProjectile } from '../base/base.projectile';
 import { HolyOrbProjectile } from './holy-orb.projectile';
 

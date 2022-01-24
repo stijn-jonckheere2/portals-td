@@ -1,7 +1,7 @@
 import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
-import { BaseProjectileGroup } from '../base-projectile.group';
+import { BaseProjectileGroup } from '../base/base-projectile.group';
 import { FireballProjectile } from './fireball.projectile';
 
 export class FireballGroup extends BaseProjectileGroup {

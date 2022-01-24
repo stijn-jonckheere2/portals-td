@@ -21,6 +21,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   isDead: boolean = false;
   isSlowed: boolean = false;
   isPoisoned: boolean = false;
+  isBeingDestroyed: boolean = false;
   id: string;
   currentHealth: number;
 
@@ -235,6 +236,12 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   destroyEnemy(receiveGold = true): void {
+    if (this.isBeingDestroyed) {
+      return;
+    }
+
+    this.isBeingDestroyed = true;
+
     this.clearAilments();
     this.stopEvents();
 
@@ -246,6 +253,9 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
       this.baseScene?.earnGold(this.gold);
     }
 
-    super.destroy();
+    this.baseScene.time.addEvent({
+      delay: 300,
+      callback: () => super.destroy()
+    });
   }
 }

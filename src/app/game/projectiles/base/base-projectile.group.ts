@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import { BasePortal } from '../portals/base/base.portal';
-import { BaseScene } from '../scenes/base.scene';
-import { BaseProjectile } from './base/base.projectile';
+import { BasePortal } from '../../portals/base/base.portal';
+import { BaseScene } from '../../scenes/base.scene';
+import { BaseProjectile } from './base.projectile';
 
 export class BaseProjectileGroup extends Phaser.Physics.Arcade.Group {
 

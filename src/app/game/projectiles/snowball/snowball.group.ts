@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
-import { BaseProjectileGroup } from '../base-projectile.group';
+import { BaseProjectileGroup } from '../base/base-projectile.group';
 import { SnowballProjectile } from './snowball.projectile';
 
 export class SnowballGroup extends BaseProjectileGroup {
