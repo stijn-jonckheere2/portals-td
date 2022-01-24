@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import { OrbElement } from '../orb-element.enum';
 import { BaseScene } from '../../scenes/base.scene';
 import { BaseProjectile } from '../base/base.projectile';
-import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 
 export class FireballProjectile extends BaseProjectile {
   static SPRITE_KEY = 'orbs';
@@ -12,7 +12,7 @@ export class FireballProjectile extends BaseProjectile {
   explosive: boolean = false;
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, FireballProjectile.SPRITE_KEY);
+    super(scene, x, y, FireballProjectile.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, ExplosionEffect.SPRITE_KEY);
 
     this.init();
     this.initEvents();
@@ -101,10 +101,5 @@ export class FireballProjectile extends BaseProjectile {
     });
 
     this.destroyEnemy();
-  }
-
-  private damageEnemy(enemy: BaseEnemy, damage: number): void {
-    enemy.takeDamage(damage);
-    this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, enemy);
   }
 }

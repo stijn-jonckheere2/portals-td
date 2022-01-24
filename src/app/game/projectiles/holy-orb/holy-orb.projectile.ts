@@ -13,7 +13,7 @@ export class HolyOrbProjectile extends BaseProjectile {
   enemiesOnCooldown: string[] = [];
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, HolyOrbProjectile.SPRITE_KEY);
+    super(scene, x, y, HolyOrbProjectile.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, ExplosionEffect.SPRITE_KEY);
 
     this.init();
     this.initEvents();
@@ -70,11 +70,6 @@ export class HolyOrbProjectile extends BaseProjectile {
         });
       }
     });
-  }
-
-  private damageEnemy(enemy: BaseEnemy, damage: number): void {
-    enemy.takeDamage(damage);
-    this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, enemy);
   }
 
   override fire(x: number, y: number): void {

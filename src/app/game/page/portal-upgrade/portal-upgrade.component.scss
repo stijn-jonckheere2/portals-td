@@ -1,3 +1,34 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.kill-counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  padding: 4px 24px;
+  padding-top: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 0 auto;
+  color: white;
+  text-shadow: 2px 2px black;
+  border-top-left-radius: 26px;
+  border-top-right-radius: 26px;
+
+  img {
+    height: 20px;
+  }
+
+  span {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+}
+
 .portal-upgrades {
   padding: 12px 24px;
   background: rgba(0, 0, 0, 0.7);

@@ -72,5 +72,9 @@ export abstract class BaseUnit extends Phaser.Physics.Arcade.Sprite {
     return this.baseScene.enemies.filter(e => !e.isDead);
   }
 
+  getUnpoisonedEnemies(): BaseEnemy[] {
+    return this.baseScene.enemies.filter(e => !e.isDead && !e.isPoisoned);
+  }
+
   abstract destroyEnemy(): void;
 }

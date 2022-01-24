@@ -5,6 +5,7 @@ import { PortalPrice } from '../portal-price.enum';
 import { BasePortal } from '../base/base.portal';
 import { BaseUpgrade } from '../../upgrades/base/base.upgrade';
 import { AilmentType } from '../../ailments/ailment-type.enum';
+import { PoisonedAilment } from '../../ailments/poisoned/poisoned.ailment';
 
 export class PoisonPortal extends BasePortal {
   static PORTAL_NAME: string = 'Poison Portal';
@@ -29,7 +30,7 @@ export class PoisonPortal extends BasePortal {
   override init(): void {
     super.init();
 
-    this.firingSpeed = 2500;
+    this.firingSpeed = 1500;
     this.maxRange = PoisonPortal.PORTAL_RANGE;
     this.price = PortalPrice.POISON;
 
@@ -55,13 +56,13 @@ export class PoisonPortal extends BasePortal {
   }
 
   poisonNearbyEnemies(): void {
-    const aliveEnemies = this.getAliveEnemies();
+    const unpoisonedEnemies = this.getUnpoisonedEnemies();
 
-    if (!aliveEnemies) {
+    if (!unpoisonedEnemies) {
       return;
     }
 
-    const closeEnemies = aliveEnemies.filter(enemy => {
+    const closeEnemies = unpoisonedEnemies.filter(enemy => {
       const distance = Phaser.Math.Distance.Between(
         enemy.body.center.x,
         enemy.body.center.y,
@@ -100,17 +101,31 @@ export class PoisonPortal extends BasePortal {
   }
 
   poisonEnemy(enemy: BaseEnemy): void {
+    if (enemy.isDead) {
+      return;
+    }
+
+    const { x, y } = enemy.body;
+    const dotPositionX: number = x - 10;
+    const dotPositionY: number = y - 10;
+    let tickDamage: number, tickInterval: number;
+
     switch (this.upgradeLevel) {
       case 0:
-        enemy.setAilment(AilmentType.POISONED, 5000, 5, 1000);
+        tickDamage = 5;
+        tickInterval = 1000;
         break;
       case 1:
-        enemy.setAilment(AilmentType.POISONED, 5000, 15, 850);
+        tickDamage = 15;
+        tickInterval = 850;
         break;
       case 2:
-        enemy.setAilment(AilmentType.POISONED, 5000, 40, 600);
+        tickDamage = 40;
+        tickInterval = 600;
         break;
     }
+
+    const poison = new PoisonedAilment(this.baseScene, dotPositionX, dotPositionY, tickDamage, tickInterval, enemy, this);
   }
 
   addUpgrade(upgrade: BaseUpgrade): void {

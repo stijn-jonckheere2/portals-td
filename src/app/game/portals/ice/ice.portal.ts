@@ -34,7 +34,7 @@ export class IcePortal extends BasePortal {
     this.firingSpeed = 700;
     this.maxRange = IcePortal.PORTAL_RANGE;
 
-    this.snowballs = new SnowballGroup(this.baseScene);
+    this.snowballs = new SnowballGroup(this.baseScene, this);
     this.body.setSize(40, 40);
     this.price = PortalPrice.ICE;
   }
@@ -86,10 +86,12 @@ export class IcePortal extends BasePortal {
 
     if (upgrade instanceof BiggerSnowballsUpgrade) {
       this.snowballs.enableBiggerSnowballs();
+      this.snowballs.setUpgradedDamage(30);
     }
 
     if (upgrade instanceof MassiveSnowballsUpgrade) {
       this.snowballs.enableMassiveSnowballs();
+      this.snowballs.setUpgradedDamage(60);
     }
   }
 

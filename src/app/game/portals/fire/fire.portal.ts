@@ -34,7 +34,7 @@ export class FirePortal extends BasePortal {
     this.maxRange = FirePortal.PORTAL_RANGE;
 
     this.price = PortalPrice.FIRE;
-    this.fireballs = new FireballGroup(this.baseScene);
+    this.fireballs = new FireballGroup(this.baseScene, this);
     this.body.setSize(40, 40);
   }
 
@@ -88,11 +88,11 @@ export class FirePortal extends BasePortal {
     this.upgrade();
 
     if (upgrade instanceof FasterBulletsUpgrade) {
-      this.fireballs.upgradedDamage = 50;
+      this.fireballs.setUpgradedDamage(50);
     }
 
     if (upgrade instanceof ExplosiveBulletsUpgrade) {
-      this.fireballs.upgradedDamage = 70;
+      this.fireballs.setUpgradedDamage(70);
       this.fireballs.enableExplosiveProjectiles();
     }
   }

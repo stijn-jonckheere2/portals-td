@@ -10,7 +10,7 @@ export class MindOrbProjectile extends BaseProjectile {
   static SPRITE_URL = 'assets/sprites/orbs.png';
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, MindOrbProjectile.SPRITE_KEY);
+    super(scene, x, y, MindOrbProjectile.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, ExplosionEffect.SPRITE_KEY);
 
     this.init();
     this.initEvents();
@@ -54,10 +54,5 @@ export class MindOrbProjectile extends BaseProjectile {
   onHitTarget(target: BaseEnemy): void {
     this.damageEnemy(target, this.damage);
     this.destroyEnemy();
-  }
-
-  private damageEnemy(enemy: BaseEnemy, damage: number): void {
-    enemy.takeDamage(damage);
-    this.effectManager.playEffectOn(ExplosionEffect.SPRITE_KEY, ExplosionEffect.EFFECT_KEY, enemy);
   }
 }

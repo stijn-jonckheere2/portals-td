@@ -21,6 +21,8 @@ export abstract class BasePortal extends BaseUnit {
   arrowIcon: ArrowDown;
   radiusCircle: Phaser.GameObjects.Arc;
 
+  killCounter: number = 0;
+
   constructor(scene: BaseScene, x: number, y: number, spriteKey: string, element: PortalElement) {
     super(scene, x, y, spriteKey);
     this.element = element;
@@ -73,6 +75,10 @@ export abstract class BasePortal extends BaseUnit {
 
     this.arrowIcon.destroyEnemy();
     this.arrowIcon = null;
+  }
+
+  addKill(): void {
+    this.killCounter++;
   }
 
   destroyEnemy(): void {

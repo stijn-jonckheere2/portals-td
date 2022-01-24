@@ -34,7 +34,7 @@ export class ArcanePortal extends BasePortal {
     this.maxRange = ArcanePortal.PORTAL_RANGE;
 
     this.price = PortalPrice.ARCANE;
-    this.arcaneMissiles = new ArcaneMissileGroup(this.baseScene);
+    this.arcaneMissiles = new ArcaneMissileGroup(this.baseScene, this);
     this.body.setSize(40, 40);
   }
 
@@ -92,7 +92,7 @@ export class ArcanePortal extends BasePortal {
     this.upgrade();
 
     if (upgrade instanceof ArcaneTurretUpgrade) {
-      this.arcaneMissiles.upgradedDamage = 100;
+      this.arcaneMissiles.setUpgradedDamage(100);
     }
   }
 

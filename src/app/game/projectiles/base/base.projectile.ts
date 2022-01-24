@@ -1,6 +1,7 @@
 import { Subscription } from 'rxjs';
 import { EffectManager } from '../../effects/manager/effect.manager';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
 
 export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
@@ -14,6 +15,10 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   effectManager: EffectManager;
   trackingSub$ = new Subscription();
 
+  parent: BasePortal;
+  effectKey: string;
+  effectSpriteKey: string;
+
   get isMaxRange(): boolean {
     return this.traveledDistanceX > this.maxDistance || this.traveledDistanceY > this.maxDistance;
   }
@@ -26,8 +31,11 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     return this.body as Phaser.Physics.Arcade.Body;
   }
 
-  constructor(scene: BaseScene, x: number, y: number, spriteKey: string) {
+  constructor(scene: BaseScene, x: number, y: number, spriteKey: string, effectKey: string, effectSpriteKey: string) {
     super(scene, x, y, spriteKey);
+
+    this.effectKey = effectKey;
+    this.effectSpriteKey = effectSpriteKey;
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -36,6 +44,14 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
   init(): void {
     this.setImmovable(true);
     this.effectManager = new EffectManager(this.baseScene);
+  }
+
+  setParent(portal: BasePortal): void {
+    this.parent = portal;
+  }
+
+  alertParentOfKill(): void {
+    this.parent?.addKill();
   }
 
   override preUpdate(time, delta): void {
@@ -49,6 +65,20 @@ export abstract class BaseProjectile extends Phaser.Physics.Arcade.Sprite {
     if (this.isMaxRange) {
       this.destroyEnemy();
     }
+  }
+
+  damageEnemy(enemy: BaseEnemy, damage: number): void {
+    if (enemy.isDead) {
+      return;
+    }
+
+    enemy.takeDamage(damage);
+
+    if (enemy.isDead) {
+      this.alertParentOfKill();
+    }
+
+    this.effectManager.playEffectOn(this.effectSpriteKey, this.effectKey, enemy);
   }
 
   trackTarget(target: BaseEnemy): void {

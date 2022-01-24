@@ -1,14 +1,13 @@
-import Phaser from 'phaser';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
+import { BaseProjectileGroup } from '../base-projectile.group';
 import { MindOrbProjectile } from './mind-orb.projectile';
 
-export class MindOrbGroup extends Phaser.Physics.Arcade.Group {
+export class MindOrbGroup extends BaseProjectileGroup {
 
-  upgradedDamage: number = null;
-
-  constructor(scene: BaseScene) {
-    super(scene.physics.world, scene);
+  constructor(scene: BaseScene, parent: BasePortal) {
+    super(scene);
 
     this.createMultiple({
       frameQuantity: 100,
@@ -17,6 +16,8 @@ export class MindOrbGroup extends Phaser.Physics.Arcade.Group {
       key: MindOrbProjectile.SPRITE_KEY,
       classType: MindOrbProjectile
     });
+
+    this.setPortalParent(parent);
   }
 
   fireProjectile(spawnX: number, spawnY: number, target: BaseEnemy): void {
@@ -27,8 +28,7 @@ export class MindOrbGroup extends Phaser.Physics.Arcade.Group {
       return;
     }
 
-    const upgraded: boolean = this.upgradedDamage !== null;
-    projectile.damage = upgraded ? this.upgradedDamage : projectile.damage;
+    projectile.damage = this.upgradedDamage ? this.upgradedDamage : projectile.damage;
 
     if (projectile) {
       projectile.setScale(0.4);

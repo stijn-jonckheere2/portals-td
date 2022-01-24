@@ -10,7 +10,7 @@ export class ArcaneMissileProjectile extends BaseProjectile {
   static SPRITE_URL = 'assets/sprites/orbs.png';
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, ArcaneMissileProjectile.SPRITE_KEY);
+    super(scene, x, y, ArcaneMissileProjectile.SPRITE_KEY, ArcaneExplosionEffect.EFFECT_KEY, ArcaneExplosionEffect.SPRITE_KEY);
 
     this.init();
     this.initEvents();
@@ -54,10 +54,5 @@ export class ArcaneMissileProjectile extends BaseProjectile {
   onHitTarget(target: BaseEnemy): void {
     this.damageEnemy(target, this.damage);
     this.destroyEnemy();
-  }
-
-  private damageEnemy(enemy: BaseEnemy, damage: number): void {
-    enemy.takeDamage(damage);
-    this.effectManager.playEffectOn(ArcaneExplosionEffect.SPRITE_KEY, ArcaneExplosionEffect.EFFECT_KEY, enemy);
   }
 }

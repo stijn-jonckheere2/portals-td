@@ -1,15 +1,15 @@
-import Phaser from 'phaser';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
+import { BaseProjectileGroup } from '../base-projectile.group';
 import { FireballProjectile } from './fireball.projectile';
 
-export class FireballGroup extends Phaser.Physics.Arcade.Group {
+export class FireballGroup extends BaseProjectileGroup {
 
-  upgradedDamage: number = null;
   explosive: boolean = false;
 
-  constructor(scene: BaseScene) {
-    super(scene.physics.world, scene);
+  constructor(scene: BaseScene, parent: BasePortal) {
+    super(scene);
 
     this.createMultiple({
       frameQuantity: 25,
@@ -18,6 +18,8 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
       key: FireballProjectile.SPRITE_KEY,
       classType: FireballProjectile
     });
+
+    this.setPortalParent(parent);
   }
 
   enableExplosiveProjectiles(): void {
@@ -42,4 +44,6 @@ export class FireballGroup extends Phaser.Physics.Arcade.Group {
       projectile.trackTarget(target);
     }
   }
+
+
 }

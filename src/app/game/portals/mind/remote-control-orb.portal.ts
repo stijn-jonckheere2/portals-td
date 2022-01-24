@@ -32,7 +32,7 @@ export class RemoteControlOrb extends BasePortal {
     this.firingSpeed = 650;
     this.maxRange = RemoteControlOrb.PORTAL_RANGE;
 
-    this.mindOrbs = new MindOrbGroup(this.baseScene);
+    this.mindOrbs = new MindOrbGroup(this.baseScene, this);
 
     this.setScale(1.2);
     this.body.setSize(32, 32);

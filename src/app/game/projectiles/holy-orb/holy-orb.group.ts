@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
+import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
+import { BaseProjectileGroup } from '../base-projectile.group';
 import { BaseProjectile } from '../base/base.projectile';
 import { HolyOrbProjectile } from './holy-orb.projectile';
 
-export class HolyOrbGroup extends Phaser.Physics.Arcade.Group {
+export class HolyOrbGroup extends BaseProjectileGroup {
 
-  upgradedDamage: number = 0;
-
-  constructor(scene: BaseScene) {
-    super(scene.physics.world, scene);
+  constructor(scene: BaseScene, parent: BasePortal) {
+    super(scene);
 
     this.createMultiple({
       frameQuantity: 6,
@@ -18,6 +18,7 @@ export class HolyOrbGroup extends Phaser.Physics.Arcade.Group {
       classType: HolyOrbProjectile,
     });
 
+    this.setPortalParent(parent);
   }
 
   fireProjectile(spawnX: number, spawnY: number): HolyOrbProjectile {
@@ -42,9 +43,5 @@ export class HolyOrbGroup extends Phaser.Physics.Arcade.Group {
     projectiles.forEach((projectile: BaseProjectile) => {
       projectile.destroyEnemy();
     });
-  }
-
-  setUpgradedDamage(damage: number): void {
-    this.upgradedDamage = damage;
   }
 }

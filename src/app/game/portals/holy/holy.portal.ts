@@ -76,7 +76,7 @@ export class HolyPortal extends BasePortal {
     this.line.setAlpha(0);
     this.orbContainer.add(this.line);
 
-    this.holyOrbs = new HolyOrbGroup(this.baseScene);
+    this.holyOrbs = new HolyOrbGroup(this.baseScene, this);
     this.addFirstOrb();
   }
 
@@ -131,7 +131,7 @@ export class HolyPortal extends BasePortal {
       this.holyOrbs.setUpgradedDamage(70);
 
       this.addTwinBladeOrbs();
-      this.maxRange = 350;
+      this.maxRange = 290;
       this.orbRotation = 0.07;
       this.toggleRadiusVisible(true);
       return;

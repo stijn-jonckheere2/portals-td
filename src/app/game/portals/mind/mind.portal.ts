@@ -51,6 +51,7 @@ export class MindPortal extends BasePortal {
     super.update(time, delta);
 
     this.findPriorityTarget();
+    this.calculateKillCounter();
   }
 
   findPriorityTarget(): void {
@@ -157,6 +158,16 @@ export class MindPortal extends BasePortal {
     }
 
     this.startShooting();
+  }
+
+  calculateKillCounter(): void {
+    if (this.remoteOrbs?.length) {
+      this.killCounter = 0;
+
+      this.remoteOrbs.forEach(orb => {
+        this.killCounter += orb.killCounter;
+      });
+    }
   }
 
   initEvents(): void {

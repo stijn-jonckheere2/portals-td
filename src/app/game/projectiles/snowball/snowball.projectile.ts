@@ -14,7 +14,7 @@ export class SnowballProjectile extends BaseProjectile {
   massiveBalls: boolean = false;
 
   constructor(scene: BaseScene, x: number, y: number) {
-    super(scene, x, y, SnowballProjectile.SPRITE_KEY);
+    super(scene, x, y, SnowballProjectile.SPRITE_KEY, ExplosionSnowEffect.EFFECT_KEY, ExplosionSnowEffect.SPRITE_KEY);
 
     this.init();
     this.initEvents();
@@ -25,7 +25,7 @@ export class SnowballProjectile extends BaseProjectile {
 
     this.speed = 400;
     this.maxDistance = 400;
-    this.damage = 5;
+    this.damage = 20;
 
     this.setFrame(OrbElement.ICE);
     this.setBodySize(32, 32);
@@ -50,7 +50,7 @@ export class SnowballProjectile extends BaseProjectile {
   }
 
   onHitTarget(target: BaseEnemy): void {
-    this.damageAndSlowEnemy(target, this.damage);
+    this.damageEnemy(target, this.damage);
 
     const aliveEnemies = this.baseScene.enemies.filter(enemy => !enemy.isDead);
 
@@ -68,19 +68,19 @@ export class SnowballProjectile extends BaseProjectile {
     closeEnemies.some((enemy, i) => {
       if (this.biggerBalls && i < 5) {
         // Don't damage the AoE snowballs + slow 4 targets
-        this.damageAndSlowEnemy(enemy, 0);
+        this.damageEnemy(enemy, 0);
         return false;
       }
 
       if (this.massiveBalls && i < 10) {
         // Don't damage the AoE snowballs + slow 8 targets
-        this.damageAndSlowEnemy(enemy, 0);
+        this.damageEnemy(enemy, 0);
         return false;
       }
 
       if (i < 2) {
         // Don't damage the AoE snowballs + slow 2 targets
-        this.damageAndSlowEnemy(enemy, 0);
+        this.damageEnemy(enemy, 0);
       }
 
       return true;
@@ -89,12 +89,10 @@ export class SnowballProjectile extends BaseProjectile {
     this.destroyEnemy();
   }
 
-  private damageAndSlowEnemy(enemy: BaseEnemy, damage: number): void {
-    enemy.takeDamage(damage);
+  override damageEnemy(enemy: BaseEnemy, damage: number): void {
+    super.damageEnemy(enemy, damage);
     enemy.setAilment(AilmentType.FROZEN, 7000);
     enemy.moveToCurrentDestination();
-
-    this.effectManager.playEffectOn(ExplosionSnowEffect.SPRITE_KEY, ExplosionSnowEffect.EFFECT_KEY, enemy);
   }
 
   override fire(x: number, y: number): void {

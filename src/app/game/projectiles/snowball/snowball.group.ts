@@ -1,15 +1,17 @@
 import Phaser from 'phaser';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { BasePortal } from '../../portals/base/base.portal';
 import { BaseScene } from '../../scenes/base.scene';
+import { BaseProjectileGroup } from '../base-projectile.group';
 import { SnowballProjectile } from './snowball.projectile';
 
-export class SnowballGroup extends Phaser.Physics.Arcade.Group {
+export class SnowballGroup extends BaseProjectileGroup {
 
   biggerBalls: boolean = false;
   massiveBalls: boolean = false;
 
-  constructor(scene: BaseScene) {
-    super(scene.physics.world, scene);
+  constructor(scene: BaseScene, parent: BasePortal) {
+    super(scene);
 
     this.createMultiple({
       frameQuantity: 25,
@@ -18,6 +20,8 @@ export class SnowballGroup extends Phaser.Physics.Arcade.Group {
       key: SnowballProjectile.SPRITE_KEY,
       classType: SnowballProjectile
     });
+
+    this.setPortalParent(parent);
   }
 
   enableBiggerSnowballs(): void {
@@ -38,6 +42,7 @@ export class SnowballGroup extends Phaser.Physics.Arcade.Group {
 
     projectile.biggerBalls = this.biggerBalls;
     projectile.massiveBalls = this.massiveBalls;
+    projectile.damage = this.upgradedDamage ? this.upgradedDamage : projectile.damage;
 
     const snowballScale = projectile.massiveBalls ? 1.5 : 1;
 
