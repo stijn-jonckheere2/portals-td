@@ -87,12 +87,11 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   override update(time, delta) {
     super.update(time, delta);
+    this.onUpdate.emit(this);
 
     if (this.isBeingDestroyed) {
       return;
     }
-
-    this.onUpdate.emit(this);
 
     if (this.isDead) {
       this.destroyEnemy();
