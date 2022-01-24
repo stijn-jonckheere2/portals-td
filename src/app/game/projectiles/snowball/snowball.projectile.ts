@@ -91,8 +91,11 @@ export class SnowballProjectile extends BaseProjectile {
 
   override damageEnemy(enemy: BaseEnemy, damage: number): void {
     super.damageEnemy(enemy, damage);
-    enemy.setAilment(AilmentType.FROZEN, 7000);
-    enemy.moveToCurrentDestination();
+
+    if(!enemy.isDead) {
+      enemy.setAilment(AilmentType.FROZEN, 7000);
+      enemy.moveToCurrentDestination();
+    }
   }
 
   override fire(x: number, y: number): void {
