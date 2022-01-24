@@ -19,6 +19,7 @@ import { HolyPortal } from "../portals/holy/holy.portal";
 import { ArcanePortal } from "../portals/arcane/arcane.portal";
 import { MindPortal } from "../portals/mind/mind.portal";
 import { SewersScene } from "../scenes/sewers.scene";
+import { environment as env } from '../../../environments/environment';
 
 @Component({
   selector: "app-game-page",
@@ -61,9 +62,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   startGame(): void {
+    if (env.production) {
+      this.startGameSubject$.next(1);
+      return;
+    }
+
     this.startGameSubject$.next(1);
-    // this.levelGoldSubject$.next(50000);
-    // this.levelHealthSubject$.next(1000000);
+    this.levelGoldSubject$.next(50000);
+    this.levelHealthSubject$.next(1000000);
   }
 
   ngOnInit(): void {
@@ -80,7 +86,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       physics: {
         default: 'arcade',
         arcade: {
-          debug: true,
+          debug: !env.production,
         }
       },
       scale: {
