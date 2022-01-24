@@ -262,7 +262,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.baseScene.time.addEvent({
-      delay: 300,
+      delay: 150,
       callback: () => super.destroy()
     });
   }
