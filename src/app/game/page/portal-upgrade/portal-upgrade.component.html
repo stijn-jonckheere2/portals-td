@@ -1,10 +1,12 @@
-
-<div class="portal-upgrades" *ngIf="portalClass">
+<div class="portal-upgrades"
+     *ngIf="portalClass">
 
   <h1>
     {{ portalClass.PORTAL_NAME }}
 
-    <button mat-stroked-button (click)="onSellPortal()" *ngIf="portal">
+    <button mat-stroked-button
+            (click)="onSellPortal()"
+            *ngIf="portal">
       Sell
       <img src="../../../../assets/images/gold-icon.png">
       {{ portalSellingPrice }}
@@ -12,18 +14,22 @@
   </h1>
   <p>{{ portalClass.PORTAL_DESCRIPTION }}</p>
 
-  <div class="portal-upgrade" *ngFor="let upgrade of possibleUpgrades">
+  <div class="portal-upgrade"
+       *ngFor="let upgrade of possibleUpgrades">
     <h2>
       {{ upgrade.UPGRADE_NAME }}
-      <mat-icon *ngIf="upgradeBought(upgrade)" color="primary" class="mat-elevation-z1">check_circle</mat-icon>
+      <mat-icon *ngIf="upgradeBought(upgrade)"
+                color="primary"
+                class="mat-elevation-z1">check_circle</mat-icon>
     </h2>
 
     <p>{{ upgrade.UPGRADE_DESCRIPTION }}</p>
 
-    <button mat-raised-button color="accent"
-      *ngIf="!upgradeBought(upgrade)"
-      (click)="onPurchaseUpgrade(upgrade)"
-      [disabled]="upgradeDisabled(upgrade)">
+    <button mat-raised-button
+            color="accent"
+            *ngIf="!upgradeBought(upgrade)"
+            (click)="onPurchaseUpgrade(upgrade)"
+            [disabled]="upgradeDisabled(upgrade)">
       <img src="../../../../assets/images/gold-icon.png">
       {{ upgrade.UPGRADE_COST }}
     </button>

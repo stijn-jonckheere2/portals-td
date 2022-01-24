@@ -6,12 +6,18 @@
   <p>You beat the level!</p>
 </div>
 
-<div class="dialog-buttons" mat-dialog-actions>
-  <button mat-stroked-button color="primary" (click)="onCloseWindow()">
+<div class="dialog-buttons"
+     mat-dialog-actions>
+  <button mat-stroked-button
+          color="primary"
+          (click)="onCloseWindow()">
     Exit
   </button>
 
-  <button mat-raised-button color="primary" (click)="onCloseWindow(true)" cdkFocusInitial>
+  <button mat-raised-button
+          color="primary"
+          (click)="onCloseWindow(true)"
+          cdkFocusInitial>
     Infinite mode
   </button>
 </div>
