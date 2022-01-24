@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs';
-import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 import { EffectManager } from '../../effects/manager/effect.manager';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
 import { BaseScene } from '../../scenes/base.scene';
