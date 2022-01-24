@@ -73,6 +73,7 @@ export class HolyPortal extends BasePortal {
 
     this.orbContainer = this.baseScene.add.container(portalCenter.x, portalCenter.y);
     this.line = this.baseScene.add.line(0, 0, 0, 0, 120, 120, 0xff0000);
+    this.line.setAlpha(0);
     this.orbContainer.add(this.line);
 
     this.holyOrbs = new HolyOrbGroup(this.baseScene);
