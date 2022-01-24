@@ -75,6 +75,10 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
   override preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta);
 
+    if (this.isBeingDestroyed) {
+      return;
+    }
+
     if (this.body && this.active) {
       this.traveledDistanceX += this.body.deltaAbsX();
       this.traveledDistanceY += this.body.deltaAbsY();
@@ -83,6 +87,10 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   override update(time, delta) {
     super.update(time, delta);
+
+    if (this.isBeingDestroyed) {
+      return;
+    }
 
     this.onUpdate.emit(this);
 
@@ -141,7 +149,7 @@ export abstract class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
   moveToCurrentDestination(): void {
     const { x, y } = this.currentDestination;
-    this.scene.physics.moveTo(this, x, y, this.actualSpeed);
+    this.scene?.physics.moveTo(this, x, y, this.actualSpeed);
   }
 
   checkCurrentMovement(): void {
