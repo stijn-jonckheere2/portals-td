@@ -3,29 +3,14 @@ import { OrbElement } from '../orb-element.enum';
 import { BaseScene } from '../../scenes/base.scene';
 import { BaseProjectile } from '../base/base.projectile';
 import { BaseEnemy } from '../../enemies/base/base.enemy';
+import { remove } from 'lodash';
 import { ExplosionEffect } from '../../effects/explosion/explosion.effect';
 
 export class HolyOrbProjectile extends BaseProjectile {
   static SPRITE_KEY = 'orbs';
   static SPRITE_URL = 'assets/sprites/orbs.png';
 
-  biggerBalls: boolean = false;
-  massiveBalls: boolean = false;
-
-  line: Phaser.GameObjects.Line;
-  innerDelta: number = 0;
-
-  orbRotation: number;
-
-  get realtimeRotation(): number {
-    const worldTimeScale: number = this.baseScene.physics.world.timeScale;
-
-    if (worldTimeScale === 0.5) {
-      return this.orbRotation * 2;
-    }
-
-    return this.orbRotation;
-  }
+  enemiesOnCooldown: string[] = [];
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, HolyOrbProjectile.SPRITE_KEY);
@@ -37,7 +22,7 @@ export class HolyOrbProjectile extends BaseProjectile {
   override init(): void {
     super.init();
 
-    this.damage = 5;
+    this.damage = 25;
 
     this.setScale(1);
     this.setOrigin(0.5, 0.5);
@@ -60,17 +45,31 @@ export class HolyOrbProjectile extends BaseProjectile {
 
   override update(time, delta): void {
     super.update(time, delta);
-    this.innerDelta += delta;
-
-    if (this.line && this.active && this.visible) {
-      this.line.rotation += this.realtimeRotation;
-      this.x = this.line.getBottomRight().x;
-      this.y = this.line.getBottomRight().y;
-    }
   }
 
   onHitTarget(target: BaseEnemy): void {
+    if (this.enemyIsOnCooldown(target.id)) {
+      return;
+    }
+
+    this.enemiesOnCooldown.push(target.id);
     this.damageEnemy(target, this.damage);
+    this.takeEnemyOffCooldown(target.id);
+  }
+
+  enemyIsOnCooldown(enemyId: string): boolean {
+    return this.enemiesOnCooldown.includes(enemyId);
+  }
+
+  takeEnemyOffCooldown(enemyId: string): void {
+    this.baseScene.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        const removed = remove(this.enemiesOnCooldown, (cooldownId) => {
+          return cooldownId === enemyId;
+        });
+      }
+    });
   }
 
   private damageEnemy(enemy: BaseEnemy, damage: number): void {
@@ -83,21 +82,7 @@ export class HolyOrbProjectile extends BaseProjectile {
     this.setVisible(true);
   }
 
-  startOrbit(centerX: number, centerY: number, rotationSpeed: number, rotationDistance: number, reverseOrbit: boolean): void {
-    this.line = this.baseScene.add.line(centerX, centerY, 0, 0, rotationDistance, rotationDistance, 0xff0000);
-    this.line.setOrigin(0.5, 0.5);
-    this.line.setScale(1);
-    this.line.setLineWidth(2);
-    this.line.setAlpha(0);
-    this.orbRotation = rotationSpeed;
-
-    if (reverseOrbit) {
-      this.line.rotation = 3.14159; // 180° in radians
-    }
-  }
-
   override destroyEnemy(): void {
-    this.line?.destroy();
     super.destroyEnemy();
   }
 }

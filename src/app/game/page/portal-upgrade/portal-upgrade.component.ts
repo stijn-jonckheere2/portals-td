@@ -19,6 +19,7 @@ import { PoisonCloudIIUpgrade } from "../../upgrades/poison/poison-cloud-ii/pois
 import { MindPortal } from "../../portals/mind/mind.portal";
 import { MastermindUpgrade } from "../../upgrades/mind/mastermind/mastermind.upgrade";
 import { TrinityUpgrade } from "../../upgrades/mind/trinity/trinity.upgrade";
+import { remove } from 'lodash';
 
 @Component({
   selector: "app-portal-upgrade",
@@ -142,8 +143,13 @@ export class PortalUpgradeComponent implements OnChanges {
       return;
     }
 
-    this.portal?.baseScene.earnGold(this.portalSellingPrice);
-    this.portal?.destroyEnemy();
+    remove(this.portal.baseGameScene.activePortals, (p) => {
+      return p.id === this.portal.id;
+    });
+
+    this.portal.baseGameScene.updateEnemyColliders();
+    this.portal.baseScene.earnGold(this.portalSellingPrice);
+    this.portal.destroyEnemy();
     this.portalSold.emit();
   }
 }

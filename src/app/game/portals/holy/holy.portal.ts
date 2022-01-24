@@ -15,8 +15,21 @@ export class HolyPortal extends BasePortal {
   static PORTAL_RANGE: number = 200;
 
   triggerTimer: Phaser.Time.TimerEvent;
-
   holyOrbs: HolyOrbGroup;
+  orbContainer: Phaser.GameObjects.Container;
+
+  line: Phaser.GameObjects.Line;
+  orbRotation: number = 0.05;
+
+  get realtimeRotation(): number {
+    const worldTimeScale: number = this.baseScene.physics.world.timeScale;
+
+    if (worldTimeScale === 0.5) {
+      return this.orbRotation * 2;
+    }
+
+    return this.orbRotation;
+  }
 
   constructor(scene: BaseScene, x: number, y: number) {
     super(scene, x, y, BasePortal.SPRITE_KEY, PortalElement.HOLY);
@@ -46,22 +59,56 @@ export class HolyPortal extends BasePortal {
   override update(time, delta): void {
     super.update(time, delta);
 
+    if (this.orbContainer) {
+      this.orbContainer.rotation += this.realtimeRotation;
+    }
   }
 
   startShooting(): void {
     if (this.holyOrbs) {
       return;
     }
+
+    const portalCenter = this.getCenter();
+
+    this.orbContainer = this.baseScene.add.container(portalCenter.x, portalCenter.y);
+    this.line = this.baseScene.add.line(0, 0, 0, 0, 120, 120, 0xff0000);
+    this.orbContainer.add(this.line);
+
     this.holyOrbs = new HolyOrbGroup(this.baseScene);
+    this.addFirstOrb();
+  }
 
-    const center = this.getCenter();
+  addOrb(x, y): void {
+    const orb = this.holyOrbs.fireProjectile(0, 0);
+    orb.x = x;
+    orb.y = y;
+    this.orbContainer.add(orb);
+  }
 
-    this.holyOrbs.centerPoint = {
-      x: center.x,
-      y: center.y
-    };
+  addFirstOrb(): void {
+    const { x, y } = this.line.getBottomRight();
+    this.addOrb(x, y);
+  }
 
-    this.holyOrbs.fireProjectile(0, 0, null, 0.045, 120);
+  addWallSweepOrbs(): void {
+    const { x, y } = this.line.getBottomRight();
+    this.addOrb(x - 10, y - 10);
+    this.addOrb(x + 20, y + 20);
+  }
+
+  addTwinBladeOrbs(): void {
+    const { x: bottomX, y: bottomY } = this.line.getBottomRight();
+
+    this.addOrb(bottomX - 10, bottomY - 10);
+    this.addOrb(bottomX + 10, bottomY + 10);
+    this.addOrb(bottomX + 30, bottomY + 30);
+
+    const { x: topX, y: topY } = this.line.getTopLeft();
+
+    this.addOrb(topX + 10, topY + 10);
+    this.addOrb(topX - 10, topY - 10);
+    this.addOrb(topX - 30, topY - 30);
   }
 
   addUpgrade(upgrade: HolyPortalUpgrades): void {
@@ -69,47 +116,42 @@ export class HolyPortal extends BasePortal {
 
     if (upgrade instanceof WallSweepUpgrade) {
       this.holyOrbs.resetProjectiles();
-      this.holyOrbs.setUpgradedDamage(10);
+      this.holyOrbs.setUpgradedDamage(40);
 
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 90);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 150);
-
+      this.addWallSweepOrbs();
       this.maxRange = 250;
+      this.orbRotation = 0.06;
       this.toggleRadiusVisible(true);
       return;
     }
 
     if (upgrade instanceof TwinBladesUpgrade) {
       this.holyOrbs.resetProjectiles();
+      this.holyOrbs.setUpgradedDamage(70);
 
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 90);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 150);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 210);
-
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 90, true);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 150, true);
-      this.holyOrbs.fireProjectile(0, 0, null, 0.06, 210, true);
-
-      this.maxRange = 330;
+      this.addTwinBladeOrbs();
+      this.maxRange = 350;
+      this.orbRotation = 0.07;
       this.toggleRadiusVisible(true);
       return;
     }
   }
 
   initEvents(): void {
-    this.scene.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
-    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene?.events.on(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
+    this.scene?.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
   stopEvents(): void {
-    this.scene.events.off(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
-    this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.scene?.events.off(Phaser.Scenes.Events.PRE_UPDATE, this.preUpdate, this);
+    this.scene?.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
   }
 
   override destroyEnemy(): void {
     super.destroyEnemy();
     this.stopEvents();
-    this.holyOrbs?.destroy(true);
+    this.holyOrbs?.resetProjectiles();
+    this.orbContainer?.destroy(true);
     this.triggerTimer?.destroy();
     this.destroy(true);
   }

@@ -60,6 +60,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
     private router: Router) {
   }
 
+  startGame(): void {
+    this.startGameSubject$.next(1);
+    // this.levelGoldSubject$.next(50000);
+    // this.levelHealthSubject$.next(1000000);
+  }
+
   ngOnInit(): void {
     this.setupSubjects();
 
@@ -74,7 +80,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       physics: {
         default: 'arcade',
         arcade: {
-          debug: false,
+          debug: true,
         }
       },
       scale: {
@@ -151,12 +157,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.currentPortalClassSubject$ = new BehaviorSubject(null);
 
     this.setupWindowSubjects();
-  }
-
-  startGame(): void {
-    this.startGameSubject$.next(1);
-    // this.levelGoldSubject$.next(50000);
-    // this.levelHealthSubject$.next(1000000);
   }
 
   togglePause(flag: boolean): void {
